@@ -9,13 +9,21 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@parse/react-native": "^0.0.1-alpha.18",
+    "@types/react": "~18.0.27",
     "expo": "~48.0.6",
     "expo-status-bar": "~1.4.4",
+    "native-base": "^3.4.28",
     "react": "18.2.0",
-    "react-native": "0.71.3"
+    "react-hook-form": "^7.43.5",
+    "react-native": "0.71.3",
+    "react-native-scripts": "^2.0.1",
+    "typescript": "^4.9.4",
+    "react-native-svg": "13.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@types/react-native": "^0.71.3"
   },
   "private": true
 }
