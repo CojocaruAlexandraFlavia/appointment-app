@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+
+import {Register} from "./components/Register";
 
 export default function App() {
-  return (
+  return (    
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <StatusBar style="auto" />
+    <Text style={styles.title}>React Native App</Text>
+        <Text>User Registration</Text>
+        <Register />
     </View>
   );
 }
@@ -16,5 +21,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: 60,
+    paddingRight: 60,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
