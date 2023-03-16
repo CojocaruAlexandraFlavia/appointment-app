@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
 import {Register} from "./components/Register";
+//import Calendar from "./components/Calendar";
 
 export default function App() {
   return (    
