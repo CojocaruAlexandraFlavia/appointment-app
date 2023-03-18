@@ -34,14 +34,14 @@ const HomeClient = ({navigation}: any): ReactElement => {
     return (
         <Center w="100%">
             <Box safeArea p="2" py="8" w="90%" maxW="290">
-                <Heading size={"lg"}>Salons</Heading>
+                <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
                 <FlatList data={mockData} renderItem={({item}) => 
                     <Box borderBottomWidth="1" _dark={{ borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-                        <HStack space={[2, 3]} justifyContent="space-even">
+                        <HStack space={[2, 3]} justifyContent="space-evenly">
                         <Avatar size="48px" source={{uri: item.images[0]}} />
                         <VStack>
                             <Text>{item.name}</Text>
-                            <StarRating rating={item.rating} disabled halfStarEnabled starSize={30}/>
+                            <StarRating rating={item.rating} disabled halfStarEnabled starSize={30} fullStarColor={'red'}/>
                             <Text>{item.phoneNumber}</Text>
                         </VStack>
                         </HStack>

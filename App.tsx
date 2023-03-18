@@ -14,7 +14,7 @@ export default function App() {
     <NavigationContainer>
         <NativeBaseProvider>
             <UserDataProvider>
-                <Stack.Navigator initialRouteName="HomeClient">
+                <Stack.Navigator>
                     <Stack.Screen name="Login" component={Login}/>
                     {/* <Stack.Screen name="Register" component={Register}/> */}
                     <Stack.Screen name="Calendar" component={Calendar}/>
