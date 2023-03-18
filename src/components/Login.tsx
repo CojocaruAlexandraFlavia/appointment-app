@@ -1,13 +1,17 @@
-import { Center, HStack, Link, VStack, Box, Button, Heading, Input, Stack, Container, FormControl, Text, Alert, WarningOutlineIcon  } from "native-base"
-import { FC, ReactElement, useState } from "react"
-import { useLoginFormContext } from "../store/LoginForm.context"
+import { ParamListBase } from "@react-navigation/native"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon  } from "native-base"
+import { ReactElement, useState } from "react"
+import { useUserDataContext } from "../store/UserData.context"
 
 type LoginData = {
     email: string, 
     password: string
 }
 
-const Login: FC<{}> = (): ReactElement => {
+type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
+
+const Login = ({navigation}): ReactElement => {
 
     const [credentials, setCredentials] = useState<LoginData>({
         email: "",
@@ -18,7 +22,7 @@ const Login: FC<{}> = (): ReactElement => {
         password: ""
     })
 
-    const {email, password, setLoginData} = useLoginFormContext()
+    const {setUser} = useUserDataContext()
 
     const findFormErrors = () : LoginData => {
         const errors : LoginData = {
@@ -37,7 +41,8 @@ const Login: FC<{}> = (): ReactElement => {
             setErrors(formErrors)
         } else {
             console.log("ok")
-            setLoginData(credentials)
+            setUser({})
+            navigation.navigate('Calendar')
         }
     }
 
@@ -74,9 +79,11 @@ const Login: FC<{}> = (): ReactElement => {
                         <Text fontSize="sm" color="coolGray.600" _dark={{color: "warmGray.200"}}>
                             I'm a new user.{" "}
                         </Text>
-                        <Link _text={{color: "indigo.500",fontWeight: "medium",fontSize: "sm"}} href="#">
+                        {/* <Link _text={{color: "indigo.500",fontWeight: "medium",fontSize: "sm"}} 
+                            onPress={navigation.navigate('Register')}>
                             Sign Up
-                        </Link>
+                        </Link> */}
+                        <Text underline onPress={() => navigation.navigate('Register')}>Register</Text>
                     </HStack>
                 </VStack>
             </Box>
