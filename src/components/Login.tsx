@@ -9,9 +9,9 @@ type LoginData = {
     password: string
 }
 
-type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
+//type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
 
-const Login = ({navigation}): ReactElement => {
+const Login = ({navigation}: any): ReactElement => {
 
     const [credentials, setCredentials] = useState<LoginData>({
         email: "",
@@ -41,8 +41,8 @@ const Login = ({navigation}): ReactElement => {
             setErrors(formErrors)
         } else {
             console.log("ok")
-            setUser({})
-            navigation.navigate('Calendar')
+            //setUser({})
+            navigation.navigate('HomeClient')
         }
     }
 

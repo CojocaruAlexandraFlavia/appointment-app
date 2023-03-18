@@ -8,19 +8,19 @@ interface SignUpProps {
   value?: any;
 }
 interface SignUpState {
-  username : string,
-  email : string,
-  password : string,
-  errors : {
-     username :  string,
-     email : string,
-     password : string
-  }
+    username : string,
+    email : string,
+    password : string,
+    errors : {
+        username :  string,
+        email : string,
+        password : string
+    }
 }
 
 const Regex = RegExp(/^\s?[A-Z0–9]+[A-Z0–9._+-]{0,}@[A-Z0–9._+-]+\.[A-Z0–9]{2,4}\s?$/i);
 
-export class Register extends React.Component
+export class Register extends React.Component<SignUpProps, SignUpState>
 {
 
   handleChange = (event : any) => {
