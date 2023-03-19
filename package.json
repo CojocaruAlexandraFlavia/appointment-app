@@ -9,22 +9,30 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@parse/react-native": "^0.0.1-alpha.18",
+    "@types/react": "~18.0.27",
     "@expo/webpack-config": "^18.0.1",
     "@types/parse": "^3.0.3",
     "@types/react": "~18.0.27",
     "@types/react-datepicker": "^4.10.0",
     "expo": "^48.0.7",
     "expo-status-bar": "~1.4.4",
+    "native-base": "^3.4.28",
     "moment": "^2.29.4",
     "react": "18.2.0",
+    "react-hook-form": "^7.43.5",
     "react-dom": "18.2.0",
     "react-native": "0.71.3",
+    "react-native-scripts": "^2.0.1",
+    "typescript": "^4.9.4",
+    "react-native-svg": "13.4.0",
     "react-native-calendar-picker": "^6.1.5",
     "react-native-web": "~0.18.10",
     "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/react-native": "^0.71.3",
     "@types/react-native": "^0.70.11",
     "@types/react-native-calendar-picker": "^7.0.3"
   },
