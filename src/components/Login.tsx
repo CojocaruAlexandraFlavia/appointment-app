@@ -1,8 +1,7 @@
-import { ParamListBase } from "@react-navigation/native"
-import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon  } from "native-base"
+import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon, Icon, Pressable  } from "native-base"
 import { ReactElement, useState } from "react"
 import { useUserDataContext } from "../store/UserData.context"
+import { MaterialIcons } from "@expo/vector-icons";
 
 type LoginData = {
     email: string, 
@@ -13,6 +12,7 @@ type LoginData = {
 
 const Login = ({navigation}: any): ReactElement => {
 
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const [credentials, setCredentials] = useState<LoginData>({
         email: "",
         password: ""
@@ -37,11 +37,11 @@ const Login = ({navigation}: any): ReactElement => {
     
     const auth = () => {
         const formErrors : LoginData = findFormErrors()
-        if (!Object.values(formErrors).includes("")) {
+        if (Object.values(formErrors).some(item => item !== "")) {
             setErrors(formErrors)
         } else {
-            console.log("ok")
-            //setUser({})
+            //OPTIONAL Login Firebase  
+            //set retrieved user to context
             navigation.navigate('HomeClient')
         }
     }
@@ -63,12 +63,19 @@ const Login = ({navigation}: any): ReactElement => {
                 <VStack space={3} mt="5">
                     <FormControl isInvalid={errors.email !== ""}>
                         <FormControl.Label>Email</FormControl.Label>
-                        <Input value={credentials.email} isInvalid={errors.email !== ""} onChangeText={text => onChangeText("email", text)}/>
+                        <Input w={{base: "100%", md: "25%"}} size={5} color="muted.400" InputLeftElement={
+                            <Icon as={<MaterialIcons name="person" />} ml={2}/>}  value={credentials.email}  isInvalid={errors.email !== ""} 
+                        onChangeText={text => onChangeText("email", text)}/>
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={errors.password !== ""}>
                         <FormControl.Label>Password</FormControl.Label>
-                        <Input type="password" value={credentials.password} isInvalid={errors.password !== ""} onChangeText={text => onChangeText("password", text)} />
+                        <Input w={{ base: "100%", md: "25%"}} value={credentials.password} isInvalid={errors.password !== ""} 
+                            onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"} InputLeftElement={
+                            <Pressable onPress={() => setShowPassword(!showPassword)}>
+                                <Icon as={
+                                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} size={5} mr="1" ml={2} color="muted.400" />
+                            </Pressable>} />
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
                         <Link _text={{fontSize: "xs", fontWeight: "500", color: "indigo.500"}} alignSelf="flex-end" mt="1">
                             Forget Password?
@@ -90,30 +97,5 @@ const Login = ({navigation}: any): ReactElement => {
         </Center>
     )
 }
-
-// const styles = StyleSheet.create({
-//     input: {
-//       height: 40,
-//       margin: 12,
-//       borderWidth: 1,
-//       padding: 10,
-//     },
-//     container: {
-//         marginTop: 50,
-//         marginHorizontal: 25
-//     },
-//     formGroup: {
-//         borderWidth: 1,
-//         borderColor: "black",
-//         padding: 10,
-//         marginBottom: 10
-//     },
-//     titleLogin: {
-//         fontSize: 10,
-//         height: 50,
-//         marginBottom: 10,
-//         marginTop: 100
-//     }
-// });
 
 export default Login
