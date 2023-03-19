@@ -91,29 +91,4 @@ const Login = ({navigation}: any): ReactElement => {
     )
 }
 
-// const styles = StyleSheet.create({
-//     input: {
-//       height: 40,
-//       margin: 12,
-//       borderWidth: 1,
-//       padding: 10,
-//     },
-//     container: {
-//         marginTop: 50,
-//         marginHorizontal: 25
-//     },
-//     formGroup: {
-//         borderWidth: 1,
-//         borderColor: "black",
-//         padding: 10,
-//         marginBottom: 10
-//     },
-//     titleLogin: {
-//         fontSize: 10,
-//         height: 50,
-//         marginBottom: 10,
-//         marginTop: 100
-//     }
-// });
-
 export default Login

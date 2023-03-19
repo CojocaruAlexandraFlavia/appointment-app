@@ -1,3 +1,4 @@
+import Register from "./src/components/Register";
 import Login from "./src/components/Login";
 import { NativeBaseProvider } from "native-base";
 import {NavigationContainer} from '@react-navigation/native';
@@ -16,7 +17,7 @@ export default function App() {
             <UserDataProvider>
                 <Stack.Navigator>
                     <Stack.Screen name="Login" component={Login}/>
-                    {/* <Stack.Screen name="Register" component={Register}/> */}
+                    <Stack.Screen name="Register" component={Register}/>
                     <Stack.Screen name="Calendar" component={Calendar}/>
                     <Stack.Screen name="HomeClient" component={HomeClient}/>
                 </Stack.Navigator>
