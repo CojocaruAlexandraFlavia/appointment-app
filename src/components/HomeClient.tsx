@@ -1,14 +1,8 @@
-import { Avatar, Box, Center, FlatList, Heading, HStack, Text, VStack } from "native-base";
+import { Link } from "@react-navigation/native";
+import { Avatar, Box, Button, Center, FlatList, Heading, HStack, Text, VStack } from "native-base";
 import { ReactElement, useState } from "react";
-import StarRating from 'react-native-star-rating';
-
-type Salon = {
-    name: string,
-    phoneNumber: string,
-    rating: number,
-    location: string,
-    images: string[]
-}
+import { Rating } from "react-native-ratings";
+import { Salon } from "../utils/Types";
 
 const HomeClient = ({navigation}: any): ReactElement => {
 
@@ -16,6 +10,7 @@ const HomeClient = ({navigation}: any): ReactElement => {
 
     const mockData: Salon[] = [
         {
+            id: 1,
             name: "Salon1",
             phoneNumber: "089878987",
             rating: 4.5,
@@ -23,6 +18,7 @@ const HomeClient = ({navigation}: any): ReactElement => {
             images: ["img1", "img2"]
         },
         {
+            id: 2,
             name: "Salon2",
             phoneNumber: "089878987",
             rating: 3.5,
@@ -33,20 +29,24 @@ const HomeClient = ({navigation}: any): ReactElement => {
 
     return (
         <Center w="100%">
-            <Box safeArea p="2" py="8" w="90%" maxW="290">
+            <Box safeArea p="2" py="8" w="100%" maxW="290">
                 <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
                 <FlatList data={mockData} renderItem={({item}) => 
-                    <Box borderBottomWidth="1" _dark={{ borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-                        <HStack space={[2, 3]} justifyContent="space-evenly">
-                        <Avatar size="48px" source={{uri: item.images[0]}} />
-                        <VStack>
-                            <Text>{item.name}</Text>
-                            <StarRating rating={item.rating} disabled halfStarEnabled starSize={30} fullStarColor={'red'}/>
-                            <Text>{item.phoneNumber}</Text>
-                        </VStack>
-                        </HStack>
-                    </Box>}>
-
+                    // <Link to={{screen: 'Salon', params: {id: item.id}}}>
+                        <Box borderBottomWidth="1" _dark={{ borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+                            <HStack space={"sm"} justifyContent="space-between">
+                                {/* <Avatar size="48px" source={{uri: item.images[0]}} /> */}
+                                <VStack>
+                                    <Text fontSize={"xl"}>{item.name}</Text>
+                                    <Rating type="custom" startingValue={item.rating}  imageSize={30} readonly />
+                                    {/* <Text>{item.phoneNumber}</Text> */}
+                                </VStack>
+                                {/* <Button height={'10'} onPress={() => navigation.navigate('Salon', {id: item.id})}>See details</Button> */}
+                                <Link style={{alignSelf:"center"}} to={{screen: 'Salon', params: {id: item.id}}}>See details</Link>
+                            </HStack>
+                        </Box>
+                    // </Link> 
+                    }>
                 </FlatList>
             </Box>
         </Center>
