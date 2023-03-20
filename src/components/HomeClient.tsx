@@ -1,18 +1,14 @@
 import { Link } from "@react-navigation/native";
-import { Avatar, Box, Center, FlatList, Heading, HStack, Text, VStack } from "native-base";
-import { ReactElement, useState } from "react";
+import { Avatar, Box, Center, FlatList, Heading, HStack, VStack } from "native-base";
+import { useState } from "react";
 import { Rating } from "react-native-ratings";
 import { Salon } from "../utils/Types";
 import * as React from 'react';
 import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
-
 function Home({navigation}: any) {
 
     const [salons, setSalons] = useState<Salon[]>([])
@@ -40,8 +36,7 @@ function Home({navigation}: any) {
         <Center w="100%">
             <Box safeArea p="2" py="8" w="100%" maxW="290">
                 <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
-                <FlatList data={mockData} renderItem={({item}) => 
-                    // <Link to={{screen: 'Salon', params: {id: item.id}}}>
+                <FlatList data={mockData} renderItem={({item}) =>
                         <Box borderBottomWidth="1" _dark={{ borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
                             <HStack space={"sm"}>
                                 <Avatar size="48px" source={{uri: item.images[0]}} mr={7}/>
@@ -51,7 +46,6 @@ function Home({navigation}: any) {
                                 </VStack>
                             </HStack>
                         </Box>
-                    // </Link> 
                     }>
                 </FlatList>
             </Box>
@@ -73,6 +67,5 @@ export default function HomeClient() {
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Notifications" component={NotificationsScreen} />
         </Drawer.Navigator>
-
     );
 }

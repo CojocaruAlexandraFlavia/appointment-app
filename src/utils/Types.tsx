@@ -23,3 +23,18 @@ export type StackNavigatorParamList = {
 // export type SalonScreenNavigationProp = NativeStackNavigationProp<StackNavigatorParamList, 'Salon'>;
 
 export type SalonScreenRouteProp = RouteProp<StackNavigatorParamList,'Salon'>;
+
+export type CalendarProps = {
+    show: boolean,
+    setShow: Function
+}
+
+export type ServiceWithTime = {
+    name: string,
+    duration: number
+}
+
+export type ServiceList = {
+    name: string,
+    services: ServiceWithTime[]
+}

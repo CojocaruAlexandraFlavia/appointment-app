@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import { Button, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {CalendarProps} from "../utils/Types";
 
-const CalendarPicker = () => {
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+const CalendarPicker: React.FC<CalendarProps> = ({show, setShow}: CalendarProps) => {
+  //const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const hideDatePicker = () => {
-    setDatePickerVisibility(false);
+    setShow(false);
   };
 
-  const handleConfirm = (date: any) => {
+  const handleConfirm = (date: Date) => {
     console.warn("A date has been picked: ", date);
     hideDatePicker();
   };
 
   return (
     <View>
-      <Button title="Show Date Picker" onPress={showDatePicker} />
+      {/*<Button title="Ask for appointment" onPress={showDatePicker} />*/}
       <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="datetime"
+        isVisible={show}
+        mode="date"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
