@@ -1,108 +1,133 @@
-import React from "react";
-import { Text } from "native-base";
+import { Center, VStack, Box, Button, Heading, Input, FormControl, WarningOutlineIcon  } from "native-base"
+import { ReactElement, useState } from "react"
+import { useUserDataContext } from "../store/UserData.context"
+import { ScrollView } from 'react-native';
 
-import * as styles from './style.module.css'
-
-interface SignUpProps {
-  name?: any;
-  value?: any;
+type RegisterData = {
+    email: string, 
+    password: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string
 }
-interface SignUpState {
-    username : string,
-    email : string,
-    password : string,
-    errors : {
-        username :  string,
-        email : string,
-        password : string
+
+//type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
+
+const Register = ({navigation}: any): ReactElement => {
+
+    const [credentials, setCredentials] = useState<RegisterData>({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        phoneNumber: ""
+
+    })
+    const [errors, setErrors] = useState<RegisterData>({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        phoneNumber: ""
+    })
+
+    const {setUser} = useUserDataContext()
+
+    const findFormErrors = () : RegisterData => {
+        const errors : RegisterData = {
+            email: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+            phoneNumber: ""
+        }
+        if(credentials.email === "") errors.email = "Required field"
+        if(credentials.password === "") errors.password = "Required field"
+        
+        if(credentials.firstName === "") errors.firstName = "Required field"
+        else if(credentials.firstName.length < 3) errors.firstName = "First Name is too short"
+        
+        if(credentials.lastName === "") errors.lastName = "Required field"
+        else if(credentials.lastName.length < 3) errors.lastName = "Last Name is too short"
+        
+        if(credentials.phoneNumber === "") errors.phoneNumber = "Required field"
+        else if(credentials.phoneNumber.length < 10) errors.phoneNumber = "Phone Number is too short"
+
+        return errors
     }
-}
-
-const Regex = RegExp(/^\s?[A-Z0–9]+[A-Z0–9._+-]{0,}@[A-Z0–9._+-]+\.[A-Z0–9]{2,4}\s?$/i);
-
-export class Register extends React.Component<SignUpProps, SignUpState>
-{
-
-  handleChange = (event : any) => {
-    event.preventDefault();
-    const { name, value } = event.target;
-    let errors = this.state.errors;
-    switch (name) {
-      case 'username':
-         errors.username = value.length < 5 ? 'Username must be 5 characters long!': '';
-         break;
-      case 'email':
-         errors.email = Regex.test(value)? '': 'Email is not valid!';
-         break;
-      case 'password':
-         errors.password = value.length < 8 ? 'Password must be eight characters long!': '';
-         break;
-      default:
-        break;
+    
+    const auth = () => {
+        const formErrors : RegisterData = findFormErrors()
+        if (!Object.values(formErrors).includes("")) {
+            setErrors(formErrors)
+        } else {
+            console.log("ok")
+            //setUser({})
+            navigation.navigate('HomeClient')
+        }
     }
-  this.setState(Object.assign(this.state, { errors,[name]: value }));
-  console.log(this.state.errors);
-  }
-  
-  handleSubmit = (event : any) => {
-    event.preventDefault();
-    let validity = true;
-    Object.values(this.state.errors).forEach(
-      (val) => val.length > 0 && (validity = false)
-    );
-    if(validity == true){
-       console.log("Registering can be done");
-    }else{
-       console.log("You cannot be registered!!!")
+
+    const onChangeText = (key: string, value: string) => {
+        if (errors[key as keyof RegisterData] !== "") {
+            setErrors({...errors, [key]: ""})
+        }
+        setCredentials({...credentials, [key]: value})
     }
-  }
 
-  constructor(props: SignUpProps) {
-    super(props);
-    const initialState = {
-       username : '',
-       email : '',
-       password : '',
-       errors : {
-         username : '',
-         email : '',
-         password : ''
-       } 
-     }
-     this.state = initialState;
-     this.handleChange = this.handleChange.bind(this);
+    return (   
+       <ScrollView > 
+        <Center w="100%"> 
+            <Box safeArea p="2" py="8" w="90%" maxW="290"> 
+                <Heading size="lg" fontWeight="500" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
+                <Heading mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
+                    Sign up to continue!
+                </Heading>
+                <VStack space={5} mt="5">
+                    <FormControl isRequired isInvalid={errors.email !== ""}>
+                        <FormControl.Label _text={{bold: true}} >Email</FormControl.Label>
+                        <Input value={credentials.email} isInvalid={errors.email !== ""} onChangeText={text => onChangeText("email", text)}/>
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={errors.password !== ""}>
+                        <FormControl.Label _text={{bold: true}} >Password</FormControl.Label>
+                        <Input type="password" value={credentials.password} isInvalid={errors.password !== ""} onChangeText={text => onChangeText("password", text)} />
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
+                    </FormControl>
+
+                    {/* <FormControl isRequired isInvalid={errors.password !== ""}>
+                        <FormControl.Label _text={{bold: true}} >Confirm Password</FormControl.Label>
+                        <Input type="password" value={credentials.password} isInvalid={errors.password !== ""} onChangeText={text => onChangeText("password", text)} />
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
+                     </FormControl> */}
+
+                     <FormControl isRequired isInvalid={errors.firstName !== ""}>
+                        <FormControl.Label _text={{bold: true}} >First Name</FormControl.Label>
+                        <Input value={credentials.firstName} isInvalid={errors.firstName !== ""} onChangeText={text => onChangeText("firstName", text)}/>
+                        <FormControl.HelperText _text={{fontSize: 'xs'}}>First Name should contain at least 3 characters. </FormControl.HelperText>
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.firstName}</FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={errors.lastName !== ""}>
+                        <FormControl.Label _text={{bold: true}} >Last Name</FormControl.Label>
+                        <Input value={credentials.lastName} isInvalid={errors.lastName !== ""} onChangeText={text => onChangeText("lastName", text)}/>
+                        <FormControl.HelperText _text={{fontSize: 'xs'}}>Last Name should contain at least 3 characters. </FormControl.HelperText>
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.lastName}</FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={errors.phoneNumber !== ""}>
+                        <FormControl.Label _text={{bold: true}} >Phone Number</FormControl.Label>
+                        <Input value={credentials.phoneNumber} isInvalid={errors.phoneNumber !== ""} onChangeText={text => onChangeText("phoneNumber", text)}/>
+                        <FormControl.HelperText _text={{fontSize: 'xs'}}>Phone Number should contain 10 characters. </FormControl.HelperText>
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <Button mt="2" colorScheme="indigo" onPress={auth}>Sign up</Button>
+                </VStack>
+            </Box>
+        </Center> 
+        </ScrollView>
+    )
 }
 
-render() {
-  const {errors} = this.state   
-  return (
-//     <div className='wrapper'>
-//       <div className='form-wrapper'>
-//          <h2>Sign Up</h2>
-//          <form onSubmit={this.handleSubmit} noValidate >
-//             <div className='fullName'>
-//                <label htmlFor="fullName">Full Name</label>
-//                <input type='text' name='fullName' onChange=            {this.handleChange}/>
-//                 {errors.username.length > 0 &&  <span style={{color: "red"}}>{errors.username}</span>}
-// </div>
-//             <div className='email'>
-//                <label htmlFor="email">Email</label>
-//                <input type='email' name='email' onChange={this.handleChange}/>
-// {errors.email.length > 0 &&  <span style={{color: "red"}}>{errors.email}</span>}
-// </div>
-//             <div className='password'>
-//                <label htmlFor="password">Password</label>
-//                <input type='password' name='password' onChange={this.handleChange}/>
-//                {errors.password.length > 0 &&  <span style={{color: "red"}}>{errors.password}</span>}
-// </div>              
-//             <div className='submit'>
-//                <button>Register Me</button>
-//             </div>
-//        </form>
-//    </div>
-// </div>
-<Text>Register</Text>
-);
-}
-
-}
+export default Register

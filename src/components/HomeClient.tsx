@@ -1,5 +1,5 @@
 import { Link } from "@react-navigation/native";
-import { Avatar, Box, Button, Center, FlatList, Heading, HStack, Text, VStack } from "native-base";
+import { Avatar, Box, Center, FlatList, Heading, HStack, Text, VStack } from "native-base";
 import { ReactElement, useState } from "react";
 import { Rating } from "react-native-ratings";
 import { Salon } from "../utils/Types";
@@ -15,7 +15,7 @@ const HomeClient = ({navigation}: any): ReactElement => {
             phoneNumber: "089878987",
             rating: 4.5,
             location: "Str. 1, Nr.1",
-            images: ["img1", "img2"]
+            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img2"]
         },
         {
             id: 2,
@@ -23,7 +23,7 @@ const HomeClient = ({navigation}: any): ReactElement => {
             phoneNumber: "089878987",
             rating: 3.5,
             location: "Str. 1, Nr.1",
-            images: ["img1", "img2"]
+            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img2"]
         },
     ]
 
@@ -34,15 +34,12 @@ const HomeClient = ({navigation}: any): ReactElement => {
                 <FlatList data={mockData} renderItem={({item}) => 
                     // <Link to={{screen: 'Salon', params: {id: item.id}}}>
                         <Box borderBottomWidth="1" _dark={{ borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-                            <HStack space={"sm"} justifyContent="space-between">
-                                {/* <Avatar size="48px" source={{uri: item.images[0]}} /> */}
+                            <HStack space={"sm"}>
+                                <Avatar size="48px" source={{uri: item.images[0]}} mr={7}/>
                                 <VStack>
-                                    <Text fontSize={"xl"}>{item.name}</Text>
-                                    <Rating type="custom" startingValue={item.rating}  imageSize={30} readonly />
-                                    {/* <Text>{item.phoneNumber}</Text> */}
+                                    <Link style={{alignSelf:"center", fontSize:20}} to={{screen: 'Salon', params: {id: item.id}}}>{item.name}</Link>
+                                    <Rating type="custom" startingValue={item.rating}  imageSize={25} readonly />
                                 </VStack>
-                                {/* <Button height={'10'} onPress={() => navigation.navigate('Salon', {id: item.id})}>See details</Button> */}
-                                <Link style={{alignSelf:"center"}} to={{screen: 'Salon', params: {id: item.id}}}>See details</Link>
                             </HStack>
                         </Box>
                     // </Link> 
@@ -51,7 +48,6 @@ const HomeClient = ({navigation}: any): ReactElement => {
             </Box>
         </Center>
     )
-
 }
 
 export default HomeClient

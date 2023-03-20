@@ -5,7 +5,7 @@ import { UserDataProvider } from "./src/store/UserData.context";
 import { StackNavigatorParamList } from "./src/utils/Types";
 
 import Login from "./src/components/Login";
-import { Register } from "./src/components/Register";
+import Register  from "./src/components/Register";
 import CalendarPicker from "./src/components/CalendarPicker";
 import HomeClient from "./src/components/HomeClient";
 import { SalonScreen } from "./src/components/Salon";
@@ -25,7 +25,7 @@ export default function App() {
     <NavigationContainer theme={CustomTheme}>
         <NativeBaseProvider>
             <UserDataProvider>
-                <Stack.Navigator initialRouteName="CalendarPicker">
+                <Stack.Navigator initialRouteName="Login">
                     <Stack.Screen name="CalendarPicker" component={CalendarPicker}/>
                     <Stack.Screen name="Login" component={Login}/>
                     <Stack.Screen name="Register" component={Register}/>
