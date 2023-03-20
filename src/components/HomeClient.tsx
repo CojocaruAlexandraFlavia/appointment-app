@@ -3,8 +3,17 @@ import { Avatar, Box, Center, FlatList, Heading, HStack, Text, VStack } from "na
 import { ReactElement, useState } from "react";
 import { Rating } from "react-native-ratings";
 import { Salon } from "../utils/Types";
+import * as React from 'react';
+import { Button, View } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
 
-const HomeClient = ({navigation}: any): ReactElement => {
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function Home({navigation}: any) {
 
     const [salons, setSalons] = useState<Salon[]>([])
 
@@ -50,4 +59,20 @@ const HomeClient = ({navigation}: any): ReactElement => {
     )
 }
 
-export default HomeClient
+function NotificationsScreen({navigation}: any) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Button onPress={() => navigation.goBack()} title="Go back home" />
+      </View>
+    );
+}
+
+export default function HomeClient() {
+    return (
+        <Drawer.Navigator initialRouteName="Home">
+          <Drawer.Screen name="Home" component={Home} />
+          <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+        </Drawer.Navigator>
+
+    );
+}
