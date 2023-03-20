@@ -25,10 +25,10 @@ export default function App() {
     <NavigationContainer theme={CustomTheme}>
         <NativeBaseProvider>
             <UserDataProvider>
-                <Stack.Navigator initialRouteName="CalendarPicker">
-                    <Stack.Screen name="CalendarPicker" component={CalendarPicker}/>
+                <Stack.Navigator initialRouteName="HomeClient">
                     <Stack.Screen name="Login" component={Login}/>
                     <Stack.Screen name="Register" component={Register}/>
+                    <Stack.Screen name="CalendarPicker" component={CalendarPicker}/>
                     <Stack.Screen name="HomeClient" component={HomeClient}/>
                     <Stack.Screen name="Salon" component={SalonScreen}/>
                 </Stack.Navigator>
