@@ -1,5 +1,4 @@
 import { RouteProp } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type Salon = {
     id: number,
@@ -17,6 +16,8 @@ export type StackNavigatorParamList = {
     Login: undefined;
     HomeClient: undefined;
     Calendar: undefined
+    Register: undefined;
+    CalendarPicker: undefined
 };
 
 // export type SalonScreenNavigationProp = NativeStackNavigationProp<StackNavigatorParamList, 'Salon'>;
