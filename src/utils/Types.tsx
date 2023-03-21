@@ -15,7 +15,6 @@ export type StackNavigatorParamList = {
     };
     Login: undefined;
     HomeClient: undefined;
-    Calendar: undefined
     Register: undefined;
     CalendarPicker: undefined
 };
@@ -37,4 +36,21 @@ export type ServiceWithTime = {
 export type ServiceList = {
     name: string,
     services: ServiceWithTime[]
+}
+
+export type User = {
+    email: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string
+    role: string,
+    password: string,
+    profilePicture: string
+}
+
+export type Review = {
+    id: number,
+    stars: number,
+    message: string,
+    client: User
 }

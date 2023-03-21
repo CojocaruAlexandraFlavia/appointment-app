@@ -4,6 +4,6 @@ declare module "*.module.css" {
 }
 
 declare module 'react-native-star-rating';
-declare module  'react-native-image-slider-box';
+declare module 'react-native-image-slider-box';
 declare module '@react-navigation/drawer';
 declare module '@react-navigation/stack';

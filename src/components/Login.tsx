@@ -1,16 +1,18 @@
 import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon, Icon, Pressable  } from "native-base"
-import { ReactElement, useState } from "react"
+import React, {ReactElement, useState} from "react"
 import { useUserDataContext } from "../store/UserData.context"
 import { MaterialIcons } from "@expo/vector-icons";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {ParamListBase} from "@react-navigation/native";
 
 type LoginData = {
     email: string, 
     password: string
 }
 
-//type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
+type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
 
-const Login = ({navigation}: any): ReactElement => {
+const Login: React.FC<Props> = ({navigation}: Props): ReactElement => {
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [credentials, setCredentials] = useState<LoginData>({

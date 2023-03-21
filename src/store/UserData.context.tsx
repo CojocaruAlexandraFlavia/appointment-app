@@ -1,13 +1,5 @@
-import { createContext, useContext, useState } from "react";
-
-type User = {
-    email: string,
-    firstName: string,
-    lastName: string,
-    phoneNumber: string
-    role: string,
-    password: string 
-}
+import React, { createContext, useContext, useState } from "react";
+import {User} from "../utils/Types";
 
 interface UserData {
     user: User,
@@ -21,7 +13,8 @@ const UserDataContext = createContext<UserData>({
         lastName: "",
         phoneNumber: "",
         role: "",
-        password: "" 
+        password: "" ,
+        profilePicture: ""
     },
     setUser: () => {},
 });
@@ -37,7 +30,8 @@ export const UserDataProvider = ({children,}: {children: React.ReactNode;}) => {
         lastName: "",
         phoneNumber: "",
         role: "",
-        password: "" 
+        password: "" ,
+        profilePicture: ""
     });
   
     return (
