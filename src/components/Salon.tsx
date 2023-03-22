@@ -1,22 +1,4 @@
-import {
-    Avatar,
-    Box,
-    Button,
-    Center,
-    FlatList,
-    FormControl,
-    Heading,
-    HStack,
-    Icon,
-    Link,
-    Modal,
-    Radio,
-    ScrollView,
-    Spacer,
-    Text,
-    View,
-    VStack,
-    WarningOutlineIcon
+import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, Spacer, Text, View, VStack, WarningOutlineIcon
 } from "native-base";
 import { useRoute } from '@react-navigation/native';
 import React, {ReactElement, useState} from "react";
@@ -223,7 +205,9 @@ export const SalonScreen: React.FC = (): ReactElement => {
                 <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
 
                 <Icon size="6" as={AntDesign} name="mobile1" color="black"/>
-                <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}
+                <Link
+                    _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
+                    _dark={{_text: {color: "primary.500",},}}
                     onPress={doCall}>Phone number: {salon.phoneNumber}
                 </Link>
 
