@@ -19,7 +19,7 @@ function Home({navigation}: any) {
             phoneNumber: "089878987",
             rating: 4.5,
             location: "Str. 1, Nr.1",
-            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img2"]
+            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img1"]
         },
         {
             id: 2,
@@ -27,7 +27,7 @@ function Home({navigation}: any) {
             phoneNumber: "089878987",
             rating: 3.5,
             location: "Str. 1, Nr.1",
-            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img2"]
+            images: ["https://www.rd.com/wp-content/uploads/2020/06/GettyImages-1139132195.jpg", "img2"]
         },
     ]
 

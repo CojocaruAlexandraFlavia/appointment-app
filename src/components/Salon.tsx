@@ -2,10 +2,20 @@ import {
     Avatar,
     Box,
     Button,
-    Center, FlatList, FormControl,
-    Heading, HStack,
-    Modal, Radio, ScrollView, Spacer,
-    Text, View, VStack,
+    Center,
+    FlatList,
+    FormControl,
+    Heading,
+    HStack,
+    Icon,
+    Link,
+    Modal,
+    Radio,
+    ScrollView,
+    Spacer,
+    Text,
+    View,
+    VStack,
     WarningOutlineIcon
 } from "native-base";
 import { useRoute } from '@react-navigation/native';
@@ -15,6 +25,7 @@ import {Review, Salon, SalonScreenRouteProp, ServiceList, User} from "../utils/T
 import { Rating } from "react-native-ratings";
 import CalendarPicker from "./CalendarPicker";
 import {Linking} from "react-native";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 
 
 export const SalonScreen: React.FC = (): ReactElement => {
@@ -210,7 +221,12 @@ export const SalonScreen: React.FC = (): ReactElement => {
                     </Modal.Content>
                 </Modal>
                 <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
-                <Text onPress={doCall}>Phone number: {salon.phoneNumber}</Text>
+
+                <Icon size="6" as={AntDesign} name="mobile1" color="black"/>
+                <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}
+                    onPress={doCall}>Phone number: {salon.phoneNumber}
+                </Link>
+
                 <CalendarPicker show={showCalendar} setShow={setShowCalendar}/> {"\n"}
 
                 <Heading italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
