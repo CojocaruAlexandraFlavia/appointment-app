@@ -6,30 +6,12 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
+import {salons} from "../utils/Constants";
 
 const Drawer = createDrawerNavigator();
 function Home({navigation}: any) {
 
-    const [salons, setSalons] = useState<Salon[]>([])
-
-    const mockData: Salon[] = [
-        {
-            id: 1,
-            name: "Salon1",
-            phoneNumber: "089878987",
-            rating: 4.5,
-            location: "Str. 1, Nr.1",
-            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img2"]
-        },
-        {
-            id: 2,
-            name: "Salon2",
-            phoneNumber: "089878987",
-            rating: 3.5,
-            location: "Str. 1, Nr.1",
-            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img2"]
-        },
-    ]
+    const [mockData, setMockData] = useState<Salon[]>(salons)
 
     return (
         <Center w="100%">

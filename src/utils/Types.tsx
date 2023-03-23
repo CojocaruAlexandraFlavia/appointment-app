@@ -6,7 +6,9 @@ export type Salon = {
     phoneNumber: string,
     rating: number,
     location: string,
-    images: string[]
+    images: string[],
+    startTime: string,
+    endTime: string
 }
 
 export type StackNavigatorParamList = {
@@ -24,8 +26,9 @@ export type StackNavigatorParamList = {
 export type SalonScreenRouteProp = RouteProp<StackNavigatorParamList,'Salon'>;
 
 export type CalendarProps = {
-    show: boolean,
-    setShow: Function
+    salonId: number
+    selectedService: string,
+    show: boolean
 }
 
 export type ServiceWithTime = {
@@ -53,4 +56,18 @@ export type Review = {
     stars: number,
     message: string,
     client: User
+}
+
+export type Appointment = {
+    id: number | null,
+    clientId: number,
+    salonId: number,
+    date: string,
+    time: string,
+    serviceName: string
+}
+
+export type ServicesListData = {
+    title: string,
+    data: ServiceWithTime[]
 }
