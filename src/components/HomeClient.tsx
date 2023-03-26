@@ -6,6 +6,7 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
+import {salons} from "../utils/Constants";
 import {BellOutlined,} from '@ant-design/icons';
 import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 
@@ -13,26 +14,7 @@ import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 const Drawer = createDrawerNavigator();
 function Home({navigation}: any) {
 
-    const [salons, setSalons] = useState<Salon[]>([])
-
-    const mockData: Salon[] = [
-        {
-            id: 1,
-            name: "Salon1",
-            phoneNumber: "089878987",
-            rating: 4.5,
-            location: "Str. 1, Nr.1",
-            images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/", "img1"]
-        },
-        {
-            id: 2,
-            name: "Salon2",
-            phoneNumber: "089878987",
-            rating: 3.5,
-            location: "Str. 1, Nr.1",
-            images: ["https://www.rd.com/wp-content/uploads/2020/06/GettyImages-1139132195.jpg", "img2"]
-        },
-    ]
+    const [mockData, setMockData] = useState<Salon[]>(salons)
 
     return (
         <Center w="100%">
