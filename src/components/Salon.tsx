@@ -1,12 +1,4 @@
-import {
-    Avatar,
-    Box,
-    Button,
-    Center, FlatList, FormControl,
-    Heading, HStack,
-    Modal, Radio, ScrollView, SectionList, Spacer,
-    Text, VStack,
-    WarningOutlineIcon
+import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, SectionList, Spacer, Text, View, VStack, WarningOutlineIcon
 } from "native-base";
 import { useRoute } from '@react-navigation/native';
 import React, {ReactElement, useEffect, useState} from "react";
@@ -15,7 +7,9 @@ import {Review, Salon, SalonScreenRouteProp, ServicesListData} from "../utils/Ty
 import { Rating } from "react-native-ratings";
 import CalendarPicker from "./CalendarPicker";
 import {Linking} from "react-native";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import {salons, allServices} from "../utils/Constants";
+
 
 export const SalonScreen: React.FC = (): ReactElement => {
 
@@ -93,7 +87,6 @@ export const SalonScreen: React.FC = (): ReactElement => {
             .catch(error => console.log(error))
     }
 
-    // @ts-ignore
     return(
         <Center w="100%">
             <Box safeArea p="2" py="8" w="100%" maxW="290">
@@ -128,7 +121,14 @@ export const SalonScreen: React.FC = (): ReactElement => {
                     </Modal.Content>
                 </Modal>
                 <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
-                <Text onPress={doCall}>Phone number: {salon.phoneNumber}</Text>
+
+                <Icon size="6" as={AntDesign} name="mobile1" color="black"/>
+                <Link
+                    _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
+                    _dark={{_text: {color: "primary.500",},}}
+                    onPress={doCall}>Phone number: {salon.phoneNumber}
+                </Link>
+
                 <CalendarPicker salonId={id} selectedService={selectedService} show={showCalendarPicker}/> {"\n"}
 
                 <Heading italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
