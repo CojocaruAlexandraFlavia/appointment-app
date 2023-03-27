@@ -116,7 +116,7 @@ export const salons: Salon[] = [
         images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/",
             "https://www.rd.com/wp-content/uploads/2020/06/GettyImages-1139132195.jpg"],
         startTime: "8:00",
-        endTime: "20.00"
+        endTime: "20:00"
     },
     {
         id: 2,
@@ -127,6 +127,6 @@ export const salons: Salon[] = [
         images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/",
             "https://www.rd.com/wp-content/uploads/2020/06/GettyImages-1139132195.jpg"],
         startTime: "9:00",
-        endTime: "21.00"
+        endTime: "21:00"
     }
 ]

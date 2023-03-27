@@ -16,7 +16,7 @@ type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
 
 const Login: React.FC<Props> = ({navigation}: Props): ReactElement => {
 
-    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState(false)
     const [credentials, setCredentials] = useState<LoginData>({
         email: "",
         password: ""

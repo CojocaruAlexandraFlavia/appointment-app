@@ -1,4 +1,4 @@
-import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, SectionList, Spacer, Text, View, VStack, WarningOutlineIcon
+import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, SectionList, Spacer, Text, VStack, WarningOutlineIcon
 } from "native-base";
 import { useRoute } from '@react-navigation/native';
 import React, {ReactElement, useEffect, useState} from "react";
@@ -7,13 +7,13 @@ import {Review, Salon, SalonScreenRouteProp, ServicesListData} from "../utils/Ty
 import { Rating } from "react-native-ratings";
 import CalendarPicker from "./CalendarPicker";
 import {Linking} from "react-native";
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import {salons, allServices} from "../utils/Constants";
 
 
 export const SalonScreen: React.FC = (): ReactElement => {
 
-    const reviews: Review[] = [
+    const staticReviews: Review[] = [
         {
             id: 1,
             stars: 4,
@@ -50,7 +50,8 @@ export const SalonScreen: React.FC = (): ReactElement => {
     const [showSelectServiceModal, setShowSelectServiceModal] = useState(false)
     const [showCalendarPicker, setShowCalendar] = useState(false)
     const [selectedService, setSelectedService] = useState("")
-    const [formValidation, setFormValidation] = useState(false)
+    const [formValidation, setFormValidation] = useState(true)
+    const [reviews, setReviews] = useState<Review[]>(staticReviews)
 
     const route = useRoute<SalonScreenRouteProp>()
     const { id } = route.params;
@@ -69,16 +70,18 @@ export const SalonScreen: React.FC = (): ReactElement => {
     }, [])
 
     const handleValidateOption = () => {
-        const validOption = selectedService === ""
-        console.log(validOption)
-        setFormValidation(!validOption)
-        setShowSelectServiceModal(validOption)
-        setShowCalendar(!validOption)
+        const validOption = selectedService !== ""
+        setFormValidation(validOption)
+        setShowSelectServiceModal(!validOption)
+        setShowCalendar(validOption)
+        // onCloseServiceModal()
     }
 
     const onCloseServiceModal = () => {
+        console.log("close service modal")
         setShowSelectServiceModal(false)
         setSelectedService("")
+        setFormValidation(true)
     }
 
     const doCall = () => {
@@ -102,10 +105,10 @@ export const SalonScreen: React.FC = (): ReactElement => {
                         <Modal.CloseButton/>
                         <Modal.Header>Choose service</Modal.Header>
                             <Modal.Body >
-                                    <FormControl maxW="300" isInvalid={formValidation}>
+                                    <FormControl maxW="300" isInvalid={!formValidation}>
                                         <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)} value={selectedService}>
                                             <ScrollView horizontal={true}>
-                                                <SectionList sections={allSalonServices} keyExtractor={(item, index) => item.name}
+                                                <SectionList initialNumToRender={10} sections={allSalonServices} keyExtractor={(item) => item.name}
                                                              renderItem={ ({item})  => <Radio size={"sm"} ml={2} mb={2} value={item.name}>
                                                                  {`${item.name}, ${item.duration}h`}</Radio>
                                                              } renderSectionHeader={({ section: { title } }) =>
