@@ -1,19 +1,27 @@
 import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, SectionList, Spacer, Text, VStack, WarningOutlineIcon
 } from "native-base";
 import { useRoute } from '@react-navigation/native';
-import React, {ReactElement, useEffect, useState} from "react";
+import React, {ReactElement, useCallback, useEffect, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
-import {Review, Salon, SalonScreenRouteProp, ServicesListData} from "../utils/Types";
+import {Review, Salon, SalonScreenRouteProp, ServicesListData, ServiceWithTime} from "../utils/Types";
 import { Rating } from "react-native-ratings";
 import CalendarPicker from "./CalendarPicker";
-import {Linking} from "react-native";
+import {Linking, ListRenderItemInfo, SectionListData, SectionListRenderItemInfo} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import {salons, allServices} from "../utils/Constants";
 
 
 export const SalonScreen: React.FC = (): ReactElement => {
 
-    const staticReviews: Review[] = [
+    const [salon, setSalon] = useState<Salon>(salons[0])
+
+    const [allSalonServices, setAllSalonServices] = useState<ServicesListData[]>([])
+
+    const [showSelectServiceModal, setShowSelectServiceModal] = useState(false)
+    const [showCalendarPicker, setShowCalendar] = useState(false)
+    const [selectedService, setSelectedService] = useState("")
+    const [formValidation, setFormValidation] = useState(true)
+    const [reviews, setReviews] = useState<Review[]>([
         {
             id: 1,
             stars: 4,
@@ -42,16 +50,7 @@ export const SalonScreen: React.FC = (): ReactElement => {
                 profilePicture: "img2"
             }
         }
-    ]
-    const [salon, setSalon] = useState<Salon>(salons[0])
-
-    const [allSalonServices, setAllSalonServices] = useState<ServicesListData[]>([])
-
-    const [showSelectServiceModal, setShowSelectServiceModal] = useState(false)
-    const [showCalendarPicker, setShowCalendar] = useState(false)
-    const [selectedService, setSelectedService] = useState("")
-    const [formValidation, setFormValidation] = useState(true)
-    const [reviews, setReviews] = useState<Review[]>(staticReviews)
+    ])
 
     const route = useRoute<SalonScreenRouteProp>()
     const { id } = route.params;
@@ -90,6 +89,25 @@ export const SalonScreen: React.FC = (): ReactElement => {
             .catch(error => console.log(error))
     }
 
+    const renderItemServiceList = useCallback(({ item }: SectionListRenderItemInfo<ServiceWithTime, ServicesListData>)  =>
+        (<Radio size={"sm"} ml={2} mb={2} value={item.name}>{`${item.name}, ${item.duration}h`}</Radio>), [])
+
+    const renderHeaderServiceList = useCallback((info: { section: SectionListData<ServiceWithTime, ServicesListData> }) =>
+        (<Heading fontSize="xl" mt="8" pb="4" alignSelf={"center"}> {info.section.title} </Heading>), [])
+
+    const renderItemReview = useCallback(({item}: ListRenderItemInfo<Review>) => (<Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
+                                                          borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+        <HStack space={[2, 3]} justifyContent="space-between">
+            <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
+            <VStack alignItems={"flex-start"}>
+                <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
+                <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
+                <Text style={{fontSize:12}}>{item.message}</Text>
+            </VStack>
+            <Spacer />
+        </HStack>
+    </Box>), [])
+
     return(
         <Center w="100%">
             <Box safeArea p="2" py="8" w="100%" maxW="290">
@@ -108,11 +126,8 @@ export const SalonScreen: React.FC = (): ReactElement => {
                                     <FormControl maxW="300" isInvalid={!formValidation}>
                                         <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)} value={selectedService}>
                                             <ScrollView horizontal={true}>
-                                                <SectionList initialNumToRender={10} sections={allSalonServices} keyExtractor={(item) => item.name}
-                                                             renderItem={ ({item})  => <Radio size={"sm"} ml={2} mb={2} value={item.name}>
-                                                                 {`${item.name}, ${item.duration}h`}</Radio>
-                                                             } renderSectionHeader={({ section: { title } }) =>
-                                                    <Heading fontSize="xl" mt="8" pb="4" alignSelf={"center"}> {title} </Heading> } />
+                                                <SectionList sections={allSalonServices} keyExtractor={(item) => item.name}
+                                                             renderItem={ renderItemServiceList } renderSectionHeader={ renderHeaderServiceList } />
                                             </ScrollView>
                                         </Radio.Group>
                                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
@@ -136,18 +151,7 @@ export const SalonScreen: React.FC = (): ReactElement => {
 
                 <Heading italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
 
-                <FlatList data={reviews} renderItem={({item}) => <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
-                                                                      borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-                    <HStack space={[2, 3]} justifyContent="space-between">
-                        <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
-                        <VStack alignItems={"flex-start"}>
-                            <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                            <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
-                            <Text style={{fontSize:12}}>{item.message}</Text>
-                        </VStack>
-                        <Spacer />
-                    </HStack>
-                </Box>} keyExtractor={item => item.id.toString()} />
+                <FlatList data={reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
             </Box>
         </Center>
     )
