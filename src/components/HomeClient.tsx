@@ -1,4 +1,4 @@
-import {Avatar, Box, Center, FlatList, Heading, HStack, Icon, Pressable, VStack} from "native-base";
+import {Avatar, Box, Center, FlatList, Heading, HStack, Icon, Link, Pressable, VStack} from "native-base";
 import { useState } from "react";
 import { Rating } from "react-native-ratings";
 import { Salon } from "../utils/Types";
@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import {salons} from "../utils/Constants";
 import {BellOutlined,} from '@ant-design/icons';
 import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import Login from './Login';
 
 
 const Drawer = createDrawerNavigator();
@@ -49,7 +50,6 @@ function NotificationsScreen({navigation}: any) {
 function ProfileScreen({navigation}: any) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button onPress={() => navigation.goBack()} title="Go back home" />
         </View>
     );
 }
@@ -57,7 +57,6 @@ function ProfileScreen({navigation}: any) {
 function EditScreen({navigation}: any) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button onPress={() => navigation.goBack()} title="Go back home" />
         </View>
     );
 }
@@ -65,7 +64,6 @@ function EditScreen({navigation}: any) {
 function AppointmentsScreen({navigation}: any) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button onPress={() => navigation.goBack()} title="Go back home" />
         </View>
     );
 }
@@ -73,7 +71,6 @@ function AppointmentsScreen({navigation}: any) {
 function ReviewsScreen({navigation}: any) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button onPress={() => navigation.goBack()} title="Go back home" />
         </View>
     );
 }
@@ -81,50 +78,37 @@ function ReviewsScreen({navigation}: any) {
 function LogoutScreen({navigation}: any) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button onPress={() => navigation.navigate("Login")} title="Logout" />
+            <Button onPress={() => navigation.navigate("Login")}  title="Logout" />
         </View>
     );
 }
 
 
-export default function HomeClient() {
+export default function HomeClient({navigation}: any) {
 
-    return (
-        <Drawer.Navigator initialRouteName="Home">
-          <Drawer.Screen name="Home" component={Home} options={{ drawerIcon: (config: any) =>
-                 <Icon size="6" as={AntDesign} name="home" color="black"/>}} />
-
-            <Drawer.Screen name="Notifications" component={NotificationsScreen} options={{ drawerIcon: (config: any) =>
-                <Icon size="6" as={AntDesign} name="bells" color="black"/>}} />
-
-
-
-            <Drawer.Screen name="Appointments" component={AppointmentsScreen} options={{ drawerIcon: (config: any) =>
-                    <Icon size="6" as={AntDesign} name="calendar" color="black"/>}} />
-
-            <Drawer.Screen name="Reviews" component={ReviewsScreen} options={{ drawerIcon: (config: any) =>
-                    <Icon size="6" as={AntDesign} name="staro" color="black"/>}} />
-
-
-
-            <Drawer.Screen name="Profile" component={ProfileScreen} options={{ drawerIcon: (config: any) =>
-                    <Icon size="6" as={AntDesign} name="user" color="black"/>}} />
-
-            <Drawer.Screen name="Edit Profile" component={EditScreen} options={{ drawerIcon: (config: any) =>
-                    <Icon size="6" as={AntDesign} name="edit" color="black"/>}} />
-
-
-
-            <Drawer.Screen name="Logout" component={LogoutScreen} options={{ drawerIcon: (config: any) =>
-                    <Icon size="6" as={Feather} name="log-out" color="black"/>}} />
-
-
-
-
-
-
-
-
-        </Drawer.Navigator>
-    );
+    // return (
+        // <Drawer.Navigator initialRouteName="Home">
+        //   <Drawer.Screen name="Home" component={Home} options={{ drawerIcon: (config: any) =>
+        //          <Icon size="6" as={AntDesign} name="home" color="black"/>}} />
+        //
+        //     <Drawer.Screen name="Notifications" component={NotificationsScreen} options={{ drawerIcon: (config: any) =>
+        //         <Icon size="6" as={AntDesign} name="bells" color="black"/>}} />
+        //
+        //     <Drawer.Screen name="Appointments" component={AppointmentsScreen} options={{ drawerIcon: (config: any) =>
+        //             <Icon size="6" as={AntDesign} name="calendar" color="black"/>}} />
+        //
+        //     <Drawer.Screen name="Reviews" component={ReviewsScreen} options={{ drawerIcon: (config: any) =>
+        //             <Icon size="6" as={AntDesign} name="staro" color="black"/>}} />
+        //
+        //     <Drawer.Screen name="Profile" component={ProfileScreen} options={{ drawerIcon: (config: any) =>
+        //             <Icon size="6" as={AntDesign} name="user" color="black"/>}} />
+        //
+        //     <Drawer.Screen name="Edit Profile" component={EditScreen} options={{ drawerIcon: (config: any) =>
+        //             <Icon size="6" as={AntDesign} name="edit" color="black"/>}} />
+        //
+        //     <Drawer.Screen name="Logout" component={LogoutScreen} options={{ drawerIcon: (config: any) =>
+        //             <Icon size="6" as={Feather} name="log-out" color="black"/>}} />
+        //
+        // </Drawer.Navigator>
+    // );
 }

@@ -1,7 +1,7 @@
 import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon, Icon, Pressable, Checkbox, Divider  } from "native-base"
 import React, { ReactElement, useState } from "react"
 import { useUserDataContext } from "../store/UserData.context"
-import { MaterialIcons } from "@expo/vector-icons";
+import {Feather, MaterialIcons} from "@expo/vector-icons";
 import { ScrollView } from 'react-native';
 import IconGoogle from "../components/IconGoogle";
 import IconFacebook from "./IconFacebook";
@@ -11,7 +11,8 @@ type RegisterData = {
     password: string,
     firstName: string,
     lastName: string,
-    phoneNumber: string
+    phoneNumber: string,
+    city: string,
 }
 
 const Register = ({navigation}: any): ReactElement => {
@@ -22,7 +23,8 @@ const Register = ({navigation}: any): ReactElement => {
         password: "",
         firstName: "",
         lastName: "",
-        phoneNumber: ""
+        phoneNumber: "",
+        city: "",
 
     })
     const [errors, setErrors] = useState<RegisterData>({
@@ -30,7 +32,8 @@ const Register = ({navigation}: any): ReactElement => {
         password: "",
         firstName: "",
         lastName: "",
-        phoneNumber: ""
+        phoneNumber: "",
+        city: "",
     })
 
     const {setUser} = useUserDataContext()
@@ -41,7 +44,8 @@ const Register = ({navigation}: any): ReactElement => {
             password: "",
             firstName: "",
             lastName: "",
-            phoneNumber: ""
+            phoneNumber: "",
+            city: "",
         }
         if(credentials.email === "") errors.email = "Required field"
         if(credentials.password === "") errors.password = "Required field"
@@ -52,8 +56,8 @@ const Register = ({navigation}: any): ReactElement => {
         if(credentials.lastName === "") errors.lastName = "Required field"
         else if(credentials.lastName.length < 3) errors.lastName = "Last Name is too short"
         
-        if(credentials.phoneNumber === "") errors.phoneNumber = "Required field"
-        else if(credentials.phoneNumber.length < 10) errors.phoneNumber = "Phone Number is too short"
+        if(credentials.city === "") errors.city = "Required field"
+        else if(credentials.city.length < 2) errors.city = "Enter a valid city"
 
         return errors
     }
@@ -128,9 +132,20 @@ const Register = ({navigation}: any): ReactElement => {
 
                     <FormControl isRequired isInvalid={errors.phoneNumber !== ""}>
                         <FormControl.Label _text={{bold: true}} >Phone Number</FormControl.Label>
-                        <Input value={credentials.phoneNumber} isInvalid={errors.phoneNumber !== ""} onChangeText={text => onChangeText("phoneNumber", text)}/>
+                        <Input value={credentials.phoneNumber}
+                               InputLeftElement={ <Icon as={<Feather name="phone" />} ml={2}/>}
+                               isInvalid={errors.phoneNumber !== ""} onChangeText={text => onChangeText("phoneNumber", text)}/>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>Phone Number should contain 10 characters. </FormControl.HelperText>
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={errors.city !== ""}>
+                        <FormControl.Label _text={{bold: true}} >City</FormControl.Label>
+                        <Input value={credentials.city}
+                               InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}
+                               isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>
+                        <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>
                     </FormControl>
 
                     <Checkbox alignItems="flex-start" defaultIsChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">

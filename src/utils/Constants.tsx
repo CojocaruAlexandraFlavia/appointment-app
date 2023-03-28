@@ -124,8 +124,8 @@ export const salons: Salon[] = [
         phoneNumber: "089878987",
         rating: 3.5,
         location: "Str. 2, Nr.2",
-        images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/",
-            "https://www.rd.com/wp-content/uploads/2020/06/GettyImages-1139132195.jpg"],
+        images: ["https://hairmatters.ca/wp-content/uploads/2023/01/fullscreen_default.webp",
+            "https://www.annora.ro/wp-content/uploads/2016/05/corpuri-de-iluminat-salon-cosmetica.png"],
         startTime: "9:00",
         endTime: "21:00"
     }
