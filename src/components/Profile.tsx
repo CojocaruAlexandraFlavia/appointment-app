@@ -1,8 +1,7 @@
 import React from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet, Alert, Share} from 'react-native';
 import {Avatar, Title, Caption, Text, TouchableRipple,} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Share from 'react-native-share';
 import Login from './Login';
 import EditProfile from './EditProfile';
 // import files from '../../assets/filesBase64';
@@ -10,19 +9,32 @@ import EditProfile from './EditProfile';
 
 const Profile = () => {
 
-    // const myCustomShare = async() => {
-    //     const shareOptions = {
-    //         message: 'Appointment your next visit to a salon easy and quick! I\'ve already made more than 10 appointments on it.',
-    //         url: files.appLogo,
-    //     }
-    //
-    //     try {
-    //         const ShareResponse = await Share.open(shareOptions);
-    //         console.log(JSON.stringify(ShareResponse));
-    //     } catch(error) {
-    //         console.log('Error => ', error);
-    //     }
-    // };
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                message:
+                    'React Native | A framework for building native apps using React',
+            }, {
+                dialogTitle:"Android Title"
+            });
+            if (result.action === Share.sharedAction) {
+                console.log("action=== sharedAction")
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                    console.log("result activity type")
+                } else {
+                    // shared
+                    console.log("else ")
+                }
+            } else if (result.action === Share.dismissedAction) {
+                console.log("action === dismissed")
+                // dismissed
+            }
+        } catch (error: any) {
+            console.log(error)
+            Alert.alert(error.message);
+        }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -79,12 +91,12 @@ const Profile = () => {
                     </View>
                 </TouchableRipple>
 
-                {/*<TouchableRipple onPress={myCustomShare}>*/}
-                {/*    <View style={styles.menuItem}>*/}
-                {/*        <Icon name="share-outline" color="#FF6347" size={25}/>*/}
-                {/*        <Text style={styles.menuItemText}>Tell Your Friends</Text>*/}
-                {/*    </View>*/}
-                {/*</TouchableRipple>*/}
+                <TouchableRipple onPress={onShare}>
+                    <View style={styles.menuItem}>
+                        <Icon name="share-outline" color="#FF6347" size={25}/>
+                        <Text style={styles.menuItemText}>Tell Your Friends</Text>
+                    </View>
+                </TouchableRipple>
 
             </View>
         </SafeAreaView>

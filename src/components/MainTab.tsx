@@ -15,6 +15,7 @@ import EditProfile from './EditProfile';
 import {useTheme, Avatar} from 'react-native-paper';
 import {View} from 'react-native-animatable';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {NavigationContainer} from "@react-navigation/native";
 
 const HomeStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
@@ -23,52 +24,52 @@ const ProfileStack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => (
-    <Tab.Navigator initialRouteName="Home" activeColor="#fff">
-        <Tab.Screen
-            name="Home"
-            component={HomeStackScreen}
-            options={{
-                tabBarLabel: 'Home',
-                tabBarColor: '#FF6347',
-                tabBarIcon: ({color}) => (
-                    <Icon name="ios-home" color={color} size={26} />
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="Notifications"
-            component={NotificationStackScreen}
-            options={{
-                tabBarLabel: 'Updates',
-                tabBarColor: '#1f65ff',
-                tabBarIcon: ({color}) => (
-                    <Icon name="ios-notifications" color={color} size={26} />
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="Profile"
-            component={ProfileStackScreen}
-            options={{
-                tabBarLabel: 'Profile',
-                tabBarColor: '#694fad',
-                tabBarIcon: ({color}) => (
-                    <Icon name="ios-person" color={color} size={26} />
-                ),
-            }}
-        />
-        {/*<Tab.Screen*/}
-        {/*    name="Explore"*/}
-        {/*    component={ExploreScreen}*/}
-        {/*    options={{*/}
-        {/*        tabBarLabel: 'Explore',*/}
-        {/*        tabBarColor: '#d02860',*/}
-        {/*        tabBarIcon: ({color}) => (*/}
-        {/*            <Icon name="ios-aperture" color={color} size={26} />*/}
-        {/*        ),*/}
-        {/*    }}*/}
-        {/*/>*/}
-    </Tab.Navigator>
+        <Tab.Navigator initialRouteName="Profile" activeColor="#fff">
+            <Tab.Screen
+                name="HomeClient"
+                component={HomeStackScreen}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarColor: '#FF6347',
+                    tabBarIcon: ({color}) => (
+                        <Icon name="ios-home" color={color} size={26} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Notifications"
+                component={NotificationStackScreen}
+                options={{
+                    tabBarLabel: 'Updates',
+                    tabBarColor: '#1f65ff',
+                    tabBarIcon: ({color}) => (
+                        <Icon name="ios-notifications" color={color} size={26} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Profile"
+                component={ProfileStackScreen}
+                options={{
+                    tabBarLabel: 'Profile',
+                    tabBarColor: '#694fad',
+                    tabBarIcon: ({color}) => (
+                        <Icon name="ios-person" color={color} size={26} />
+                    ),
+                }}
+            />
+            {/*<Tab.Screen*/}
+            {/*    name="ExploreScreen"*/}
+            {/*    component={ExploreScreen}*/}
+            {/*    options={{*/}
+            {/*        tabBarLabel: 'Explore',*/}
+            {/*        tabBarColor: '#d02860',*/}
+            {/*        tabBarIcon: ({color}) => (*/}
+            {/*            <Icon name="ios-aperture" color={color} size={26} />*/}
+            {/*        ),*/}
+            {/*    }}*/}
+            {/*/>*/}
+        </Tab.Navigator>
 );
 
 export default MainTab;
@@ -89,7 +90,7 @@ const HomeStackScreen = ({navigation}:any) => {
                 },
             }}>
             <HomeStack.Screen
-                name="Home"
+                name="HomeClient"
                 component={HomeClient}
                 options={{
                     title: 'Appointment Salons',
@@ -147,7 +148,7 @@ const NotificationStackScreen = ({navigation}:any) => (
             },
         }}>
         <NotificationStack.Screen
-            name="Notifications"
+            name="NotificationScreen"
             component={NotificationScreen}
             options={{
                 headerLeft: () => (
@@ -188,7 +189,10 @@ const ProfileStackScreen = ({navigation}:any) => {
                                 size={25}
                                 backgroundColor={colors.background}
                                 color="#000"
-                                onPress={() => navigation.openDrawer()}
+                                onPress={() => {
+                                    console.log(navigation)
+                                    navigation?.openDrawer()
+                                }}
                             />
                         </View>
                     ),

@@ -1,5 +1,5 @@
 const Images = [
-    { image: require("http://beautydistrict.ro/wp-content/uploads/2014/02/IMG_5541_resize.jpg") },
+    { image: require("https://beautydistrict.ro/wp-content/uploads/2014/02/IMG_5541_resize.jpg") },
     { image: require("https://www.floreasca.com/wp-content/uploads/2020/05/cmraaaaav2mcmevxdaln50ne9flxbhmhiue-9bqbjbwq5mid4mpj84nbvjvejvshkry4qo2c2u7t24rilpgfyyznpmjon8_t-tgzyhae1ppbu0qaqq_ug_q8riibquusojydcs6gehboaweh_lj-geat7bm5k1iughrwquoiicgbzngsj7u07mukk4u7hw.jpg") },
     { image: require("https://jovsky.ro/wp-content/uploads/2020/01/floreasca-home-300x184.jpg") },
     { image: require("https://www.floreasca.com/wp-content/uploads/2020/05/cmrzaaaamrt-kkqvnle4dm1yj4-2nznhvozegl1dylph0mkup2bgwcq5nc_tbjjikqdtkj8lkprq-cg-vkge2vc2qaewbln2_d_16-iquuroys0dpgmhl_mfdg6jdegd1pq3fahjehbcwnnzoannjb6p1qwxuu_4ghrigwom2svqwsilisvvsbsfu_xw8q.jpg") },
@@ -14,7 +14,7 @@ export const markers = [
         },
         title: "Beauty District",
         description: "Description...",
-        image: Images[0].image,
+        image: require("https://beautydistrict.ro/wp-content/uploads/2014/02/IMG_5541_resize.jpg"),
         rating: 4,
         reviews: 99,
     },
@@ -25,7 +25,7 @@ export const markers = [
         },
         title: "Salonette",
         description: "Description...",
-        image: Images[1].image,
+        image: require("https://jovsky.ro/wp-content/uploads/2020/01/floreasca-home-300x184.jpg"),
         rating: 5,
         reviews: 102,
     },
@@ -47,21 +47,21 @@ export const markers = [
         },
         title: "Endorphin Lab",
         description: "Description...",
-        image: Images[3].image,
+        image: require("https://getavoinea.ro/wp-content/uploads/2022/05/alphabeauty-geta-voinea-agora-floreasca-1.jpg"),
         rating: 4,
-        reviews: 48,
-    },
-    {
-        coordinate: {
-            latitude: 44.460231,
-            longitude: 26.100649,
-        },
-        title: "Agora",
-        description: "Description...",
-        image: Images[4].image,
-        rating: 4,
-        reviews: 178,
-    },
+        reviews: 48
+    }
+    // {
+    //     coordinate: {
+    //         latitude: 44.460231,
+    //         longitude: 26.100649,
+    //     },
+    //     title: "Agora",
+    //     description: "Description...",
+    //     image: Images[4].image,
+    //     rating: 4,
+    //     reviews: 178,
+    // },
 ];
 
 export const mapDarkStyle = [

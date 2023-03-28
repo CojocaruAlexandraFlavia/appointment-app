@@ -14,7 +14,8 @@ const UserDataContext = createContext<UserData>({
         phoneNumber: "",
         role: "",
         password: "" ,
-        profilePicture: ""
+        profilePicture: "",
+        city: ""
     },
     setUser: () => {},
 });
@@ -31,7 +32,8 @@ export const UserDataProvider = ({children,}: {children: React.ReactNode;}) => {
         phoneNumber: "",
         role: "",
         password: "" ,
-        profilePicture: ""
+        profilePicture: "",
+        city: ""
     });
   
     return (

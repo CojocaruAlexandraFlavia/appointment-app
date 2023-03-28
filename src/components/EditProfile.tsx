@@ -13,36 +13,36 @@ const EditProfile = () => {
     const [image, setImage] = useState('https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg');
     const {colors} = useTheme();
 
-    const takePhotoFromCamera = () => {
-        ImagePicker.openCamera({
-            compressImageMaxWidth: 300,
-            compressImageMaxHeight: 300,
-            cropping: true,
-            compressImageQuality: 0.7
-        }).then((image: { path: React.SetStateAction<string>; }) => {
-            console.log(image);
-            setImage(image.path);
-            // @ts-ignore
-            this.bs.current.snapTo(1);
-        });
-    }
-
-    const choosePhotoFromLibrary = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 300,
-            cropping: true,
-            compressImageQuality: 0.7
-        }).then((image: { path: React.SetStateAction<string>; }) => {
-            console.log(image);
-            setImage(image.path);
-            // @ts-ignore
-            this.bs.current.snapTo(1);
-        });
-    }
-
     const bs = React.createRef();
     const fall = new Animated.Value(1);
+
+
+    // const takePhotoFromCamera = () => {
+    //     ImagePicker.openCamera({
+    //         compressImageMaxWidth: 300,
+    //         compressImageMaxHeight: 300,
+    //         cropping: true,
+    //         compressImageQuality: 0.7
+    //     }).then((image: { path: React.SetStateAction<string>; }) => {
+    //         console.log(image);
+    //         setImage(image.path);
+    //         bs.current.snapTo(1);
+    //     });
+    // }
+    //
+    // const choosePhotoFromLibrary = () => {
+    //     ImagePicker.openPicker({
+    //         width: 300,
+    //         height: 300,
+    //         cropping: true,
+    //         compressImageQuality: 0.7
+    //     }).then((image: { path: React.SetStateAction<string>; }) => {
+    //         console.log(image);
+    //         setImage(image.path);
+    //
+    //         bs.current.snapTo(1);
+    //     });
+    // }
 
     let renderInner = () => (
         <View style={styles.panel}>
@@ -58,7 +58,7 @@ const EditProfile = () => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.panelButton} // @ts-ignore
-                onPress={() => this.bs.current.snapTo(1)}>
+                onPress={() => bs.current.snapTo(1)}>
                 <Text style={styles.panelButtonTitle}>Cancel</Text>
             </TouchableOpacity>
         </View>
@@ -74,15 +74,15 @@ const EditProfile = () => {
 
     return (
         <View style={styles.container}>
-            <BottomSheet // @ts-ignore
-                ref={this.bs}
-                snapPoints={[330, 0]} // @ts-ignore
-                renderContent={this.renderInner} // @ts-ignore
-                renderHeader={this.renderHeader}
-                initialSnap={1} // @ts-ignore
-                callbackNode={this.fall}
-                enabledGestureInteraction={true}
-            />
+            {/*<BottomSheet*/}
+            {/*    ref={bs}*/}
+            {/*    snapPoints={[330, 0]} // @ts-ignore*/}
+            {/*    renderContent={renderInner} // @ts-ignore*/}
+            {/*    renderHeader={renderHeader}*/}
+            {/*    initialSnap={1} // @ts-ignore*/}
+            {/*    callbackNode={fall}*/}
+            {/*    enabledGestureInteraction={true}*/}
+            {/*/>*/}
 
             <Animated.View
                 style={{margin: 20,
@@ -90,7 +90,7 @@ const EditProfile = () => {
             }}>
                 <View style={{alignItems: 'center'}}>
                     <TouchableOpacity  // @ts-ignore
-                        onPress={() => this.bs.current.snapTo(0)}>
+                        onPress={() => bs.current.snapTo(0)}>
                         <View
                             style={{
                                 height: 100,

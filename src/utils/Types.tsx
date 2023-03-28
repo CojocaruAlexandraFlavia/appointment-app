@@ -18,7 +18,8 @@ export type StackNavigatorParamList = {
     Login: undefined;
     HomeClient: undefined;
     Register: undefined;
-    CalendarPicker: undefined
+    CalendarPicker: undefined;
+    MainTab: undefined
 };
 
 // export type SalonScreenNavigationProp = NativeStackNavigationProp<StackNavigatorParamList, 'Salon'>;
@@ -49,6 +50,7 @@ export type User = {
     role: string,
     password: string,
     profilePicture: string
+    city: string
 }
 
 export type Review = {
