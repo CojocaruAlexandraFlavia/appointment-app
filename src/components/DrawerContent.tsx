@@ -26,7 +26,8 @@ export function DrawerContent(props:any) {
                         <View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
+                                    uri:
+                                        'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg',
                                 }}
                                 size={50}
                             />
@@ -46,7 +47,7 @@ export function DrawerContent(props:any) {
                         />
                         <DrawerItem
                             icon={({color, size}:any) => (
-                                <Icon name="user" color={color} size={size} /> )}
+                                <Icon name="account-outline" color={color} size={size} /> )}
                             label="Profile"
                             onPress={() => {props.navigation.navigate('Profile')}}
                         />
@@ -58,13 +59,13 @@ export function DrawerContent(props:any) {
                         />
                         <DrawerItem
                             icon={({color, size}:any) => (
-                                <Icon name="staro" color={color} size={size}/> )}
+                                <Icon name="star" color={color} size={size}/> )}
                             label="Reviews"
                             onPress={() => {props.navigation.navigate('Reviews')}}
                         />
                         <DrawerItem
                             icon={({color, size}:any) => (
-                                <Icon name="bells" color={color} size={size}/> )}
+                                <Icon name="bell-outline" color={color} size={size}/> )}
                             label="Notifications"
                             onPress={() => {props.navigation.navigate('NotificationScreen')}}
                         />

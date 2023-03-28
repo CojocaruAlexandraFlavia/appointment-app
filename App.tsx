@@ -49,7 +49,7 @@ export default function App() {
                     {/*<Stack.Screen name="Salon" component={SalonScreen}/>*/}
                     {/*<Stack.Screen name="MainTab" component={MainTab}/>*/}
                     <Drawer.Screen options={{ headerShown: false }} name="HomeDrawer" component={MainTab} />
-                    {/*<Drawer.Screen name="Login" component={MainTab} />*/}
+                    <Drawer.Screen options={{ headerShown: false }} name="Salon" component={SalonScreen} />
                 </Drawer.Navigator>
             </UserDataProvider>
         </NativeBaseProvider>

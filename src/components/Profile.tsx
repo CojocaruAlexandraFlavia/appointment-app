@@ -13,7 +13,7 @@ const Profile = () => {
         try {
             const result = await Share.share({
                 message:
-                    'React Native | A framework for building native apps using React',
+                    'Appointment your next visit to a salon easy and quick! I\'ve already made more than 10 appointments on it.',
             }, {
                 dialogTitle:"Android Title"
             });

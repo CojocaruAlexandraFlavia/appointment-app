@@ -41,7 +41,7 @@ const MainTab = () => (
                 component={NotificationStackScreen}
                 options={{
                     tabBarLabel: 'Updates',
-                    tabBarColor: '#1f65ff',
+                    tabBarColor: '#FF6347',
                     tabBarIcon: ({color}) => (
                         <Icon name="ios-notifications" color={color} size={26} />
                     ),
@@ -93,7 +93,7 @@ const HomeStackScreen = ({navigation}:any) => {
                 name="HomeClient"
                 component={HomeClient}
                 options={{
-                    title: 'Appointment Salons',
+                    title: 'Find a salon',
                     headerLeft: () => (
                         <View style={{marginLeft: 10}}>
                             <Icon.Button
@@ -140,7 +140,7 @@ const NotificationStackScreen = ({navigation}:any) => (
     <NotificationStack.Navigator
         screenOptions={{
             headerStyle: {
-                backgroundColor: '#1f65ff',
+                backgroundColor: '#FF6347',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -148,14 +148,14 @@ const NotificationStackScreen = ({navigation}:any) => (
             },
         }}>
         <NotificationStack.Screen
-            name="NotificationScreen"
+            name="Notifications"
             component={NotificationScreen}
             options={{
                 headerLeft: () => (
                     <Icon.Button
                         name="ios-menu"
                         size={25}
-                        backgroundColor="#1f65ff"
+                        backgroundColor="#FF6347"
                         onPress={() => navigation.openDrawer()}
                     />
                 ),

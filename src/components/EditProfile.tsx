@@ -192,7 +192,7 @@ const EditProfile = () => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <Icon name="map-marker-outline" color="#000" size={20} />
+                    <Icon name="map-marker-outline" color="#000" size={24} />
                     <TextInput
                         placeholder="City"
                         placeholderTextColor="#666666"
