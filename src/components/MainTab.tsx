@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -8,14 +8,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import HomeClient from './HomeClient';
 import NotificationScreen from './NotificationScreen';
-import ExploreScreen from './ExploreScreen';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
 
 import {useTheme, Avatar} from 'react-native-paper';
 import {View} from 'react-native-animatable';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {NavigationContainer} from "@react-navigation/native";
+import {HStack, Input} from "native-base";
+import {salons} from "../utils/Constants";
 
 const HomeStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
@@ -26,7 +26,7 @@ const Tab = createMaterialBottomTabNavigator();
 const MainTab = () => (
         <Tab.Navigator initialRouteName="Profile" activeColor="#fff">
             <Tab.Screen
-                name="HomeClient"
+                name="HomeStackClient"
                 component={HomeStackScreen}
                 options={{
                     tabBarLabel: 'Home',
@@ -37,7 +37,7 @@ const MainTab = () => (
                 }}
             />
             <Tab.Screen
-                name="Notifications"
+                name="NotificationsStack"
                 component={NotificationStackScreen}
                 options={{
                     tabBarLabel: 'Updates',
@@ -48,7 +48,7 @@ const MainTab = () => (
                 }}
             />
             <Tab.Screen
-                name="Profile"
+                name="ProfileTab"
                 component={ProfileStackScreen}
                 options={{
                     tabBarLabel: 'Profile',
@@ -70,19 +70,32 @@ const MainTab = () => (
             {/*    }}*/}
             {/*/>*/}
         </Tab.Navigator>
-);
+    )
 
 export default MainTab;
 
 const HomeStackScreen = ({navigation}:any) => {
+
+    const [allHomePageSalons, setAllHomePageSalons] = useState(salons)
+    const [filteredSalons, setFilteredSalons] = useState(allHomePageSalons)
+
+    const onChangeSearchInput = (text: String) => {
+        if (text !== "") {
+            const filteredSalons = allHomePageSalons.filter(salon => salon.name.toLowerCase().includes(text.toLowerCase()))
+            setFilteredSalons(filteredSalons)
+        } else {
+            setFilteredSalons(allHomePageSalons)
+        }
+
+    }
+
     const {colors} = useTheme();
     return (
         <HomeStack.Navigator
             screenOptions={{
                 headerStyle: {
                     backgroundColor: colors.background,
-                    shadowColor: colors.background, // iOS
-                    elevation: 0, // Android
+                    elevation: 0,
                 },
                 headerTintColor: "#000",
                 headerTitleStyle: {
@@ -91,11 +104,11 @@ const HomeStackScreen = ({navigation}:any) => {
             }}>
             <HomeStack.Screen
                 name="HomeClient"
-                component={HomeClient}
+                children={() => <HomeClient data={filteredSalons} navigation={navigation}/>}
                 options={{
-                    title: 'Find a salon',
+                    title: '',
                     headerLeft: () => (
-                        <View style={{marginLeft: 10}}>
+                        <HStack style={{marginLeft: 10}}>
                             <Icon.Button
                                 name="ios-menu"
                                 size={25}
@@ -103,17 +116,16 @@ const HomeStackScreen = ({navigation}:any) => {
                                 backgroundColor={colors.background}
                                 onPress={() => navigation.openDrawer()}
                             />
-                        </View>
+                            <Input variant="underlined" onChangeText={onChangeSearchInput} placeholder='Find a salon'
+                                    _focus={{ backgroundColor: "gray.50", borderColor: "none"}} width={'72%'} InputRightElement={
+                                <Icon
+                                    name="ios-search"
+                                    size={15}
+                                    color="#000" />} />
+                        </HStack>
                     ),
                     headerRight: () => (
                         <View style={{flexDirection: 'row', marginRight: 10}}>
-                            <Icon.Button
-                                name="ios-search"
-                                size={25}
-                                color="#000"
-                                backgroundColor={colors.background}
-                                onPress={() => {}}
-                            />
                             <TouchableOpacity
                                 style={{paddingHorizontal: 10, marginTop: 5}}
                                 onPress={() => {

@@ -1,16 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useTheme, Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch} from 'react-native-paper';
+import { useTheme, Avatar, Title, Caption, Drawer} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import HomeClient from './HomeClient';
 import Profile from './Profile';
 import Appointments from './Appointments';
 import Reviews from './Reviews';
-import NotificationScreen from './NotificationScreen';
 import Login from './Login';
-import{ AuthContext } from '../components/context';
 
 export function DrawerContent(props:any) {
 
@@ -67,7 +64,7 @@ export function DrawerContent(props:any) {
                             icon={({color, size}:any) => (
                                 <Icon name="bell-outline" color={color} size={size}/> )}
                             label="Notifications"
-                            onPress={() => {props.navigation.navigate('NotificationScreen')}}
+                            onPress={() => {props.navigation.navigate('Notifications')}}
                         />
                     </Drawer.Section>
                 </View>

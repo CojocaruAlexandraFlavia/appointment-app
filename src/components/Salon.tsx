@@ -33,7 +33,8 @@ export const SalonScreen: React.FC = (): ReactElement => {
                 phoneNumber: "+343654765",
                 role: "CLIENT",
                 password: "pass",
-                profilePicture: "img1"
+                profilePicture: "img1",
+                city: "Bucharest"
             }
         },
         {
@@ -47,7 +48,8 @@ export const SalonScreen: React.FC = (): ReactElement => {
                 phoneNumber: "+343654765",
                 role: "CLIENT",
                 password: "pass",
-                profilePicture: "img2"
+                profilePicture: "img2",
+                city: "Brasov"
             }
         }
     ])
