@@ -1,10 +1,10 @@
 import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon, Icon, Pressable, Checkbox, Divider  } from "native-base"
 import React, { ReactElement, useState } from "react"
-import { useUserDataContext } from "../store/UserData.context"
+import { useUserDataContext } from "../../store/UserData.context"
 import {Feather, MaterialIcons} from "@expo/vector-icons";
 import { ScrollView } from 'react-native';
-import IconGoogle from "../components/IconGoogle";
-import IconFacebook from "./IconFacebook";
+import IconGoogle from "../../components/IconGoogle";
+import IconFacebook from "../../components/IconFacebook";
 
 type RegisterData = {
     email: string, 
@@ -69,7 +69,7 @@ const Register = ({navigation}: any): ReactElement => {
         } else {
             console.log("ok")
             //setUser({})
-            navigation.navigate('HomeClient')
+            navigation.navigate('Login')
         }
     }
 

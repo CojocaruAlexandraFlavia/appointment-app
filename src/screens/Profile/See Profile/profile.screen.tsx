@@ -2,8 +2,8 @@ import React from 'react';
 import {View, SafeAreaView, StyleSheet, Alert, Share} from 'react-native';
 import {Avatar, Title, Caption, Text, TouchableRipple,} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Login from './Login';
-import EditProfile from './EditProfile';
+import Login from '../../Login/login.screen';
+import EditProfile from '../Edit Profile/edit-profile.screen';
 // import files from '../../assets/filesBase64';
 // import logo from '../../assets/logo'
 

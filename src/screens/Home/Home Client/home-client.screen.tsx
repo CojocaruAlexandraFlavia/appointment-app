@@ -1,7 +1,7 @@
 import {Avatar, Box, Center, FlatList, Heading, HStack, Pressable, VStack} from "native-base";
 import {useEffect, useState} from "react";
 import { Rating } from "react-native-ratings";
-import { Salon } from "../utils/Types";
+import { Salon } from "../../../utils/Types";
 import 'react-native-gesture-handler';
 import React from 'react'
 

@@ -3,12 +3,13 @@ import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Ico
 import { useRoute } from '@react-navigation/native';
 import React, {ReactElement, useCallback, useEffect, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
-import {Review, Salon, SalonScreenRouteProp, ServicesListData, ServiceWithTime} from "../utils/Types";
+import {Review, Salon, ServicesListData, ServiceWithTime} from "../../utils/Types";
 import { Rating } from "react-native-ratings";
-import CalendarPicker from "./CalendarPicker";
+import CalendarPicker from "../Calendar/calendar-picker.screen";
 import {Linking, ListRenderItemInfo, SectionListData, SectionListRenderItemInfo} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import {salons, allServices} from "../utils/Constants";
+import {salons, allServices} from "../../utils/Constants";
+import {SalonScreenRouteProp} from "../../navigation/navigator.types";
 
 
 export const SalonScreen: React.FC = (): ReactElement => {

@@ -3,13 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme, Avatar, Title, Caption, Drawer} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeClient from './HomeClient';
-import Profile from './Profile';
-import Appointments from './Appointments';
-import Reviews from './Reviews';
-import Login from './Login';
+import HomeClient from '../../screens/Home/Home Client/home-client.screen';
+import Profile from '../../screens/Profile/See Profile/profile.screen';
+import Appointments from '../../screens/Appointments/appointments.screen';
+import Reviews from '../../screens/Reviews/reviews.screen';
+import Login from '../../screens/Login/login.screen';
 
-export function DrawerContent(props:any) {
+export const DrawerContent = (props:any) => {
 
     const paperTheme = useTheme();
 
@@ -74,7 +74,7 @@ export function DrawerContent(props:any) {
                     icon={({color, size}:any) => (
                         <Icon name="exit-to-app" color={color} size={size}/> )}
                     label="Logut"
-                    onPress={() => {props.navigation.navigate('Login')}}
+                    onPress={() => {props.navigation.navigate('LoginScreen')}}
                     // onPress={() => {signOut()}}
                 />
             </Drawer.Section>

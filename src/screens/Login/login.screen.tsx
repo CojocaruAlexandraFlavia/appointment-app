@@ -1,20 +1,32 @@
-import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon, Icon, Pressable, Checkbox, Divider  } from "native-base"
+import {
+    Box,
+    Button,
+    Center,
+    Checkbox,
+    Divider,
+    FormControl,
+    Heading,
+    HStack,
+    Icon,
+    Input,
+    Link,
+    Pressable,
+    Text,
+    VStack,
+    WarningOutlineIcon
+} from "native-base"
 import React, {ReactElement, useState} from "react"
-import { useUserDataContext } from "../store/UserData.context"
-import { MaterialIcons } from "@expo/vector-icons";
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {ParamListBase} from "@react-navigation/native";
-import IconGoogle from "../components/IconGoogle";
-import IconFacebook from "./IconFacebook";
+import {MaterialIcons} from "@expo/vector-icons";
+import IconGoogle from "../../components/IconGoogle";
+import IconFacebook from "../../components/IconFacebook";
+import {LoginScreenNavigationProps} from "../../navigation/navigator.types";
 
 type LoginData = {
     email: string, 
     password: string
 }
 
-type Props = NativeStackScreenProps<ParamListBase, 'Login'>;
-
-const Login: React.FC<Props> = ({navigation}: Props): ReactElement => {
+const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNavigationProps): ReactElement => {
 
     const [showPassword, setShowPassword] = useState(false)
     const [credentials, setCredentials] = useState<LoginData>({
@@ -26,7 +38,7 @@ const Login: React.FC<Props> = ({navigation}: Props): ReactElement => {
         password: ""
     })
 
-    const {setUser} = useUserDataContext()
+    // const {setUser} = useUserDataContext()
 
     const findFormErrors = () : LoginData => {
         const errors : LoginData = {
@@ -44,7 +56,7 @@ const Login: React.FC<Props> = ({navigation}: Props): ReactElement => {
         if (Object.values(formErrors).some(item => item !== "")) {
             setErrors(formErrors)
         } else {
-            //OPTIONAL Login Firebase  
+            //OPTIONAL LoginScreen Firebase
             //set retrieved user to context
             navigation.navigate('HomeClient')
         }

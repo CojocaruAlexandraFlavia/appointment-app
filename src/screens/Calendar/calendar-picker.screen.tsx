@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {  View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {CalendarProps, Salon, ServiceWithTime} from "../utils/Types";
+import {CalendarProps, Salon, ServiceWithTime} from "../../utils/Types";
 import {Modal} from "native-base";
 import {format} from 'date-fns'
-import {appointments, allServices, salons} from "../utils/Constants";
+import {appointments, allServices, salons} from "../../utils/Constants";
 
 const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show}: CalendarProps) => {
 

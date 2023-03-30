@@ -1,5 +1,3 @@
-import { RouteProp } from "@react-navigation/native";
-
 export type Salon = {
     id: number,
     name: string,
@@ -11,20 +9,7 @@ export type Salon = {
     endTime: string
 }
 
-export type StackNavigatorParamList = {
-    Salon: {
-      id: number;
-    };
-    Login: undefined;
-    HomeClient: undefined;
-    Register: undefined;
-    CalendarPicker: undefined;
-    MainTab: undefined
-};
-
 // export type SalonScreenNavigationProp = NativeStackNavigationProp<StackNavigatorParamList, 'Salon'>;
-
-export type SalonScreenRouteProp = RouteProp<StackNavigatorParamList,'Salon'>;
 
 export type CalendarProps = {
     salonId: number

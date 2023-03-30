@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, Animated, TouchableHighlight, TouchableOpacity, 
 import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import NotificationsList from '../utils/NotificationsList';
+import NotificationsList from '../../utils/NotificationsList';
 
 const NotificationScreen = ({navigation}:any) => {
     const [listData, setListData] = useState(
