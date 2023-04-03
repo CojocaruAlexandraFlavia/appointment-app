@@ -11,7 +11,7 @@ import {ProfileStackScreen} from "./profile-stack-screen";
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => (
-        <Tab.Navigator initialRouteName="Profile" activeColor="#fff">
+        <Tab.Navigator initialRouteName="HomeStackClient" activeColor="#fff">
             <Tab.Screen
                 name="HomeStackClient"
                 component={HomeStackScreen}

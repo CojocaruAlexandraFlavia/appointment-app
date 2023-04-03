@@ -89,7 +89,7 @@ export const allServices: ServiceList[] = [
 export const appointments: Appointment[] = [
     {
         id: 1,
-        date: '24-03-2023',
+        date: '24-04-2023',
         time: '15:00',
         clientId: 1,
         serviceName: "Eyelash extension",

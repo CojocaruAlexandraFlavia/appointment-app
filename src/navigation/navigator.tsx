@@ -1,16 +1,19 @@
-import {NavigationContainer} from "@react-navigation/native";
+import {DefaultTheme, NavigationContainer} from "@react-navigation/native";
 import {Authentication} from "./authentication";
-import {Drawer} from "./drawer";
-import MainTab from "./tab";
 
+const CustomTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: 'white'
+    },
+};
 
 export const Navigator = () => {
 
     return(
-        <NavigationContainer>
+        <NavigationContainer theme={CustomTheme}>
             <Authentication/>
-            <Drawer/>
-            <MainTab/>
         </NavigationContainer>
     )
 
