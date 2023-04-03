@@ -3,16 +3,18 @@ import Login from "../../screens/Login/login.screen";
 import Register from "../../screens/Register/register.screen";
 import {StackNavigatorParamList} from "../navigator.types";
 import {Drawer} from "../drawer";
+import {SalonScreen} from "../../screens/Salon/salon.screen";
 
 const Stack = createNativeStackNavigator<StackNavigatorParamList>();
 
 export const Authentication = () => {
 
     return(
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="HomeClient" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register"  component={Register}/>
             <Stack.Screen name="HomeClient" component={Drawer}/>
+            <Stack.Screen name="Salon" component={SalonScreen} />
         </Stack.Navigator>
     )
 

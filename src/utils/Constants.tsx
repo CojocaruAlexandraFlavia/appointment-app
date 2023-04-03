@@ -103,6 +103,14 @@ export const appointments: Appointment[] = [
         serviceName: "Gel manicure",
         salonId: 2
     },
+    {
+        id: 3,
+        date: '24-04-2023',
+        time: '9:00',
+        clientId: 1,
+        serviceName: "Eyelash extension",
+        salonId: 1
+    },
 
 ]
 
