@@ -9,12 +9,12 @@ export type Salon = {
     endTime: string
 }
 
-// export type SalonScreenNavigationProp = NativeStackNavigationProp<StackNavigatorParamList, 'Salon'>;
-
 export type CalendarProps = {
     salonId: number
     selectedService: string,
-    show: boolean
+    show: boolean,
+    navigation: any,
+    setShow: Function
 }
 
 export type ServiceWithTime = {
@@ -57,4 +57,10 @@ export type Appointment = {
 export type ServicesListData = {
     title: string,
     data: ServiceWithTime[]
+}
+
+export type ConfirmAppointmentProp = {
+    date: string,
+    time: string,
+    service: string
 }

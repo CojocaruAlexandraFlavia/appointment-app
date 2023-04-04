@@ -5,9 +5,8 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeClient from '../../screens/Home/Home Client/home-client.screen';
 import Profile from '../../screens/Profile/See Profile/profile.screen';
-import Appointments from '../../screens/Appointments/appointments.screen';
+import Appointments from '../../screens/Appointments/See appointments/appointments.screen';
 import Reviews from '../../screens/Reviews/reviews.screen';
-import Login from '../../screens/Login/login.screen';
 
 export const DrawerContent = (props:any) => {
 

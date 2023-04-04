@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {  View } from "react-native";
+import React, {useCallback, useEffect, useState} from "react";
+import {ListRenderItemInfo, View} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {CalendarProps, Salon, ServiceWithTime} from "../../utils/Types";
-import {Modal} from "native-base";
+import {Button, FlatList, FormControl, Modal, Radio, ScrollView, WarningOutlineIcon} from "native-base";
 import {format} from 'date-fns'
 import {appointments, allServices, salons} from "../../utils/Constants";
 import moment from "moment";
 
-const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show}: CalendarProps) => {
+const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show, navigation, setShow}: CalendarProps) => {
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isHourSelectionModalVisible, setHourSelectionVisibility] = useState(false)
@@ -22,6 +22,9 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         rating: 0,
         startTime: ""
     })
+    const [selectedAppointmentTime, setSelectedAppointmentTime] = useState("")
+    const [selectedAppointmentDate, setSelectedAppointmentDate] = useState("")
+    const [selectTimeValid, setSelectTimeValid] = useState(false)
 
     useEffect(() => {
         setDatePickerVisibility(show)
@@ -43,11 +46,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
                 moment(workingHour).isSameOrBefore(moment(appHour[selectedServiceWithDuration.duration])))
     }
 
-    const handleConfirm = (date: Date) => {
-        const formattedSelectedDate = format(date, "dd-MM-yyyy HH:mm")
-        const selectedDay = formattedSelectedDate.split(" ")[0]
-
-        // searching selected service in all available services
+    const findSelectedServiceWithTime = () => {
         let selectedServiceWithDuration: ServiceWithTime = {name: "", duration: 0}
         for (const serviceCategory of allServices) {
             for (const service of serviceCategory.services) {
@@ -57,6 +56,16 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
                 }
             }
         }
+        return selectedServiceWithDuration
+    }
+
+    const handleConfirm = (date: Date) => {
+        const formattedSelectedDate = format(date, "dd-MM-yyyy HH:mm")
+        const selectedDay = formattedSelectedDate.split(" ")[0]
+        setSelectedAppointmentDate(selectedDay)
+
+        // searching selected service in all available services
+        const selectedServiceWithDuration = findSelectedServiceWithTime()
 
         // build array with all hours during a day
         const allDayHours = [];
@@ -99,10 +108,43 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         }
 
         setAvailableTimeSlots(availableHours)
-
-        // setDatePickerVisibility(false)
-        // setHourSelectionVisibility(true)
+        setShow(false)
+        setDatePickerVisibility(false)
+        setHourSelectionVisibility(true)
     };
+
+    const confirmSelectedTime = () => {
+        if (selectedAppointmentTime === "") {
+            setSelectTimeValid(true)
+        } else {
+            setSelectTimeValid(false)
+            navigation.navigate('ConfirmAppointment', {
+                date: selectedAppointmentDate,
+                time: selectedAppointmentTime,
+                service: selectedService}
+            )
+            setHourSelectionVisibility(false)
+            setSelectedAppointmentTime("")
+            setAvailableTimeSlots([])
+            setDatePickerVisibility(false)
+            setShow(false)
+        }
+    }
+
+    const selectTimeRadio = (value: string) => {
+        setSelectTimeValid(false)
+        setSelectedAppointmentTime(value)
+    }
+
+    const renderItemTimeslot = useCallback(({item}: ListRenderItemInfo<Date>) => (
+        <Radio value={format(item, "HH:mm")} size={"sm"}>{format(item, "HH:mm")}</Radio>
+    ), [])
+
+    const onCloseSelectTimeModal = () => {
+        setHourSelectionVisibility(false)
+        setSelectedAppointmentTime("")
+        setSelectTimeValid(false)
+    }
 
     return (
         <View>
@@ -112,13 +154,23 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
             />
-            <Modal isOpen={isHourSelectionModalVisible} onClose={() => setHourSelectionVisibility(false)}>
+            <Modal isOpen={isHourSelectionModalVisible} onClose={onCloseSelectTimeModal}>
                 <Modal.Content>
                     <Modal.CloseButton/>
                     <Modal.Header>Choose appointment hour</Modal.Header>
                     <Modal.Body>
-
+                        <FormControl isInvalid={selectTimeValid}>
+                            <Radio.Group name={"Select time"} onChange={value => selectTimeRadio(value)} value={selectedAppointmentTime}>
+                                <ScrollView horizontal={true}>
+                                    <FlatList data={availableTimeSlots} renderItem={renderItemTimeslot} keyExtractor={item => item.getTime().toString()} />
+                                </ScrollView>
+                            </Radio.Group>
+                            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
+                        </FormControl>
                     </Modal.Body>
+                    <Modal.Footer>
+                        <Button colorScheme="green" onPress={confirmSelectedTime}>Confirm</Button>
+                    </Modal.Footer>
                 </Modal.Content>
             </Modal>
         </View>

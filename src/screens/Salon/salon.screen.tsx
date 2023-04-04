@@ -1,20 +1,20 @@
 import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, SectionList, Spacer, Text, VStack, WarningOutlineIcon
 } from "native-base";
 import { useRoute } from '@react-navigation/native';
-import React, {ReactElement, useCallback, useEffect, useState} from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { SliderBox } from "react-native-image-slider-box";
-import {Review, Salon, ServicesListData, ServiceWithTime} from "../../utils/Types";
+import { Review, Salon, ServicesListData, ServiceWithTime } from "../../utils/Types";
 import { Rating } from "react-native-ratings";
 import CalendarPicker from "../Calendar/calendar-picker.screen";
-import {Linking, ListRenderItemInfo, SectionListData, SectionListRenderItemInfo} from "react-native";
+import { Linking, ListRenderItemInfo, SectionListData, SectionListRenderItemInfo } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import {salons, allServices} from "../../utils/Constants";
-import {SalonScreenRouteProp} from "../../navigation/navigator.types";
+import { salons, allServices } from "../../utils/Constants";
+import { SalonScreenRouteProp } from "../../navigation/navigator.types";
 
 
-export const SalonScreen: React.FC = (): ReactElement => {
+export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
 
-    const [salon, setSalon] = useState<Salon>(salons[0])
+    const [salon] = useState<Salon>(salons[0])
 
     const [allSalonServices, setAllSalonServices] = useState<ServicesListData[]>([])
 
@@ -22,7 +22,7 @@ export const SalonScreen: React.FC = (): ReactElement => {
     const [showCalendarPicker, setShowCalendar] = useState(false)
     const [selectedService, setSelectedService] = useState("")
     const [formValidation, setFormValidation] = useState(true)
-    const [reviews, setReviews] = useState<Review[]>([
+    const [reviews] = useState<Review[]>([
         {
             id: 1,
             stars: 4,
@@ -93,7 +93,7 @@ export const SalonScreen: React.FC = (): ReactElement => {
     }
 
     const renderItemServiceList = useCallback(({ item }: SectionListRenderItemInfo<ServiceWithTime, ServicesListData>)  =>
-        (<Radio size={"sm"} ml={2} mb={2} value={item.name}>{`${item.name}, ${item.duration}h`}</Radio>), [])
+        (<Radio size={"sm"} ml={2} mb={1} value={item.name}>{`${item.name}, ${item.duration}h`}</Radio>), [])
 
     const renderHeaderServiceList = useCallback((info: { section: SectionListData<ServiceWithTime, ServicesListData> }) =>
         (<Heading fontSize="xl" mt="8" pb="4" alignSelf={"center"}> {info.section.title} </Heading>), [])
@@ -150,7 +150,8 @@ export const SalonScreen: React.FC = (): ReactElement => {
                     onPress={doCall}>Phone number: {salon.phoneNumber}
                 </Link>
 
-                <CalendarPicker salonId={id} selectedService={selectedService} show={showCalendarPicker}/> {"\n"}
+                <CalendarPicker salonId={id} selectedService={selectedService}
+                                setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/> {"\n"}
 
                 <Heading italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
 
