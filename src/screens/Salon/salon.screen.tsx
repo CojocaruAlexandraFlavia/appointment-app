@@ -28,6 +28,7 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
             stars: 4,
             message: "superb",
             client: {
+                id: 2,
                 email: "email@email.com",
                 firstName: "John",
                 lastName: "Smith",
@@ -43,6 +44,7 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
             stars: 5,
             message: "professional lllll lllllllllll llllllllllllllllll llllllllll llllllllllllllll llllllll lllllll fdsifhsudf wfwuigrweur ygsdywgwyr wgrwiyrgwyi",
             client: {
+                id: 1,
                 email: "email@email.com",
                 firstName: "Maria",
                 lastName: "K",
@@ -69,7 +71,7 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
         }
         setAllSalonServices(listData)
 
-    }, [])
+    }, [allServices])
 
     const handleValidateOption = () => {
         const validOption = selectedService !== ""

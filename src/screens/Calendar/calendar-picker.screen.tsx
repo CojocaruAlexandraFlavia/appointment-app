@@ -121,8 +121,9 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
             navigation.navigate('ConfirmAppointment', {
                 date: selectedAppointmentDate,
                 time: selectedAppointmentTime,
-                service: selectedService}
-            )
+                service: selectedService,
+                idSalon: salonId
+            })
             setHourSelectionVisibility(false)
             setSelectedAppointmentTime("")
             setAvailableTimeSlots([])

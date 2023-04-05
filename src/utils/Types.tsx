@@ -28,6 +28,7 @@ export type ServiceList = {
 }
 
 export type User = {
+    id: number,
     email: string,
     firstName: string,
     lastName: string,
@@ -62,5 +63,6 @@ export type ServicesListData = {
 export type ConfirmAppointmentProp = {
     date: string,
     time: string,
-    service: string
+    service: string,
+    idSalon: number
 }
