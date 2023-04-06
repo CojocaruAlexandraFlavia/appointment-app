@@ -1,4 +1,4 @@
-import {Appointment, Salon, ServiceList} from "./Types";
+import {Appointment, Salon, ServiceList} from "./types";
 
 export const allServices: ServiceList[] = [
     {

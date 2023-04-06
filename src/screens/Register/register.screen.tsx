@@ -1,19 +1,29 @@
-import { Center, HStack, Link, VStack, Box, Button, Heading, Input, FormControl, Text, WarningOutlineIcon, Icon, Pressable, Checkbox, Divider  } from "native-base"
-import React, { ReactElement, useState } from "react"
-import { useUserDataContext } from "../../store/UserData.context"
+import {
+    Box,
+    Button,
+    Center,
+    Checkbox,
+    Divider,
+    FormControl,
+    Heading,
+    HStack,
+    Icon,
+    Input,
+    Link,
+    Pressable,
+    Text,
+    VStack,
+    WarningOutlineIcon
+} from "native-base"
+import React, {ReactElement, useState} from "react"
+import {useUserDataContext} from "../../store/UserData.context"
 import {Feather, MaterialIcons} from "@expo/vector-icons";
-import { ScrollView } from 'react-native';
+import {ScrollView} from 'react-native';
 import IconGoogle from "../../components/IconGoogle";
 import IconFacebook from "../../components/IconFacebook";
-
-type RegisterData = {
-    email: string, 
-    password: string,
-    firstName: string,
-    lastName: string,
-    phoneNumber: string,
-    city: string,
-}
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../../utils/firebase";
+import {RegisterData} from "../../utils/types";
 
 const Register = ({navigation}: any): ReactElement => {
 
@@ -35,6 +45,7 @@ const Register = ({navigation}: any): ReactElement => {
         phoneNumber: "",
         city: "",
     })
+    const [registerError, setRegisterError] = useState("")
 
     const {setUser} = useUserDataContext()
 
@@ -62,14 +73,27 @@ const Register = ({navigation}: any): ReactElement => {
         return errors
     }
     
-    const auth = () => {
+    const signUp = async () => {
         const formErrors : RegisterData = findFormErrors()
         if (!Object.values(formErrors).includes("")) {
             setErrors(formErrors)
         } else {
-            console.log("ok")
+            try {
+                const firebaseUser = await createUserWithEmailAndPassword(
+                    auth,
+                    credentials.email,
+                    credentials.password
+                );
+                console.log(firebaseUser.user)
+                setRegisterError("")
+            } catch (e) {
+                setRegisterError((e as { message: string }).message);
+                setTimeout(() => {
+                    setRegisterError("")
+                }, 5000)
+            }
             //setUser({})
-            navigation.navigate('Login')
+            //navigation.navigate('Login')
         }
     }
 
@@ -162,7 +186,8 @@ const Register = ({navigation}: any): ReactElement => {
                             </Link>
                         </HStack>
                     </Checkbox>
-                    <Button mt="2" colorScheme="indigo" onPress={auth}>Sign up</Button>
+                    {registerError && <Text color='red.600'>{registerError}</Text>}
+                    <Button mt="2" colorScheme="indigo" onPress={signUp}>Sign up</Button>
                 </VStack>
             </Box>
 

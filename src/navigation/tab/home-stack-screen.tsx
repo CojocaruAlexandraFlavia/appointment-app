@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {salons} from "../../utils/Constants";
+import {salons} from "../../utils/constants";
 import {Avatar, useTheme} from "react-native-paper";
 import HomeClient from "../../screens/Home/Home Client/home-client.screen";
 import {HStack, Input} from "native-base";

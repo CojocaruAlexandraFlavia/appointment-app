@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {Alert, StyleSheet} from "react-native";
 import {useRoute} from "@react-navigation/native";
 import {ConfirmAppointmentRouteProp} from "../../../navigation/navigator.types";
-import {salons} from "../../../utils/Constants";
+import {salons} from "../../../utils/constants";
 import {useUserDataContext} from "../../../store/UserData.context";
 import {Loading} from "../../../components/activity-indicator.component";
 

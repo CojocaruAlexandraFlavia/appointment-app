@@ -66,3 +66,12 @@ export type ConfirmAppointmentProp = {
     service: string,
     idSalon: number
 }
+
+export type RegisterData = {
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    city: string,
+}

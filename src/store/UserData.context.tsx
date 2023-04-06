@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import {User} from "../utils/Types";
+import {User} from "../utils/types";
 
 interface UserData {
     user: User,

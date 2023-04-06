@@ -1,6 +1,6 @@
 import {ParamListBase, RouteProp} from "@react-navigation/native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {ConfirmAppointmentProp} from "../utils/Types";
+import {ConfirmAppointmentProp} from "../utils/types";
 
 export type StackNavigatorParamList = {
     Salon: {
