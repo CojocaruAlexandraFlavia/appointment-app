@@ -83,6 +83,31 @@ export const allServices: ServiceList[] = [
                 duration: 2
             }
         ]
+    },
+    {
+        name: "Men",
+        services: [
+            {
+                name: "Haircut",
+                duration: 1
+            },
+            {
+                name: "Hairdressing",
+                duration: 1
+            },
+            {
+                name: "Hair treatment",
+                duration: 1
+            },
+            {
+                name: "Hair coloring",
+                duration: 2
+            },
+            {
+                name: "Highlights",
+                duration: 2
+            }
+        ]
     }
 ]
 

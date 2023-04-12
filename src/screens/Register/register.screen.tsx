@@ -22,8 +22,9 @@ import {ScrollView} from 'react-native';
 import IconGoogle from "../../components/IconGoogle";
 import IconFacebook from "../../components/IconFacebook";
 import {createUserWithEmailAndPassword} from "firebase/auth";
-import { auth } from "../../utils/firebase";
+import {auth, firestore} from "../../utils/firebase";
 import {RegisterData} from "../../utils/types";
+import {addDoc, collection } from "firebase/firestore";
 
 const Register = ({navigation}: any): ReactElement => {
 
@@ -78,19 +79,34 @@ const Register = ({navigation}: any): ReactElement => {
         if (!Object.values(formErrors).includes("")) {
             setErrors(formErrors)
         } else {
+            setErrors({city: "", email: "", firstName: "", lastName: "", password: "", phoneNumber: ""})
             try {
-                const firebaseUser = await createUserWithEmailAndPassword(
+                await createUserWithEmailAndPassword(
                     auth,
                     credentials.email,
                     credentials.password
                 );
-                console.log(firebaseUser.user)
+
+                const collectionRef = collection(firestore, "users");
+
+                await addDoc(collectionRef, {
+                    email: credentials.email,
+                    firstName: credentials.firstName,
+                    lastName: credentials.lastName,
+                    phoneNumber: credentials.phoneNumber,
+                    city: credentials.city
+                });
+
                 setRegisterError("")
             } catch (e) {
-                setRegisterError((e as { message: string }).message);
-                setTimeout(() => {
-                    setRegisterError("")
-                }, 5000)
+                console.log(e)
+                const errorCode = (e as { code: string }).code
+                let errorMessage = errorCode.split('/')[1].replaceAll('-', ' ')
+                errorMessage = errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+                setRegisterError(errorMessage)
+                // setTimeout(() => {
+                //     setRegisterError("")
+                // }, 5000)
             }
             //setUser({})
             //navigation.navigate('Login')
@@ -186,8 +202,8 @@ const Register = ({navigation}: any): ReactElement => {
                             </Link>
                         </HStack>
                     </Checkbox>
-                    {registerError && <Text color='red.600'>{registerError}</Text>}
                     <Button mt="2" colorScheme="indigo" onPress={signUp}>Sign up</Button>
+                    {registerError && <Text alignSelf='center' mt={3}  fontSize='xl' color='red.500'>{registerError}</Text>}
                 </VStack>
             </Box>
 

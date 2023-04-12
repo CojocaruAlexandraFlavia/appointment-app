@@ -75,3 +75,7 @@ export type RegisterData = {
     phoneNumber: string,
     city: string,
 }
+export type LoginData = {
+    email: string,
+    password: string
+}

@@ -44,25 +44,25 @@ const EditProfile = () => {
     //     });
     // }
 
-    let renderInner = () => (
-        <View style={styles.panel}>
-            <View style={{alignItems: 'center'}}>
-                <Text style={styles.panelTitle}>Upload Photo</Text>
-                <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
-            </View>
-            <TouchableOpacity style={styles.panelButton} onPress={takePhotoFromCamera}>
-                <Text style={styles.panelButtonTitle}>Take Photo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.panelButton} onPress={choosePhotoFromLibrary}>
-                <Text style={styles.panelButtonTitle}>Choose From Library</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.panelButton} // @ts-ignore
-                onPress={() => bs.current.snapTo(1)}>
-                <Text style={styles.panelButtonTitle}>Cancel</Text>
-            </TouchableOpacity>
-        </View>
-    );
+    // let renderInner = () => (
+    //     <View style={styles.panel}>
+    //         <View style={{alignItems: 'center'}}>
+    //             <Text style={styles.panelTitle}>Upload Photo</Text>
+    //             <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+    //         </View>
+    //         <TouchableOpacity style={styles.panelButton} onPress={takePhotoFromCamera}>
+    //             <Text style={styles.panelButtonTitle}>Take Photo</Text>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity style={styles.panelButton} onPress={choosePhotoFromLibrary}>
+    //             <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity
+    //             style={styles.panelButton} // @ts-ignore
+    //             onPress={() => bs.current.snapTo(1)}>
+    //             <Text style={styles.panelButtonTitle}>Cancel</Text>
+    //         </TouchableOpacity>
+    //     </View>
+    // );
 
     let renderHeader = () => (
         <View style={styles.header}>

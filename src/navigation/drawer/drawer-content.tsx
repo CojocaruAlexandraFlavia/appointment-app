@@ -73,7 +73,7 @@ export const DrawerContent = (props:any) => {
                     icon={({color, size}:any) => (
                         <Icon name="exit-to-app" color={color} size={size}/> )}
                     label="Logut"
-                    onPress={() => {props.navigation.navigate('LoginScreen')}}
+                    onPress={() => {props.navigation.navigate('Login')}}
                     // onPress={() => {signOut()}}
                 />
             </Drawer.Section>

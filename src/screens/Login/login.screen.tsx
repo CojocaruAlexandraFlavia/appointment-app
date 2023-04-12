@@ -20,11 +20,11 @@ import {MaterialIcons} from "@expo/vector-icons";
 import IconGoogle from "../../components/IconGoogle";
 import IconFacebook from "../../components/IconFacebook";
 import {LoginScreenNavigationProps} from "../../navigation/navigator.types";
-
-type LoginData = {
-    email: string, 
-    password: string
-}
+import {signInWithEmailAndPassword} from "firebase/auth";
+import {auth, firestore} from "../../utils/firebase";
+import {LoginData} from "../../utils/types";
+import {collection, getDocs, query, where} from "firebase/firestore";
+import {useUserDataContext} from "../../store/UserData.context";
 
 const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNavigationProps): ReactElement => {
 
@@ -37,8 +37,9 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
         email: "",
         password: ""
     })
+    const [firebaseLoginError, setFirebaseLoginError] = useState("")
 
-    // const {setUser} = useUserDataContext()
+    const {setUser} = useUserDataContext()
 
     const findFormErrors = () : LoginData => {
         const errors : LoginData = {
@@ -51,14 +52,35 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
         return errors
     }
     
-    const auth = () => {
+    const signIn = async () => {
         const formErrors : LoginData = findFormErrors()
         if (Object.values(formErrors).some(item => item !== "")) {
+            setFirebaseLoginError("")
             setErrors(formErrors)
         } else {
-            //OPTIONAL LoginScreen Firebase
-            //set retrieved user to context
-            navigation.navigate('HomeClient')
+            try {
+                await signInWithEmailAndPassword(
+                    auth,
+                    credentials.email,
+                    credentials.password
+                )
+
+                const collectionRef = collection(firestore, "users");
+                const firestoreUserQuery = query(collectionRef, where("email", "==", credentials.email));
+                const firestoreUser = await getDocs(firestoreUserQuery)
+                const firestoreUserData = firestoreUser.docs[0].data()
+
+                setUser(firestoreUserData)
+
+                setFirebaseLoginError("")
+                navigation.navigate('HomeClient')
+            } catch (e) {
+                console.log(e)
+                const errorCode = (e as { code: string }).code
+                let errorMessage = errorCode.split('/')[1].replaceAll('-', ' ')
+                errorMessage = errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+                setFirebaseLoginError(errorMessage)
+            }
         }
     }
 
@@ -106,7 +128,8 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                             Remember me and keep me logged in
                         </Text>
                     </Checkbox>
-                    <Button mt="2" colorScheme="indigo" onPress={auth}>Sign in</Button>
+                    <Button mt="2" colorScheme="indigo" onPress={signIn}>Sign in</Button>
+                    {firebaseLoginError && <Text mt={4} alignSelf='center' fontSize='xl' color='red.500'>Error: {firebaseLoginError}</Text>}
                 </VStack>
             </Box>
 
