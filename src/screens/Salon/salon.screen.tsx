@@ -12,7 +12,7 @@ import { salons, allServices } from "../../utils/constants";
 import { SalonScreenRouteProp } from "../../navigation/navigator.types";
 
 
-export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
+export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const [salon] = useState<Salon>(salons[0])
 

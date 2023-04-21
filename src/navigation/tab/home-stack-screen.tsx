@@ -30,9 +30,7 @@ export const HomeStackScreen = ({navigation}: any) => {
     return (
         <HomeStack.Navigator
             screenOptions={{
-                headerStyle: {
-                    backgroundColor: colors.background
-                },
+                headerStyle: {backgroundColor: colors.background},
                 headerTintColor: "#000",
                 headerTitleStyle: {
                     fontWeight: 'bold',

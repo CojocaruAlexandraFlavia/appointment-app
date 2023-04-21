@@ -1,5 +1,5 @@
 import {useTheme} from "react-native-paper";
-import Profile from "../../screens/Profile/See Profile/profile.screen";
+import Profile from "../../screens/Profile/See Profile";
 import {View} from "react-native-animatable";
 import Icon from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";

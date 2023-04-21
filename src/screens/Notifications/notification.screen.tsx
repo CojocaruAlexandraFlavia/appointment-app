@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import NotificationsList from '../../utils/NotificationsList';
 
-const NotificationScreen = ({navigation}:any) => {
+const Notifications = ({navigation}:any) => {
     const [listData, setListData] = useState(
         NotificationsList.map((NotificationItem, index) => ({
             key: `${index}`,
@@ -232,7 +232,7 @@ const NotificationScreen = ({navigation}:any) => {
     );
 };
 
-export default NotificationScreen;
+export default Notifications;
 
 const styles = StyleSheet.create({
     container: {

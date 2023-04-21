@@ -14,9 +14,13 @@ export type StackNavigatorParamList = {
     Notifications: undefined;
     Profile: undefined;
     EditProfile:undefined;
-    ConfirmAppointment: ConfirmAppointmentProp
+    ConfirmAppointment: ConfirmAppointmentProp;
+    Appointments: undefined;
+    Reviews: undefined;
+
 };
 export type SalonScreenRouteProp = RouteProp<StackNavigatorParamList, 'Salon'>;
 export type ConfirmAppointmentRouteProp = RouteProp<StackNavigatorParamList, 'ConfirmAppointment'>;
-
 export type LoginScreenNavigationProps = NativeStackScreenProps<ParamListBase, 'LoginScreen'>;
+export type AppointmentsScreenRouteProp = RouteProp<StackNavigatorParamList, 'Appointments'>;
+export type ReviewsScreenRouteProp = RouteProp<StackNavigatorParamList, 'Reviews'>;
