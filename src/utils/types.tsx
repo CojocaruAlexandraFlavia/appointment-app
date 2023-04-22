@@ -1,5 +1,5 @@
 export type Salon = {
-    id: number,
+    id: string,
     name: string,
     phoneNumber: string,
     rating: number,
@@ -10,7 +10,7 @@ export type Salon = {
 }
 
 export type CalendarProps = {
-    salonId: number
+    salonId: string
     selectedService: string,
     show: boolean,
     navigation: any,
@@ -49,7 +49,7 @@ export type Review = {
 export type Appointment = {
     id: number | null,
     clientId: number,
-    salonId: number,
+    salonId: string,
     date: string,
     time: string,
     serviceName: string
@@ -64,7 +64,7 @@ export type ConfirmAppointmentProp = {
     date: string,
     time: string,
     service: string,
-    idSalon: number
+    idSalon: string
 }
 
 export type RegisterData = {

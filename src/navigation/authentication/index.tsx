@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator<StackNavigatorParamList>();
 export const Authentication = () => {
 
     return(
-        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="HomeClient" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register"  component={Register}/>
             <Stack.Screen name="HomeClient" component={Drawer}/>

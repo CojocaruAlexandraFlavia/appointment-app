@@ -1,44 +1,70 @@
-import {Box, Button, Center, Container, Heading, HStack, Modal, Text, View} from "native-base";
-import React, {useEffect, useState} from "react";
-import {Alert, StyleSheet} from "react-native";
-import {useRoute} from "@react-navigation/native";
-import {ConfirmAppointmentRouteProp} from "../../../navigation/navigator.types";
-import {salons} from "../../../utils/constants";
-import {useUserDataContext} from "../../../store/UserData.context";
-import {Loading} from "../../../components/activity-indicator.component";
+import { Box, Button, Center, Heading, HStack, Text, View } from "native-base";
+import React, { useCallback, useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+import { ConfirmAppointmentRouteProp } from "../../../navigation/navigator.types";
+import { salons } from "../../../utils/constants";
+import { useUserDataContext } from "../../../store/UserData.context";
+import { Loading } from "../../../components/activity-indicator.component";
+import confirmAppointmentStyle from "./confirm-appointment.style";
+import {addDoc, collection, doc, getDoc} from "firebase/firestore";
+import { firestore } from "../../../utils/firebase";
+import { Salon } from "../../../utils/types";
+import {salonConverter} from "../../Salon/salon.class";
 
 export const ConfirmAppointment = () => {
 
     const route = useRoute<ConfirmAppointmentRouteProp>()
     const { service, time, date, idSalon } = route.params;
+    const styles = confirmAppointmentStyle()
 
-    const { user, setUser } = useUserDataContext()
+    const { user } = useUserDataContext()
 
-    const [salonName, setSalonName] = useState("")
+    const [salon, setSalon] = useState<Salon | null>(null)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+    const [firebaseError, setFirebaseError] = useState("")
 
-    useEffect(() => {
-        const salon = salons.filter(salon => salon.id = idSalon)[0]
-        setSalonName(salon.name)
+    const retrieveSalon = useCallback(async () => {
+        try {
+            const docRef = doc(firestore, "salons", idSalon).withConverter(salonConverter);
+            const salonDoc = await getDoc(docRef)
+            if (salonDoc.exists()) {
+                setSalon({...salonDoc.data(), images: [], id: salonDoc.id})
+            }
+        } catch (e) {
+            console.log("error " + e)
+        }
     }, [])
 
-    const confirmAppointment = () => {
 
-        //TODO save appointment
-        setShowConfirmationModal(true)
-        setTimeout(() => {
-            setShowConfirmationModal(false)
-        }, 5000)
+    useEffect(() => {
+        retrieveSalon().then(() => console.log("retrieve salon id: " + salon?.id)).catch(e => console.log(e))
+    }, [retrieveSalon])
+
+    const confirmAppointment = async () => {
+        try {
+            const collectionRef = collection(firestore, "appointments");
+            const savedEntry = await addDoc(collectionRef, {
+                salonId: salon?.id,
+                date: date,
+                time: time,
+                clientId: user.id,
+                serviceName: salon?.name
+            });
+            console.log("Saved: ")
+            console.log(savedEntry)
+            setShowConfirmationModal(true)
+            setTimeout(() => {
+                setShowConfirmationModal(false)
+            }, 3000)
+        } catch (e) {
+            const errorCode = (e as { code: string }).code
+            // let errorMessage = errorCode.split('/')[1].replaceAll('-', ' ')
+            // errorMessage = errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+            console.log(e)
+            setFirebaseError(errorCode)
+        }
 
     }
-
-    const styles = StyleSheet.create({
-        centered: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-        }
-    })
 
     return(
         <View style={styles.centered}>
@@ -47,7 +73,7 @@ export const ConfirmAppointment = () => {
                     <Heading mb={8}>Do you confirm the following appointment?</Heading>
                     <HStack>
                         <Text fontSize="xl" bold>Salon: </Text>
-                        <Text fontSize="xl">{salonName}</Text>
+                        <Text fontSize="xl">{salon?.name}</Text>
                     </HStack>
                     <HStack>
                         <Text fontSize="xl" bold>Date: </Text>
@@ -62,9 +88,10 @@ export const ConfirmAppointment = () => {
                 {
                     showConfirmationModal && <Loading/>
                 }
+                {
+                    firebaseError && <Text color='red.500'>{firebaseError}</Text>
+                }
             </Center>
         </View>
-
     )
-
 }

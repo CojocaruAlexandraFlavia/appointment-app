@@ -6,6 +6,9 @@ import {Button, FlatList, FormControl, Modal, Radio, ScrollView, WarningOutlineI
 import {format} from 'date-fns'
 import {appointments, allServices, salons} from "../../utils/constants";
 import moment from "moment";
+import {doc, getDoc} from "firebase/firestore";
+import {firestore} from "../../utils/firebase";
+import {salonConverter} from "../Salon/salon.class";
 
 const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show, navigation, setShow}: CalendarProps) => {
 
@@ -14,7 +17,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
     const [availableTimeSlots, setAvailableTimeSlots] = useState<Date[]>([])
     const [salon, setSalon] = useState<Salon>({
         endTime: "",
-        id: 0,
+        id: "",
         images: [],
         location: "",
         name: "",
@@ -26,12 +29,24 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
     const [selectedAppointmentDate, setSelectedAppointmentDate] = useState("")
     const [selectTimeValid, setSelectTimeValid] = useState(false)
 
+    const retrieveSalon = useCallback(async () => {
+        try {
+            const docRef = doc(firestore, "salons", salonId).withConverter(salonConverter);
+            const salonDoc = await getDoc(docRef)
+            if (salonDoc.exists()) {
+                setSalon({...salonDoc.data(), images: [], id: salonDoc.id})
+            }
+        } catch (e) {
+            console.log("error " + e)
+        }
+    }, [])
+
     useEffect(() => {
         setDatePickerVisibility(show)
 
         //get salon by id
-        const foundSalon = salons.filter(item => item.id === salonId)[0]
-        setSalon(foundSalon)
+        retrieveSalon().then(() => console.log("retrieved salon: " + salon))
+
     }, [salonId, show])
 
     const hideDatePicker = () => {

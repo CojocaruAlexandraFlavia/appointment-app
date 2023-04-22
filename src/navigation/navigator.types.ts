@@ -4,7 +4,7 @@ import {ConfirmAppointmentProp} from "../utils/types";
 
 export type StackNavigatorParamList = {
     Salon: {
-        id: number;
+        id: string;
     };
     Login: undefined;
     HomeClient: undefined;

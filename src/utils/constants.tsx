@@ -118,7 +118,7 @@ export const appointments: Appointment[] = [
         time: '15:00',
         clientId: 1,
         serviceName: "Eyelash extension",
-        salonId: 1
+        salonId: "1"
     },
     {
         id: 2,
@@ -126,7 +126,7 @@ export const appointments: Appointment[] = [
         time: '13:00',
         clientId: 1,
         serviceName: "Gel manicure",
-        salonId: 2
+        salonId: "2"
     },
     {
         id: 3,
@@ -134,14 +134,14 @@ export const appointments: Appointment[] = [
         time: '9:00',
         clientId: 1,
         serviceName: "Eyelash extension",
-        salonId: 1
+        salonId: "1"
     },
 
 ]
 
 export const salons: Salon[] = [
     {
-        id: 1,
+        id: "1",
         name: "Salon1",
         phoneNumber: "089878987",
         rating: 4.5,
@@ -152,7 +152,7 @@ export const salons: Salon[] = [
         endTime: "20:00"
     },
     {
-        id: 2,
+        id: "2",
         name: "Salon2",
         phoneNumber: "089878987",
         rating: 3.5,

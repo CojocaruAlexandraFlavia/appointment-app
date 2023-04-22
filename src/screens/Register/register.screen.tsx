@@ -16,7 +16,6 @@ import {
     WarningOutlineIcon
 } from "native-base"
 import React, {ReactElement, useState} from "react"
-import {useUserDataContext} from "../../store/UserData.context"
 import {Feather, MaterialIcons} from "@expo/vector-icons";
 import {ScrollView} from 'react-native';
 import IconGoogle from "../../components/IconGoogle";
@@ -47,8 +46,6 @@ const Register = ({navigation}: any): ReactElement => {
         city: "",
     })
     const [registerError, setRegisterError] = useState("")
-
-    const {setUser} = useUserDataContext()
 
     const findFormErrors = () : RegisterData => {
         const errors : RegisterData = {
