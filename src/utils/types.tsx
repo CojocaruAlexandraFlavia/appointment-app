@@ -6,7 +6,8 @@ export type Salon = {
     location: string,
     images: string[],
     startTime: string,
-    endTime: string
+    endTime: string,
+    reviews: Review[]
 }
 
 export type CalendarProps = {
@@ -28,19 +29,18 @@ export type ServiceList = {
 }
 
 export type User = {
-    id: number,
+    id: string,
     email: string,
     firstName: string,
     lastName: string,
     phoneNumber: string
     role: string,
-    password: string,
     profilePicture: string
     city: string
 }
 
 export type Review = {
-    id: number,
+    id: string,
     stars: number,
     message: string,
     client: User

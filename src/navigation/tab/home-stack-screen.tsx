@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {salons} from "../../utils/constants";
 import {Avatar, useTheme} from "react-native-paper";
 import HomeClient from "../../screens/Home/Home Client/home-client.screen";
@@ -8,11 +8,10 @@ import {View} from "react-native-animatable";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {StackNavigatorParamList} from "../navigator.types";
-import {addDoc, collection, getDocs} from "firebase/firestore";
-import {firestore, storage} from "../../utils/firebase";
+import {collection, getDocs} from "firebase/firestore";
+import {firestore} from "../../utils/firebase";
 import {Salon} from "../../utils/types";
 import {salonConverter} from "../../screens/Salon/salon.class";
-import {getDownloadURL, list, ref } from "firebase/storage";
 
 const HomeStack = createNativeStackNavigator<StackNavigatorParamList>();
 
@@ -21,21 +20,18 @@ export const HomeStackScreen = ({navigation}: any) => {
     const [allHomePageSalons, setAllHomePageSalons] = useState<Salon[]>([])
     const [filteredSalons, setFilteredSalons] = useState(allHomePageSalons)
 
-    const retrieveSalonImages = async (salonId: string) => {
-        const listResult = await list(ref(storage, `salons/${salonId}`))
-        const url = await getDownloadURL(listResult.items[0])
-        return [url]
-    }
-
     const retrieveAllSalons = async () => {
         const salonCollectionRef = collection(firestore, "salons").withConverter(salonConverter)
         const salonDocs = await getDocs(salonCollectionRef)
+
         try {
             let salonList: Salon[] = []
             salonDocs.forEach( documentSnapshot =>  {
-                salonList.push({...documentSnapshot.data(), images: [], id: documentSnapshot.id});
+                const salon = documentSnapshot.data()
+                salonList.push({...salon, images: [salon.image], id: documentSnapshot.id, reviews: []})
             })
             setFilteredSalons(salonList)
+            setAllHomePageSalons(salonList)
         } catch (e) {
             console.log("error: " + e)
         }

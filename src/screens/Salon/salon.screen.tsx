@@ -1,4 +1,23 @@
-import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, SectionList, Spacer, Text, VStack, WarningOutlineIcon
+import {
+    Avatar,
+    Box,
+    Button,
+    Center,
+    FlatList,
+    FormControl,
+    Heading,
+    HStack,
+    Icon,
+    Link,
+    Modal,
+    Radio,
+    ScrollView,
+    SectionList,
+    Spacer,
+    Text,
+    View,
+    VStack,
+    WarningOutlineIcon
 } from "native-base";
 import { useRoute } from '@react-navigation/native';
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
@@ -15,6 +34,8 @@ import {firestore, storage} from "../../utils/firebase";
 import {salonConverter} from "./salon.class";
 import {getDownloadURL, list, ref} from "firebase/storage";
 import {Loading} from "../../components/activity-indicator.component";
+import {userConverter} from "../Profile/user.class";
+import {ReviewClass} from "./review.class";
 
 
 export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
@@ -27,7 +48,8 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
         name: "",
         phoneNumber: "",
         rating: 0,
-        startTime: ""
+        startTime: "",
+        reviews: []
     })
 
     const [allSalonServices, setAllSalonServices] = useState<ServicesListData[]>([])
@@ -36,40 +58,6 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
     const [showCalendarPicker, setShowCalendar] = useState(false)
     const [selectedService, setSelectedService] = useState("")
     const [formValidation, setFormValidation] = useState(true)
-    const [reviews] = useState<Review[]>([
-        {
-            id: 1,
-            stars: 4,
-            message: "superb",
-            client: {
-                id: 2,
-                email: "email@email.com",
-                firstName: "John",
-                lastName: "Smith",
-                phoneNumber: "+343654765",
-                role: "CLIENT",
-                password: "pass",
-                profilePicture: "img1",
-                city: "Bucharest"
-            }
-        },
-        {
-            id: 2,
-            stars: 5,
-            message: "professional lllll lllllllllll llllllllllllllllll llllllllll llllllllllllllll llllllll lllllll fdsifhsudf wfwuigrweur ygsdywgwyr wgrwiyrgwyi",
-            client: {
-                id: 1,
-                email: "email@email.com",
-                firstName: "Maria",
-                lastName: "K",
-                phoneNumber: "+343654765",
-                role: "CLIENT",
-                password: "pass",
-                profilePicture: "img2",
-                city: "Brasov"
-            }
-        }
-    ])
 
     const route = useRoute<SalonScreenRouteProp>()
     const { id } = route.params;
@@ -90,10 +78,21 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
         let salonImages: string[] = []
         const result = await list(ref(storage, `salons/${salonId}`))
         for(const item of result.items) {
-            const url = await getDownloadURL(ref(storage, `/salons/${salonId}/${item.name}`))
+            const url = await getDownloadURL(item)
             salonImages.push(url)
         }
         return salonImages
+    }
+
+    const updateReviewsWithUserDetails = async (reviews: ReviewClass[]) => {
+        let updatedReviews: Review[] = []
+        for (const review of reviews) {
+            const client = await getDoc(doc(firestore, review.client.path).withConverter(userConverter))
+            if (client.exists()) {
+                updatedReviews.push({...review, client: client.data()})
+            }
+        }
+        return updatedReviews
     }
 
     const retrieveSalon = useCallback(async () => {
@@ -101,19 +100,23 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
             const docRef = doc(firestore, "salons", id).withConverter(salonConverter);
             const salonDoc = await getDoc(docRef)
             if (salonDoc.exists()) {
-                retrieveSalonImages(id).then(result => {
-                    setSalon({...salonDoc.data(), images: result, id: salonDoc.id})
+                retrieveSalonImages(id).then(async result => {
+                    if (salonDoc.exists()) {
+                        const salon = salonDoc.data()
+                        const updatedReviews = await updateReviewsWithUserDetails(salon.reviews)
+                        setSalon({...salon, images: result, id: salonDoc.id, reviews: updatedReviews})
+                    }
                 })
             }
-        } catch (e) {
+        } catch (e: any) {
             console.log("error " + e)
         }
-    }, [id])
+    }, [])
 
     useEffect(() => {
-        retrieveSalon().then(() => console.log('retrieved salon: ' + salon?.id)).catch(e => console.log(e))
+        retrieveSalon().catch(e => console.log(e))
         retrieveAllServices()
-    }, [])
+    }, [id])
 
     const handleValidateOption = () => {
         const validOption = selectedService !== ""
@@ -156,53 +159,57 @@ export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
     </Box>), [])
 
     return(
-        <Center w="100%">
-            {salon.images.length === 0 ? <Loading/>: <Box safeArea p="2" py="8" w="100%" maxW="290">
-                <HStack justifyContent={"space-between"} mb={2}>
-                    <Heading  size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>
-                    <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating} imageSize={20} readonly />
-                </HStack>
+        <View>
+            {
+                salon.images.length === 0 ? <View h="100%"> <Loading/> </View>: <Center w="100%">
+                    <Box safeArea p="2" py="8" w="100%" maxW="290">
+                        <HStack justifyContent={"space-between"} mb={2}>
+                            <Heading  size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>
+                            <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating} imageSize={20} readonly />
+                        </HStack>
 
-                <SliderBox alignSelf={"center"} ImageComponentStyle={{borderRadius: 15, width: '75%'}} w="90%"
-                           images={salon?.images} autoplay circleLoop sliderBoxHeight={120}/>
-                <Modal isOpen={showSelectServiceModal} onClose={onCloseServiceModal} size={"lg"}>
-                    <Modal.Content flexGrow={1}>
-                        <Modal.CloseButton/>
-                        <Modal.Header>Choose service</Modal.Header>
-                        <Modal.Body >
-                            <FormControl maxW="300" isInvalid={!formValidation}>
-                                <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)} value={selectedService}>
-                                    <ScrollView horizontal={true}>
-                                        <SectionList sections={allSalonServices} keyExtractor={(item) => item.name}
-                                                     renderItem={ renderItemServiceList } renderSectionHeader={ renderHeaderServiceList } />
-                                    </ScrollView>
-                                </Radio.Group>
-                                <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
-                            </FormControl>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button colorScheme={"success"} onPress={handleValidateOption}>Next</Button>
-                        </Modal.Footer>
-                    </Modal.Content>
-                </Modal>
-                <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
+                        <SliderBox alignSelf={"center"} ImageComponentStyle={{borderRadius: 15, width: '75%'}} w="90%"
+                                   images={salon?.images} autoplay circleLoop sliderBoxHeight={120}/>
+                        <Modal isOpen={showSelectServiceModal} onClose={onCloseServiceModal} size={"lg"}>
+                            <Modal.Content flexGrow={1}>
+                                <Modal.CloseButton/>
+                                <Modal.Header>Choose service</Modal.Header>
+                                <Modal.Body >
+                                    <FormControl maxW="300" isInvalid={!formValidation}>
+                                        <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)} value={selectedService}>
+                                            <ScrollView horizontal={true}>
+                                                <SectionList sections={allSalonServices} keyExtractor={(item) => item.name}
+                                                             renderItem={ renderItemServiceList } renderSectionHeader={ renderHeaderServiceList } />
+                                            </ScrollView>
+                                        </Radio.Group>
+                                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
+                                    </FormControl>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button colorScheme={"success"} onPress={handleValidateOption}>Next</Button>
+                                </Modal.Footer>
+                            </Modal.Content>
+                        </Modal>
+                        <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
 
-                <Icon size="6" as={AntDesign} name="mobile1" color="black"/>
-                <Link
-                    _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
-                    _dark={{_text: {color: "primary.500",},}}
-                    onPress={doCall}>Phone number: {salon?.phoneNumber}
-                </Link>
+                        <Icon size="6" as={AntDesign} name="mobile1" color="black"/>
+                        <Link
+                            _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
+                            _dark={{_text: {color: "primary.500",},}}
+                            onPress={doCall}>Phone number: {salon?.phoneNumber}
+                        </Link>
 
-                <CalendarPicker salonId={id} selectedService={selectedService}
-                                setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/> {"\n"}
+                        <CalendarPicker salonId={id} selectedService={selectedService}
+                                        setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/> {"\n"}
 
-                <Heading italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
+                        <Heading italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
 
-                <FlatList data={reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
-            </Box>}
+                        <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
+                    </Box>
 
-        </Center>
+                </Center>
+            }
+        </View>
     )
 
 }

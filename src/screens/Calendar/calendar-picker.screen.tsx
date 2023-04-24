@@ -23,7 +23,8 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         name: "",
         phoneNumber: "",
         rating: 0,
-        startTime: ""
+        startTime: "",
+        reviews: []
     })
     const [selectedAppointmentTime, setSelectedAppointmentTime] = useState("")
     const [selectedAppointmentDate, setSelectedAppointmentDate] = useState("")
@@ -34,7 +35,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
             const docRef = doc(firestore, "salons", salonId).withConverter(salonConverter);
             const salonDoc = await getDoc(docRef)
             if (salonDoc.exists()) {
-                setSalon({...salonDoc.data(), images: [], id: salonDoc.id})
+                setSalon({...salonDoc.data(), images: [], id: salonDoc.id, reviews: []})
             }
         } catch (e) {
             console.log("error " + e)

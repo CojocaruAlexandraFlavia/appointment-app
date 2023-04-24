@@ -28,7 +28,7 @@ export const ConfirmAppointment = () => {
             const docRef = doc(firestore, "salons", idSalon).withConverter(salonConverter);
             const salonDoc = await getDoc(docRef)
             if (salonDoc.exists()) {
-                setSalon({...salonDoc.data(), images: [], id: salonDoc.id})
+                setSalon({...salonDoc.data(), images: [], id: salonDoc.id, reviews: []})
             }
         } catch (e) {
             console.log("error " + e)
