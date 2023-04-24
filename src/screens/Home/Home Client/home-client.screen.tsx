@@ -49,4 +49,4 @@ const HomeClient = ({data, navigation}: Props) => {
     )
 }
 
-export default HomeClient
+export default HomeClient;

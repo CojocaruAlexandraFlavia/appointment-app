@@ -38,7 +38,7 @@ import {userConverter} from "../Profile/user.class";
 import {ReviewClass} from "./review.class";
 
 
-export const SalonScreen: React.FC = ({navigation}: any): ReactElement => {
+export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const [salon, setSalon] = useState<Salon>({
         endTime: "",

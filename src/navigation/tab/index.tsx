@@ -1,9 +1,7 @@
 import React from 'react';
-
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-
 import Icon from 'react-native-vector-icons/Ionicons';
-import Profile from '../../screens/Profile/See Profile/profile.screen';
+
 import {HomeStackScreen} from "./home-stack-screen";
 import {NotificationStackScreen} from "./notification-stack-screen";
 import {ProfileStackScreen} from "./profile-stack-screen";
@@ -35,7 +33,7 @@ const MainTab = () => (
                 }}
             />
             <Tab.Screen
-                name="ProfileTab"
+                name="ProfileStack"
                 component={ProfileStackScreen}
                 options={{
                     tabBarLabel: 'Profile',
@@ -47,7 +45,7 @@ const MainTab = () => (
             />
             {/*<Tab.Screen*/}
             {/*    name="ExploreScreen"*/}
-            {/*    component={ExploreScreen}*/}
+            {/*    component={HomeStackScreen}*/}
             {/*    options={{*/}
             {/*        tabBarLabel: 'Explore',*/}
             {/*        tabBarColor: '#d02860',*/}

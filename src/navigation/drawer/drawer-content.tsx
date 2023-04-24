@@ -3,10 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme, Avatar, Title, Caption, Drawer} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeClient from '../../screens/Home/Home Client/home-client.screen';
-import Profile from '../../screens/Profile/See Profile/profile.screen';
-import Appointments from '../../screens/Appointments/See appointments/appointments.screen';
-import Reviews from '../../screens/Reviews/reviews.screen';
+
+import HomeClient from '../../screens/Home/Home Client';
+import Profile from '../../screens/Profile/See Profile';
+import Appointments from '../../screens/Appointments/See appointments';
+import Reviews from '../../screens/Reviews';
+import Notifications from '../../screens/Notifications';
 
 export const DrawerContent = (props:any) => {
 
@@ -18,6 +20,7 @@ export const DrawerContent = (props:any) => {
         <View style={{flex:1}}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
+
                     <View style={styles.userInfoSection}>
                         <View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image
@@ -35,6 +38,7 @@ export const DrawerContent = (props:any) => {
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>
+
                         <DrawerItem
                             icon={({color, size}:any) => (
                                 <Icon name="home-outline" color={color} size={size}/> )}
@@ -68,6 +72,7 @@ export const DrawerContent = (props:any) => {
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
+
             <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem
                     icon={({color, size}:any) => (
