@@ -25,6 +25,7 @@ import {auth, firestore} from "../../utils/firebase";
 import {LoginData} from "../../utils/types";
 import {collection, getDocs, query, where} from "firebase/firestore";
 import {useUserDataContext} from "../../store/UserData.context";
+import {userConverter} from "../Profile/user.class";
 
 const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNavigationProps): ReactElement => {
 
@@ -66,11 +67,12 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                 )
 
                 const collectionRef = collection(firestore, "users");
-                const firestoreUserQuery = query(collectionRef, where("email", "==", credentials.email));
-                const firestoreUser = await getDocs(firestoreUserQuery)
-                const firestoreUserData = firestoreUser.docs[0].data()
+                const firestoreUserQuery = query(collectionRef, where("email", "==", credentials.email)).withConverter(userConverter);
+                const firestoreUserSnapshot = await getDocs(firestoreUserQuery)
+                const userDocumentSnapshot = firestoreUserSnapshot.docs[0]
+                const firestoreUser = {...userDocumentSnapshot.data(), id: userDocumentSnapshot.id}
 
-                setUser(firestoreUserData)
+                setUser(firestoreUser)
 
                 setFirebaseLoginError("")
                 navigation.navigate('HomeClient')

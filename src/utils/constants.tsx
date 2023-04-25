@@ -1,4 +1,4 @@
-import {Appointment, Salon, ServiceList} from "./types";
+import {ServiceList} from "./types";
 
 export const allServices: ServiceList[] = [
     {
@@ -108,58 +108,5 @@ export const allServices: ServiceList[] = [
                 duration: 2
             }
         ]
-    }
-]
-
-export const appointments: Appointment[] = [
-    {
-        id: 1,
-        date: '24-04-2023',
-        time: '15:00',
-        clientId: 1,
-        serviceName: "Eyelash extension",
-        salonId: "1"
-    },
-    {
-        id: 2,
-        date: '24-03-2023',
-        time: '13:00',
-        clientId: 1,
-        serviceName: "Gel manicure",
-        salonId: "2"
-    },
-    {
-        id: 3,
-        date: '24-04-2023',
-        time: '9:00',
-        clientId: 1,
-        serviceName: "Eyelash extension",
-        salonId: "1"
-    },
-
-]
-
-export const salons: Salon[] = [
-    {
-        id: "1",
-        name: "Salon1",
-        phoneNumber: "089878987",
-        rating: 4.5,
-        location: "Str. 1, Nr.1",
-        images: ["https://cdn1.treatwell.net/images/view/v2.i5059481.w720.h480.x57F4036F/",
-            "https://www.rd.com/wp-content/uploads/2020/06/GettyImages-1139132195.jpg"],
-        startTime: "8:00",
-        endTime: "20:00"
-    },
-    {
-        id: "2",
-        name: "Salon2",
-        phoneNumber: "089878987",
-        rating: 3.5,
-        location: "Str. 2, Nr.2",
-        images: ["https://hairmatters.ca/wp-content/uploads/2023/01/fullscreen_default.webp",
-            "https://www.annora.ro/wp-content/uploads/2016/05/corpuri-de-iluminat-salon-cosmetica.png"],
-        startTime: "9:00",
-        endTime: "21:00"
     }
 ]

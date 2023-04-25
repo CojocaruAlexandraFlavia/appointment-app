@@ -27,7 +27,7 @@ import { Rating } from "react-native-ratings";
 import CalendarPicker from "../Calendar/calendar-picker.screen";
 import { Linking, ListRenderItemInfo, SectionListData, SectionListRenderItemInfo } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { salons, allServices } from "../../utils/constants";
+import { allServices } from "../../utils/constants";
 import { SalonScreenRouteProp } from "../../navigation/navigator.types";
 import {doc, getDoc} from "firebase/firestore";
 import {firestore, storage} from "../../utils/firebase";
@@ -72,7 +72,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             listData.push(data)
         }
         setAllSalonServices(listData)
-    }, [])
+    }, [allServices])
 
     const retrieveSalonImages = async (salonId: string) => {
         let salonImages: string[] = []
@@ -161,7 +161,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     return(
         <View>
             {
-                salon.images.length === 0 ? <View h="100%"> <Loading/> </View>: <Center w="100%">
+                salon.images.length === 0? <View h="100%"><Loading/></View>: <Center w="100%">
                     <Box safeArea p="2" py="8" w="100%" maxW="290">
                         <HStack justifyContent={"space-between"} mb={2}>
                             <Heading  size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>

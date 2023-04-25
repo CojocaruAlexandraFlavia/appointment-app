@@ -14,33 +14,31 @@ export const Reviews: React.FC = ({navigation}: any): ReactElement => {
 
     const [reviews] = useState<Review[]>([
         {
-            id: 1,
+            id: "1",
             stars: 4,
             message: "superb",
             client: {
-                id: 2,
+                id: "2",
                 email: "email@email.com",
                 firstName: "John",
                 lastName: "Smith",
                 phoneNumber: "+343654765",
                 role: "CLIENT",
-                password: "pass",
                 profilePicture: "img1",
                 city: "Bucharest"
             }
         },
         {
-            id: 2,
+            id: "2",
             stars: 5,
             message: "professional team",
             client: {
-                id: 1,
+                id: "1",
                 email: "email@email.com",
                 firstName: "Maria",
                 lastName: "K",
                 phoneNumber: "+343654765",
                 role: "CLIENT",
-                password: "pass",
                 profilePicture: "img2",
                 city: "Brasov"
             }

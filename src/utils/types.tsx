@@ -47,8 +47,8 @@ export type Review = {
 }
 
 export type Appointment = {
-    id: number | null,
-    clientId: number,
+    id: string,
+    clientId: string,
     salonId: string,
     date: string,
     time: string,

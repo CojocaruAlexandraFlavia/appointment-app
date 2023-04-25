@@ -17,10 +17,7 @@ const HomeClient = ({data, navigation}: Props) => {
     const [allSalons, setAllSalons] = useState<Salon[]>(data)
 
     useEffect(() => {
-        console.log("use effect")
-        if(data.length > 0) {
-            setAllSalons(data)
-        }
+        setAllSalons(data)
     }, [data])
 
 
@@ -36,13 +33,14 @@ const HomeClient = ({data, navigation}: Props) => {
         </Box>
     </Pressable>, [])
 
+
     return (
         <Center w="100%">
             <Box safeArea p="2" py="8" w="100%" maxW="290">
                 <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
                 {
-                    allSalons.length > 0?  <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}>
-                    </FlatList>: <Loading/>
+                    allSalons.length > 0? <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}>
+                    </FlatList>: null
                 }
             </Box>
         </Center>

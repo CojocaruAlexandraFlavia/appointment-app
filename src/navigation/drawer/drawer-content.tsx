@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useTheme, Avatar, Title, Caption, Drawer} from 'react-native-paper';
+import { Avatar, Title, Caption, Drawer} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -9,18 +9,21 @@ import Profile from '../../screens/Profile/See Profile';
 import Appointments from '../../screens/Appointments/See appointments';
 import Reviews from '../../screens/Reviews';
 import Notifications from '../../screens/Notifications';
+import {useUserDataContext} from "../../store/UserData.context";
 
 export const DrawerContent = (props:any) => {
 
-    const paperTheme = useTheme();
+    const { setUser } = useUserDataContext()
 
-    //const { signOut } = React.useContext(AuthContext);
+    const signOut = () => {
+        setUser({})
+        props.navigation.navigate('Login')
+    }
 
     return(
         <View style={{flex:1}}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
-
                     <View style={styles.userInfoSection}>
                         <View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image
@@ -77,8 +80,8 @@ export const DrawerContent = (props:any) => {
                 <DrawerItem
                     icon={({color, size}:any) => (
                         <Icon name="exit-to-app" color={color} size={size}/> )}
-                    label="Logut"
-                    onPress={() => {props.navigation.navigate('Login')}}
+                    label="Logout"
+                    onPress={signOut}
                     // onPress={() => {signOut()}}
                 />
             </Drawer.Section>

@@ -1,14 +1,16 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {ListRenderItemInfo, View} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {CalendarProps, Salon, ServiceWithTime} from "../../utils/types";
-import {Button, FlatList, FormControl, Modal, Radio, ScrollView, WarningOutlineIcon} from "native-base";
+import {Appointment, CalendarProps, Salon, ServiceWithTime} from "../../utils/types";
+import {Alert, Button,
+    CloseIcon, FlatList, FormControl, HStack, IconButton, Modal, Radio, ScrollView, VStack, WarningOutlineIcon, Text} from "native-base";
 import {format} from 'date-fns'
-import {appointments, allServices, salons} from "../../utils/constants";
+import {allServices} from "../../utils/constants";
 import moment from "moment";
-import {doc, getDoc} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, query, where} from "firebase/firestore";
 import {firestore} from "../../utils/firebase";
 import {salonConverter} from "../Salon/salon.class";
+import {appointmentConverter} from "../Appointments/appointment.class";
 
 const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show, navigation, setShow}: CalendarProps) => {
 
@@ -29,6 +31,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
     const [selectedAppointmentTime, setSelectedAppointmentTime] = useState("")
     const [selectedAppointmentDate, setSelectedAppointmentDate] = useState("")
     const [selectTimeValid, setSelectTimeValid] = useState(false)
+    const [error, setError] = useState(null)
 
     const retrieveSalon = useCallback(async () => {
         try {
@@ -37,8 +40,9 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
             if (salonDoc.exists()) {
                 setSalon({...salonDoc.data(), images: [], id: salonDoc.id, reviews: []})
             }
-        } catch (e) {
+        } catch (e: any) {
             console.log("error " + e)
+            setError(e)
         }
     }, [])
 
@@ -46,7 +50,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         setDatePickerVisibility(show)
 
         //get salon by id
-        retrieveSalon().then(() => console.log("retrieved salon: " + salon))
+        retrieveSalon()
 
     }, [salonId, show])
 
@@ -75,7 +79,27 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         return selectedServiceWithDuration
     }
 
-    const handleConfirm = (date: Date) => {
+    const retrieveAppointmentsForSelectedServiceAndDate = async (selectedDate: string) => {
+        try {
+            const collectionRef = collection(firestore, "appointments");
+            const compoundQuery = query(collectionRef,
+                where("salonId", "==", salonId),
+                where("date", "==", selectedDate),
+                where("serviceName", "==", selectedService)
+            ).withConverter(appointmentConverter)
+            const result = await getDocs(compoundQuery)
+            let appointments: Appointment[] = []
+            result.forEach(documentSnapshot => {
+                appointments.push({...documentSnapshot.data(), id: documentSnapshot.id})
+            })
+            return appointments
+        } catch (e: any) {
+            console.log("Error at retrieving appointments: " + e)
+            setError(e)
+        }
+    }
+
+    const handleConfirm = async (date: Date) => {
         const formattedSelectedDate = format(date, "dd-MM-yyyy HH:mm")
         const selectedDay = formattedSelectedDate.split(" ")[0]
         setSelectedAppointmentDate(selectedDay)
@@ -98,35 +122,35 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
             moment(dayHour).isSameOrBefore(salonEndTime))
 
         // searching for salon appointments for the selected day and service
-        const selectedDaySalonAppointmentsForSelectedService = appointments.filter(item =>
-            item.date === selectedDay &&
-            item.salonId === salon.id &&
-            item.serviceName === selectedService);
-        const appointmentsHours = []
-        for (const app of selectedDaySalonAppointmentsForSelectedService) {
-            const appointmentStartTime = moment(app.time, "HH:mm")
-            const appointmentEndTime = moment(app.time, "HH:mm").add(selectedServiceWithDuration.duration, 'h')
-            const currentAppointmentInterval = salonWorkingHours.filter(item => moment(item).isSameOrAfter(appointmentStartTime) &&
-                moment(item).isSameOrBefore(appointmentEndTime))
-            appointmentsHours.push(currentAppointmentInterval)
-        }
-        appointmentsHours.sort()
+        const selectedDaySalonAppointmentsForSelectedService = await retrieveAppointmentsForSelectedServiceAndDate(selectedDay)
 
-        // build available hours array
-        const availableHours = []
-        for(const workingHour of salonWorkingHours) {
-            const workingHourWithServiceTime = moment(workingHour).add(selectedServiceWithDuration.duration, 'h')
-            const insideAppointmentTimeslot = appointmentsHours.filter(appHour =>
-                filterForAvailableHours(appHour, workingHour, selectedServiceWithDuration))
-            if (insideAppointmentTimeslot.length === 0 && workingHourWithServiceTime.isSameOrBefore(salonEndTime)) {
-                availableHours.push(workingHour)
+        if (selectedDaySalonAppointmentsForSelectedService !== undefined) {
+            const appointmentsHours = []
+            for (const app of selectedDaySalonAppointmentsForSelectedService) {
+                const appointmentStartTime = moment(app.time, "HH:mm")
+                const appointmentEndTime = moment(app.time, "HH:mm").add(selectedServiceWithDuration.duration, 'h')
+                const currentAppointmentInterval = salonWorkingHours.filter(item => moment(item).isSameOrAfter(appointmentStartTime) &&
+                    moment(item).isSameOrBefore(appointmentEndTime))
+                appointmentsHours.push(currentAppointmentInterval)
             }
-        }
+            appointmentsHours.sort()
 
-        setAvailableTimeSlots(availableHours)
-        setShow(false)
-        setDatePickerVisibility(false)
-        setHourSelectionVisibility(true)
+            // build available hours array
+            const availableHours = []
+            for (const workingHour of salonWorkingHours) {
+                const workingHourWithServiceTime = moment(workingHour).add(selectedServiceWithDuration.duration, 'h')
+                const insideAppointmentTimeslot = appointmentsHours.filter(appHour =>
+                    filterForAvailableHours(appHour, workingHour, selectedServiceWithDuration))
+                if (insideAppointmentTimeslot.length === 0 && workingHourWithServiceTime.isSameOrBefore(salonEndTime)) {
+                    availableHours.push(workingHour)
+                }
+            }
+
+            setAvailableTimeSlots(availableHours)
+            setShow(false)
+            setDatePickerVisibility(false)
+            setHourSelectionVisibility(true)
+        }
     };
 
     const confirmSelectedTime = () => {
@@ -163,6 +187,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         setSelectTimeValid(false)
     }
 
+    // @ts-ignore
     return (
         <View>
             <DateTimePickerModal
@@ -176,14 +201,29 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
                     <Modal.CloseButton/>
                     <Modal.Header>Choose appointment hour</Modal.Header>
                     <Modal.Body>
-                        <FormControl isInvalid={selectTimeValid}>
-                            <Radio.Group name={"Select time"} onChange={value => selectTimeRadio(value)} value={selectedAppointmentTime}>
-                                <ScrollView horizontal={true}>
-                                    <FlatList data={availableTimeSlots} renderItem={renderItemTimeslot} keyExtractor={item => item.getTime().toString()} />
-                                </ScrollView>
-                            </Radio.Group>
-                            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
-                        </FormControl>
+                        {
+                            error? <Alert w="100%" status="error" variant="left-accent">
+                                <VStack space={2} flexShrink={1} w="100%">
+                                    <HStack flexShrink={1} space={2} justifyContent="space-between">
+                                        <HStack space={2} flexShrink={1}>
+                                            <Alert.Icon mt="1" />
+                                            <Text fontSize="md" color="coolGray.800">
+                                                {error}
+                                            </Text>
+                                        </HStack>
+                                        <IconButton variant="unstyled" _focus={{ borderWidth: 0 }} icon={<CloseIcon size="3" />} _icon={{ color: "coolGray.600"}} />
+                                    </HStack>
+                                </VStack>
+                            </Alert>:  <FormControl isInvalid={selectTimeValid}>
+                                <Radio.Group name={"Select time"} onChange={value => selectTimeRadio(value)} value={selectedAppointmentTime}>
+                                    <ScrollView horizontal={true}>
+                                        <FlatList data={availableTimeSlots} renderItem={renderItemTimeslot} keyExtractor={item => item.getTime().toString()} />
+                                    </ScrollView>
+                                </Radio.Group>
+                                <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
+                            </FormControl>
+                        }
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button colorScheme="green" onPress={confirmSelectedTime}>Confirm</Button>

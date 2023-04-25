@@ -2,7 +2,6 @@ import { Box, Button, Center, Heading, HStack, Text, View } from "native-base";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { ConfirmAppointmentRouteProp } from "../../../navigation/navigator.types";
-import { salons } from "../../../utils/constants";
 import { useUserDataContext } from "../../../store/UserData.context";
 import { Loading } from "../../../components/activity-indicator.component";
 import confirmAppointmentStyle from "./confirm-appointment.style";
@@ -24,6 +23,7 @@ export const ConfirmAppointment = () => {
     const [firebaseError, setFirebaseError] = useState("")
 
     const retrieveSalon = useCallback(async () => {
+        console.log(idSalon)
         try {
             const docRef = doc(firestore, "salons", idSalon).withConverter(salonConverter);
             const salonDoc = await getDoc(docRef)
@@ -38,20 +38,18 @@ export const ConfirmAppointment = () => {
 
     useEffect(() => {
         retrieveSalon().then(() => console.log("retrieve salon id: " + salon?.id)).catch(e => console.log(e))
-    }, [retrieveSalon])
+    }, [])
 
     const confirmAppointment = async () => {
         try {
             const collectionRef = collection(firestore, "appointments");
-            const savedEntry = await addDoc(collectionRef, {
+            await addDoc(collectionRef, {
                 salonId: salon?.id,
                 date: date,
                 time: time,
                 clientId: user.id,
                 serviceName: salon?.name
             });
-            console.log("Saved: ")
-            console.log(savedEntry)
             setShowConfirmationModal(true)
             setTimeout(() => {
                 setShowConfirmationModal(false)
