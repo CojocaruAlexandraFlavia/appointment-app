@@ -75,7 +75,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                 setUser(firestoreUser)
 
                 setFirebaseLoginError("")
-                navigation.navigate('HomeClient')
+                navigation.navigate('Drawer')
             } catch (e) {
                 console.log(e)
                 const errorCode = (e as { code: string }).code

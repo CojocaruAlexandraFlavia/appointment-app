@@ -5,8 +5,6 @@ import {ReviewClass} from "./review.class";
 class SalonClass {
     constructor(readonly id: string, readonly name: string, readonly location: string, readonly phoneNumber: string, readonly rating: number,
                 readonly startTime: string, readonly endTime: string, readonly image: string, readonly reviews: ReviewClass[]) {}
-
-
 }
 
 export const salonConverter: FirestoreDataConverter<SalonClass> = {

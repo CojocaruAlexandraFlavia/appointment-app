@@ -20,6 +20,8 @@ export const DrawerContent = (props:any) => {
         props.navigation.navigate('Login')
     }
 
+    const { user } = useUserDataContext()
+
     return(
         <View style={{flex:1}}>
             <DrawerContentScrollView {...props}>
@@ -27,10 +29,8 @@ export const DrawerContent = (props:any) => {
                     <View style={styles.userInfoSection}>
                         <View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image
-                                source={{
-                                    uri:
-                                        'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg',
-                                }}
+                                source={ !user.profilePicture? { uri: 'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg'}:
+                                    { uri: user.profilePicture} }
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>

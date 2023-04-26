@@ -101,11 +101,9 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             const salonDoc = await getDoc(docRef)
             if (salonDoc.exists()) {
                 retrieveSalonImages(id).then(async result => {
-                    if (salonDoc.exists()) {
-                        const salon = salonDoc.data()
-                        const updatedReviews = await updateReviewsWithUserDetails(salon.reviews)
-                        setSalon({...salon, images: result, id: salonDoc.id, reviews: updatedReviews})
-                    }
+                    const salon = salonDoc.data()
+                    const updatedReviews = await updateReviewsWithUserDetails(salon.reviews)
+                    setSalon({...salon, images: result, id: salonDoc.id, reviews: updatedReviews})
                 })
             }
         } catch (e: any) {

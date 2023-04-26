@@ -8,15 +8,15 @@ interface UserData {
 
 const UserDataContext = createContext<UserData>({
     user: {
-        id: 0,
+        id: "0",
         email: "",
         firstName: "",
         lastName: "",
         phoneNumber: "",
         role: "",
-        password: "" ,
         profilePicture: "",
-        city: ""
+        city: "",
+        username: ""
     },
     setUser: () => {},
 });
@@ -27,15 +27,15 @@ export const useUserDataContext = () => {
 
 export const UserDataProvider = ({children,}: {children: React.ReactNode;}) => {
     const [user, setUser] = useState({
-        id: 0,
+        id: "0",
         email: "",
         firstName: "",
         lastName: "",
         phoneNumber: "",
         role: "",
-        password: "" ,
         profilePicture: "",
-        city: ""
+        city: "",
+        username: ""
     });
   
     return (

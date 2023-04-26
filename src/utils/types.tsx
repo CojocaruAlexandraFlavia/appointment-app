@@ -35,8 +35,9 @@ export type User = {
     lastName: string,
     phoneNumber: string
     role: string,
-    profilePicture: string
-    city: string
+    profilePicture: string,
+    city: string,
+    username: string
 }
 
 export type Review = {

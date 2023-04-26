@@ -11,6 +11,7 @@ import {collection, doc, getDoc, getDocs, query, where} from "firebase/firestore
 import {firestore} from "../../utils/firebase";
 import {salonConverter} from "../Salon/salon.class";
 import {appointmentConverter} from "../Appointments/appointment.class";
+import {AlertComponent} from "../../components/alert.component";
 
 const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show, navigation, setShow}: CalendarProps) => {
 
@@ -202,19 +203,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
                     <Modal.Header>Choose appointment hour</Modal.Header>
                     <Modal.Body>
                         {
-                            error? <Alert w="100%" status="error" variant="left-accent">
-                                <VStack space={2} flexShrink={1} w="100%">
-                                    <HStack flexShrink={1} space={2} justifyContent="space-between">
-                                        <HStack space={2} flexShrink={1}>
-                                            <Alert.Icon mt="1" />
-                                            <Text fontSize="md" color="coolGray.800">
-                                                {error}
-                                            </Text>
-                                        </HStack>
-                                        <IconButton variant="unstyled" _focus={{ borderWidth: 0 }} icon={<CloseIcon size="3" />} _icon={{ color: "coolGray.600"}} />
-                                    </HStack>
-                                </VStack>
-                            </Alert>:  <FormControl isInvalid={selectTimeValid}>
+                            error? <AlertComponent status="error" text={error}/>:  <FormControl isInvalid={selectTimeValid}>
                                 <Radio.Group name={"Select time"} onChange={value => selectTimeRadio(value)} value={selectedAppointmentTime}>
                                     <ScrollView horizontal={true}>
                                         <FlatList data={availableTimeSlots} renderItem={renderItemTimeslot} keyExtractor={item => item.getTime().toString()} />

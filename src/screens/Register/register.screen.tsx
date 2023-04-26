@@ -23,7 +23,9 @@ import IconFacebook from "../../components/IconFacebook";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth, firestore} from "../../utils/firebase";
 import {RegisterData} from "../../utils/types";
-import {addDoc, collection } from "firebase/firestore";
+import {addDoc, collection, getDocs, orderBy, query, where} from "firebase/firestore";
+import {userConverter} from "../Profile/user.class";
+import {AlertComponent} from "../../components/alert.component";
 
 const Register = ({navigation}: any): ReactElement => {
 
@@ -46,6 +48,7 @@ const Register = ({navigation}: any): ReactElement => {
         city: "",
     })
     const [registerError, setRegisterError] = useState("")
+    const [added, setAdded] = useState(false)
 
     const findFormErrors = () : RegisterData => {
         const errors : RegisterData = {
@@ -86,14 +89,33 @@ const Register = ({navigation}: any): ReactElement => {
 
                 const collectionRef = collection(firestore, "users");
 
+                let username = `${credentials.firstName}.${credentials.lastName}`.toLowerCase()
+                const queryUsernameStartingWith = query(collectionRef,
+                    where("username", ">=", username),
+                    where('username', '<=', username + '\uf8ff'),
+                    orderBy("username", "desc")).withConverter(userConverter)
+                const existingUserWithUsername = await getDocs(queryUsernameStartingWith)
+                if (!existingUserWithUsername.empty) {
+                    const lastUserContainingUsername = existingUserWithUsername.docs[0].data()
+                    const lastUsernameNumberArray = lastUserContainingUsername.username.match(/\d+/)
+                    if (lastUsernameNumberArray) {
+                        const lastUsernameNumber = lastUsernameNumberArray.join('')
+                        const newUsernameNumber = Number(lastUsernameNumber) + 1
+                        username = `${username}${newUsernameNumber.toString()}`
+                    } else if (lastUserContainingUsername.username === username) {
+                        username = `${username}1`
+                    }
+                }
+
                 await addDoc(collectionRef, {
                     email: credentials.email,
                     firstName: credentials.firstName,
                     lastName: credentials.lastName,
                     phoneNumber: credentials.phoneNumber,
-                    city: credentials.city
+                    city: credentials.city,
+                    username: username
                 });
-
+                setAdded(true)
                 setRegisterError("")
             } catch (e) {
                 console.log(e)
@@ -200,7 +222,8 @@ const Register = ({navigation}: any): ReactElement => {
                         </HStack>
                     </Checkbox>
                     <Button mt="2" colorScheme="indigo" onPress={signUp}>Sign up</Button>
-                    {registerError && <Text alignSelf='center' mt={3}  fontSize='xl' color='red.500'>{registerError}</Text>}
+                    {registerError && <AlertComponent status={"error"} text={registerError} onClose={() => setRegisterError("")}/>}
+                    {added && <AlertComponent status={"success"} text={"User created successfully!"} onClose={() => setAdded(false)}/>}
                 </VStack>
             </Box>
 
