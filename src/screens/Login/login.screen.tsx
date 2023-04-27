@@ -75,6 +75,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                 setUser(firestoreUser)
 
                 setFirebaseLoginError("")
+                setCredentials({ email: "", password: ""})
                 navigation.navigate('Drawer')
             } catch (e) {
                 console.log(e)

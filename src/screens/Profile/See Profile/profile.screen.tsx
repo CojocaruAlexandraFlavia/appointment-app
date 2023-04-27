@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, SafeAreaView, StyleSheet, Alert, Share, ListRenderItemInfo} from 'react-native';
+import {View, SafeAreaView, Alert, Share, ListRenderItemInfo} from 'react-native';
 import {Title, Caption, Text, TouchableRipple, Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useUserDataContext} from "../../../store/UserData.context";
@@ -9,8 +9,8 @@ import {firestore} from "../../../utils/firebase";
 import {appointmentConverter} from "../../Appointments/appointment.class";
 import {salonConverter} from "../../Salon/salon.class";
 import {userConverter} from "../user.class";
-import {Box, FlatList, Heading, HStack, Pressable, VStack} from 'native-base';
-import {Rating} from "react-native-ratings";
+import {Box, FlatList, Heading, HStack, Pressable} from 'native-base';
+import profileStyles from "./profile.styles";
 
 type RecordType = Record<string, number>
 
@@ -32,13 +32,11 @@ const Profile = ({navigation}: any) => {
         appointmentsSnapshot.forEach(documentSnapshot => {
             appointmentList.push({...documentSnapshot.data(), id: documentSnapshot.id})
         })
-        setAppointments(appointmentList)
+        return appointmentList
+    }
 
-        const salonIds = appointmentList.map(app => app.salonId)
-
-        console.log('SalonIds: ', salonIds)
-
-        let occurrencesMapping: Record<string, number> = {}
+    const buildFavoriteSalonOccurrencesMapping = (salonIds: string[]) => {
+        let occurrencesMapping: RecordType = {}
         salonIds.forEach(salonId => {
             if (occurrencesMapping.hasOwnProperty(salonId)) {
                 occurrencesMapping[salonId] = occurrencesMapping[salonId] + 1
@@ -47,16 +45,19 @@ const Profile = ({navigation}: any) => {
             }
         })
 
-        console.log('occurrences: ', occurrencesMapping)
-
         const maxOccurrence = Math.max(...Object.values(occurrencesMapping))
         const salonIdsWithMaxOccurrence = Object.keys(occurrencesMapping)
             .filter(salonId => occurrencesMapping[salonId] === maxOccurrence)
 
         let favoritesOccurrences: RecordType = {}
-        salonIdsWithMaxOccurrence.forEach(salonId => favoritesOccurrences[salonId] = occurrencesMapping[salonId])
-        setFavoritesOccurrencesMapping(favoritesOccurrences)
+        for (const salonId of salonIdsWithMaxOccurrence) {
+            favoritesOccurrences[salonId] = occurrencesMapping[salonId]
+        }
 
+        return favoritesOccurrences
+    }
+
+    const buildFavoriteSalonList = async (favoritesOccurrences: RecordType) => {
         const salonList: Salon[] = []
         const favoriteSalonIds = Object.keys(favoritesOccurrences)
 
@@ -65,10 +66,22 @@ const Profile = ({navigation}: any) => {
             const salonDoc = await getDoc(docRef)
             if (salonDoc.exists()) {
                 const firebaseSalonData = salonDoc.data()
-                console.log(firebaseSalonData)
                 salonList.push({...firebaseSalonData, id: salonDoc.id, images: [firebaseSalonData?.image], reviews: []})
             }
         }
+        return salonList
+    }
+
+    const retrieveUserAppointmentsAndFavoriteSalons = async () => {
+        let appointmentList = await retrieveUserAppointments()
+        setAppointments(appointmentList)
+
+        const salonIds = appointmentList.map(app => app.salonId)
+
+        let favoritesOccurrences = buildFavoriteSalonOccurrencesMapping(salonIds)
+        setFavoritesOccurrencesMapping(favoritesOccurrences)
+
+        const salonList = await buildFavoriteSalonList(favoritesOccurrences)
         setFavoriteSalons(salonList)
     }
 
@@ -89,13 +102,12 @@ const Profile = ({navigation}: any) => {
     }
 
     useEffect(() => {
+        if (favoriteSalons === null) {
+            retrieveUserAppointmentsAndFavoriteSalons()
+        }
         if (nrOfReviews === -1) {
             retrieveUserReviews()
         }
-        if (favoriteSalons === null) {
-            retrieveUserAppointments()
-        }
-
     }, [])
 
     const onShare = async () => {
@@ -132,10 +144,14 @@ const Profile = ({navigation}: any) => {
             <HStack space={"lg"}>
                 <Avatar.Image size={60} source={{uri: item.images[0]}} style={{marginRight: 6}}/>
                 <Heading alignSelf="center" fontSize={20}>{item.name}</Heading>
-                <Heading alignSelf="flex-end" fontSize={15}>Appointments: {favoritesOccurrencesMapping[item.id]}</Heading>
+                {
+                    favoritesOccurrencesMapping[item.id] && <Heading alignSelf="flex-end" fontSize={15}>Appointments: {favoritesOccurrencesMapping[item.id]}</Heading>
+                }
             </HStack>
         </Box>
-    </Pressable>, [])
+    </Pressable>, [favoritesOccurrencesMapping])
+
+    const styles = profileStyles()
 
     return (
         <SafeAreaView style={styles.container}>
@@ -193,7 +209,7 @@ const Profile = ({navigation}: any) => {
                     </View>
                 </TouchableRipple>
                 {
-                    showFavorites? <View style={styles.menuItem}>
+                    Object.keys(favoritesOccurrencesMapping).length > 0 && showFavorites? <View style={styles.menuItem}>
                         <FlatList data={favoriteSalons} renderItem={renderSalonItem} keyExtractor={item => item.id.toString()}/>
                     </View>: null
                 }
@@ -210,54 +226,3 @@ const Profile = ({navigation}: any) => {
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    userInfoSection: {
-        paddingHorizontal: 30,
-        marginBottom: 25,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    caption: {
-        fontSize: 14,
-        lineHeight: 14,
-        fontWeight: '500',
-    },
-    row: {
-        flexDirection: 'row',
-        marginBottom: 10,
-    },
-    infoBoxWrapper: {
-        borderBottomColor: '#dddddd',
-        borderBottomWidth: 1,
-        borderTopColor: '#dddddd',
-        borderTopWidth: 1,
-        flexDirection: 'row',
-        height: 100,
-    },
-    infoBox: {
-        width: '50%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    menuWrapper: {
-        marginTop: 10,
-    },
-    menuItem: {
-        flexDirection: 'row',
-        paddingVertical: 15,
-        paddingHorizontal: 30,
-    },
-    menuItemText: {
-        color: '#777777',
-        marginLeft: 20,
-        fontWeight: '600',
-        fontSize: 16,
-        lineHeight: 26,
-    },
-});

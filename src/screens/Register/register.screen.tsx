@@ -27,38 +27,26 @@ import {addDoc, collection, getDocs, orderBy, query, where} from "firebase/fires
 import {userConverter} from "../Profile/user.class";
 import {AlertComponent} from "../../components/alert.component";
 
+const emptyState: RegisterData = {
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    city: "",
+
+}
+
 const Register = ({navigation}: any): ReactElement => {
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
-    const [credentials, setCredentials] = useState<RegisterData>({
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
-        city: "",
-
-    })
-    const [errors, setErrors] = useState<RegisterData>({
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
-        city: "",
-    })
+    const [credentials, setCredentials] = useState<RegisterData>(emptyState)
+    const [errors, setErrors] = useState<RegisterData>(emptyState)
     const [registerError, setRegisterError] = useState("")
     const [added, setAdded] = useState(false)
 
     const findFormErrors = () : RegisterData => {
-        const errors : RegisterData = {
-            email: "",
-            password: "",
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            city: "",
-        }
+        const errors = emptyState
         if(credentials.email === "") errors.email = "Required field"
         if(credentials.password === "") errors.password = "Required field"
         
@@ -72,6 +60,14 @@ const Register = ({navigation}: any): ReactElement => {
         else if(credentials.city.length < 2) errors.city = "Enter a valid city"
 
         return errors
+    }
+
+    const resetState = () => {
+        setRegisterError("")
+        setCredentials(emptyState)
+        setErrors(emptyState)
+        setShowPassword(false)
+        setAdded(false)
     }
     
     const signUp = async () => {
@@ -116,7 +112,7 @@ const Register = ({navigation}: any): ReactElement => {
                     username: username
                 });
                 setAdded(true)
-                setRegisterError("")
+                setTimeout(() => resetState(), 5000)
             } catch (e) {
                 console.log(e)
                 const errorCode = (e as { code: string }).code
