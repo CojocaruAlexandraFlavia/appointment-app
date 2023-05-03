@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, SafeAreaView, Alert, Share, ListRenderItemInfo} from 'react-native';
+import {View, SafeAreaView, ListRenderItemInfo} from 'react-native';
 import {Title, Caption, Text, TouchableRipple, Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useUserDataContext} from "../../../store/UserData.context";
@@ -110,33 +110,6 @@ const Profile = ({navigation}: any) => {
         }
     }, [])
 
-    const onShare = async () => {
-        try {
-            const result = await Share.share({
-                message:
-                    'Appointment your next visit to a salon easy and quick! I\'ve already made more than 10 appointments on it.',
-            }, {
-                dialogTitle:"Android Title"
-            });
-            if (result.action === Share.sharedAction) {
-                console.log("action=== sharedAction")
-                if (result.activityType) {
-                    // shared with activity type of result.activityType
-                    console.log("result activity type")
-                } else {
-                    // shared
-                    console.log("else ")
-                }
-            } else if (result.action === Share.dismissedAction) {
-                console.log("action === dismissed")
-                // dismissed
-            }
-        } catch (error: any) {
-            console.log(error)
-            Alert.alert(error.message);
-        }
-    };
-
     const renderSalonItem = useCallback(({item}: ListRenderItemInfo<Salon>) => <Pressable
         onPress={() => navigation.navigate('Salon', {id: item.id})}>
         <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]}
@@ -213,13 +186,6 @@ const Profile = ({navigation}: any) => {
                         <FlatList data={favoriteSalons} renderItem={renderSalonItem} keyExtractor={item => item.id.toString()}/>
                     </View>: null
                 }
-                <TouchableRipple onPress={onShare}>
-                    <View style={styles.menuItem}>
-                        <Icon name="share-outline" color="#FF6347" size={25}/>
-                        <Text style={styles.menuItemText}>Tell Your Friends</Text>
-                    </View>
-                </TouchableRipple>
-
             </View>
         </SafeAreaView>
     );

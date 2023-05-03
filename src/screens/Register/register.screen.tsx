@@ -46,7 +46,7 @@ const Register = ({navigation}: any): ReactElement => {
     const [added, setAdded] = useState(false)
 
     const findFormErrors = () : RegisterData => {
-        const errors = emptyState
+        const errors = {...emptyState}
         if(credentials.email === "") errors.email = "Required field"
         if(credentials.password === "") errors.password = "Required field"
         

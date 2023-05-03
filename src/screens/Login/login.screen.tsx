@@ -20,40 +20,54 @@ import {MaterialIcons} from "@expo/vector-icons";
 import IconGoogle from "../../components/IconGoogle";
 import IconFacebook from "../../components/IconFacebook";
 import {LoginScreenNavigationProps} from "../../navigation/navigator.types";
-import {signInWithEmailAndPassword} from "firebase/auth";
-import {auth, firestore} from "../../utils/firebase";
+import {
+    FacebookAuthProvider,
+    getAuth,
+    getRedirectResult,
+    GoogleAuthProvider,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signInWithRedirect
+} from "firebase/auth";
+import app, {auth, firestore} from "../../utils/firebase";
 import {LoginData} from "../../utils/types";
 import {collection, getDocs, query, where} from "firebase/firestore";
 import {useUserDataContext} from "../../store/UserData.context";
 import {userConverter} from "../Profile/user.class";
 
+import {FirebaseError} from "@firebase/util";
+
+const emptyData: LoginData = {
+    email: "",
+    password: ""
+}
+
 const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNavigationProps): ReactElement => {
 
     const [showPassword, setShowPassword] = useState(false)
-    const [credentials, setCredentials] = useState<LoginData>({
-        email: "",
-        password: ""
-    })
-    const [errors, setErrors] = useState<LoginData>({
-        email: "",
-        password: ""
-    })
+    const [credentials, setCredentials] = useState<LoginData>(emptyData)
+    const [errors, setErrors] = useState<LoginData>(emptyData)
     const [firebaseLoginError, setFirebaseLoginError] = useState("")
 
     const {setUser} = useUserDataContext()
 
     const findFormErrors = () : LoginData => {
-        const errors : LoginData = {
-            email: "",
-            password: ""
-        }
+        const errors = {...emptyData}
         if(credentials.email === "") errors.email = "Required field"
         if(credentials.password === "") errors.password = "Required field"
 
         return errors
     }
+
+    const retrieveUserByFieldFromFirestore = async (field: string, value: string) => {
+        const collectionRef = collection(firestore, "users");
+        const firestoreUserQuery = query(collectionRef, where(field, "==", value)).withConverter(userConverter);
+        const firestoreUserSnapshot = await getDocs(firestoreUserQuery)
+        const userDocumentSnapshot = firestoreUserSnapshot.docs[0]
+        return {...userDocumentSnapshot.data(), id: userDocumentSnapshot.id}
+    }
     
-    const signIn = async () => {
+    const signInUsingEmailAndPassword = async () => {
         const formErrors : LoginData = findFormErrors()
         if (Object.values(formErrors).some(item => item !== "")) {
             setFirebaseLoginError("")
@@ -66,13 +80,8 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                     credentials.password
                 )
 
-                const collectionRef = collection(firestore, "users");
-                const firestoreUserQuery = query(collectionRef, where("email", "==", credentials.email)).withConverter(userConverter);
-                const firestoreUserSnapshot = await getDocs(firestoreUserQuery)
-                const userDocumentSnapshot = firestoreUserSnapshot.docs[0]
-                const firestoreUser = {...userDocumentSnapshot.data(), id: userDocumentSnapshot.id}
-
-                setUser(firestoreUser)
+                const user = await retrieveUserByFieldFromFirestore("email", credentials.email)
+                setUser(user)
 
                 setFirebaseLoginError("")
                 setCredentials({ email: "", password: ""})
@@ -84,6 +93,68 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                 errorMessage = errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
                 setFirebaseLoginError(errorMessage)
             }
+        }
+    }
+
+    // not working yet
+    const signInUsingFacebook = async () => {
+        try {
+            const provider = new FacebookAuthProvider();
+            const auth = getAuth();
+            // await signInWithRedirect(auth, provider)
+            const result = await signInWithPopup(auth, provider)
+            console.log("after redirect")
+            //const result = await getRedirectResult(auth);
+            console.log(result)
+            if (result) {
+                // This is the signed-in user
+                const credential = FacebookAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user
+                console.log(user)
+                // let firestoreUser
+                // if (user.email) {
+                //     firestoreUser = await retrieveUserByFieldFromFirestore("email",user.email)
+                // } else if (user.phoneNumber) {
+                //     firestoreUser = await retrieveUserByFieldFromFirestore("phoneNumber", user.phoneNumber)
+                // }
+
+                // setUser(firestoreUser)
+            }
+        } catch (error) {
+            console.log(error)
+            if (error instanceof FirebaseError) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData?.email;
+                const credential = FacebookAuthProvider.credentialFromError(error);
+                setFirebaseLoginError(`Facebook login error: ${errorMessage}, for user ${email}`)
+            } else {
+                setFirebaseLoginError("Facebook login error, please try again")
+            }
+        }
+    }
+
+    // not working yet
+    const signInUsingGoogle = () => {
+        const provider = new GoogleAuthProvider()
+        console.log(auth)
+        try {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    console.log("then")
+                    // This gives you a Google Access Token. You can use it to access the Google API.
+                    const credential = GoogleAuthProvider.credentialFromResult(result);
+                    const token = credential.accessToken;
+                    // The signed-in user info.
+                    const user = result.user;
+                    console.log(user, token)
+                    // IdP data available using getAdditionalUserInfo(result)
+                    // ...
+                })
+        } catch(error) {
+            console.log(error)
+            // ...
         }
     }
 
@@ -131,7 +202,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                             Remember me and keep me logged in
                         </Text>
                     </Checkbox>
-                    <Button mt="2" colorScheme="indigo" onPress={signIn}>Sign in</Button>
+                    <Button mt="2" colorScheme="indigo" onPress={signInUsingEmailAndPassword}>Sign in</Button>
                     {firebaseLoginError && <Text mt={4} alignSelf='center' fontSize='xl' color='red.500'>Error: {firebaseLoginError}</Text>}
                 </VStack>
             </Box>
@@ -145,10 +216,10 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
             </HStack>
 
             <HStack space="4" alignItems="center" justifyContent="center">
-                <Pressable>
+                <Pressable onPress={signInUsingFacebook}>
                     <IconFacebook />
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={signInUsingGoogle}>
                     <IconGoogle />
                 </Pressable>
             </HStack>

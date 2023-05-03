@@ -10,14 +10,16 @@ import Appointments from '../../screens/Appointments/See appointments';
 import Reviews from '../../screens/Reviews';
 import Notifications from '../../screens/Notifications';
 import {useUserDataContext} from "../../store/UserData.context";
+import {getAuth, signOut} from 'firebase/auth';
+import app from "../../utils/firebase";
 
 export const DrawerContent = (props:any) => {
 
     const { setUser } = useUserDataContext()
 
-    const signOut = () => {
+    const logout = () => {
         setUser({})
-        props.navigation.navigate('Login')
+        signOut(getAuth(app)).then(() => props.navigation.navigate('Login'))
     }
 
     const { user } = useUserDataContext()
@@ -81,8 +83,7 @@ export const DrawerContent = (props:any) => {
                     icon={({color, size}:any) => (
                         <Icon name="exit-to-app" color={color} size={size}/> )}
                     label="Logout"
-                    onPress={signOut}
-                    // onPress={() => {signOut()}}
+                    onPress={logout}
                 />
             </Drawer.Section>
         </View>
