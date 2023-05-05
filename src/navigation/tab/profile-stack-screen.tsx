@@ -46,7 +46,7 @@ export const ProfileStackScreen = ({navigation}: any) => {
                                 name="account-edit"
                                 size={25}
                                 backgroundColor={colors.background}
-                                color="#000"
+                                color="black"
                                 onPress={() => navigation.navigate('EditProfile')}
                             />
                         </View>

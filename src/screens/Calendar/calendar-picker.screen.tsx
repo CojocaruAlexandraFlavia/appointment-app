@@ -4,13 +4,13 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {Appointment, CalendarProps, Salon, ServiceWithTime} from "../../utils/types";
 import {Button, FlatList, FormControl, Modal, Radio, ScrollView, WarningOutlineIcon} from "native-base";
 import {format} from 'date-fns'
-import {allServices} from "../../utils/constants";
 import moment from "moment";
 import {collection, doc, getDoc, getDocs, query, where} from "firebase/firestore";
 import {firestore} from "../../utils/firebase";
 import {salonConverter} from "../Salon/salon.class";
 import {appointmentConverter} from "../Appointments/appointment.class";
 import {AlertComponent} from "../../components/alert.component";
+import * as servicesJson from '../../utils/all-services.json'
 
 const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show, navigation, setShow}: CalendarProps) => {
 
@@ -68,7 +68,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
 
     const findSelectedServiceWithTime = () => {
         let selectedServiceWithDuration: ServiceWithTime = {name: "", duration: 0}
-        for (const serviceCategory of allServices) {
+        for (const serviceCategory of servicesJson.allServices) {
             for (const service of serviceCategory.services) {
                 if (service.name === selectedService) {
                     selectedServiceWithDuration = service

@@ -26,7 +26,6 @@ import { Rating } from "react-native-ratings";
 import CalendarPicker from "../Calendar/calendar-picker.screen";
 import {Alert, Linking, SectionListData, SectionListRenderItemInfo, Share} from "react-native";
 import {Entypo, Feather} from "@expo/vector-icons";
-import { allServices } from "../../utils/constants";
 import { SalonScreenRouteProp } from "../../navigation/navigator.types";
 import {doc, getDoc} from "firebase/firestore";
 import {firestore, storage} from "../../utils/firebase";
@@ -39,6 +38,7 @@ import {TouchableRipple} from "react-native-paper";
 import salonStyles from "./salon.styles"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AddReviewModal from "./add-review.modal";
+import * as servicesJson from '../../utils/all-services.json'
 
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
@@ -66,7 +66,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const retrieveAllServices = useCallback(() =>  {
         let listData: ServicesListData[] = []
-        for (const item of allServices) {
+        for (const item of servicesJson.allServices) {
             const data: ServicesListData = {
                 title: item.name,
                 data: item.services
@@ -74,7 +74,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             listData.push(data)
         }
         setAllSalonServices(listData)
-    }, [allServices])
+    }, [])
 
     const retrieveSalonImages = async (salonId: string) => {
         let salonImages: string[] = []

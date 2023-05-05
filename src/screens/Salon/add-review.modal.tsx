@@ -47,14 +47,12 @@ const AddReviewModal = ({salonId, retrieveSalon}: AddReviewProp) => {
             updateDoc(salonRef, {
                 reviews: arrayUnion({...review, client: userRef, id: salonDocument.data().reviews.length + 1})
             }).then( async () => {
-                // setLoading(true)
                 retrieveSalon().then(() => {
                     setLoading(false)
                     closeModal()
                 })
             })
         }
-
     }
 
     return(

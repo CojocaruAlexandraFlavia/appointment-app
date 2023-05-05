@@ -11,7 +11,7 @@ export class UserClass {
 export const userConverter: FirestoreDataConverter<UserClass> = {
     toFirestore(user: WithFieldValue<UserClass>): DocumentData {
         return {
-            id: user.id,
+            // id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
