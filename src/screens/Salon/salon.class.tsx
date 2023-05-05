@@ -2,7 +2,7 @@ import { DocumentData, QueryDocumentSnapshot, SnapshotOptions, WithFieldValue } 
 import { FirestoreDataConverter } from "@firebase/firestore";
 import {ReviewClass} from "./review.class";
 
-class SalonClass {
+export class SalonClass {
     constructor(readonly id: string, readonly name: string, readonly location: string, readonly phoneNumber: string, readonly rating: number,
                 readonly startTime: string, readonly endTime: string, readonly image: string, readonly reviews: ReviewClass[]) {}
 }

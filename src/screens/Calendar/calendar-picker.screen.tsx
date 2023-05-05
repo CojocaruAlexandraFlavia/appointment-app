@@ -2,8 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {ListRenderItemInfo, View} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {Appointment, CalendarProps, Salon, ServiceWithTime} from "../../utils/types";
-import {Alert, Button,
-    CloseIcon, FlatList, FormControl, HStack, IconButton, Modal, Radio, ScrollView, VStack, WarningOutlineIcon, Text} from "native-base";
+import {Button, FlatList, FormControl, Modal, Radio, ScrollView, WarningOutlineIcon} from "native-base";
 import {format} from 'date-fns'
 import {allServices} from "../../utils/constants";
 import moment from "moment";
@@ -203,7 +202,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
                     <Modal.Header>Choose appointment hour</Modal.Header>
                     <Modal.Body>
                         {
-                            error? <AlertComponent status="error" text={error}/>:  <FormControl isInvalid={selectTimeValid}>
+                            error? <AlertComponent status="error" text={error} onClose={() => setError(null)}/>:  <FormControl isInvalid={selectTimeValid}>
                                 <Radio.Group name={"Select time"} onChange={value => selectTimeRadio(value)} value={selectedAppointmentTime}>
                                     <ScrollView horizontal={true}>
                                         <FlatList data={availableTimeSlots} renderItem={renderItemTimeslot} keyExtractor={item => item.getTime().toString()} />

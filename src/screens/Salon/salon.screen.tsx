@@ -3,7 +3,6 @@ import {
     Box,
     Button,
     Center,
-    FlatList,
     FormControl,
     Heading,
     HStack,
@@ -25,7 +24,7 @@ import { SliderBox } from "react-native-image-slider-box";
 import { Review, Salon, ServicesListData, ServiceWithTime } from "../../utils/types";
 import { Rating } from "react-native-ratings";
 import CalendarPicker from "../Calendar/calendar-picker.screen";
-import {Alert, Linking, ListRenderItemInfo, SectionListData, SectionListRenderItemInfo, Share} from "react-native";
+import {Alert, Linking, SectionListData, SectionListRenderItemInfo, Share} from "react-native";
 import {Entypo, Feather} from "@expo/vector-icons";
 import { allServices } from "../../utils/constants";
 import { SalonScreenRouteProp } from "../../navigation/navigator.types";
@@ -39,6 +38,7 @@ import {ReviewClass} from "./review.class";
 import {TouchableRipple} from "react-native-paper";
 import salonStyles from "./salon.styles"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import AddReviewModal from "./add-review.modal";
 
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
@@ -145,19 +145,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     const renderHeaderServiceList = useCallback((info: { section: SectionListData<ServiceWithTime, ServicesListData> }) =>
         (<Heading fontSize="xl" mt="8" pb="4" alignSelf={"center"}> {info.section.title} </Heading>), [])
 
-    const renderItemReview = useCallback(({item}: ListRenderItemInfo<Review>) => (<Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
-                                                          borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-        <HStack space={[2, 3]} justifyContent="space-between">
-            <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
-            <VStack alignItems={"flex-start"}>
-                <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
-                <Text style={{fontSize:12}}>{item.message}</Text>
-            </VStack>
-            <Spacer />
-        </HStack>
-    </Box>), [])
-
     const onShare = async () => {
         try {
             const shareMessage = `Name: ${salon.name},\nLocation: ${salon.location}\nPhone number: ${salon.phoneNumber}\nRating: ${salon.rating}/5.00`
@@ -166,19 +153,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             }, {
                 dialogTitle: `Salon ${salon.name}`
             });
-            if (result.action === Share.sharedAction) {
-                console.log("action=== sharedAction")
-                if (result.activityType) {
-                    // shared with activity type of result.activityType
-                    console.log("result activity type")
-                } else {
-                    // shared
-                    console.log("else ")
-                }
-            } else if (result.action === Share.dismissedAction) {
-                console.log("action === dismissed")
-                // dismissed
-            }
         } catch (error: any) {
             console.log(error)
             Alert.alert(error.message);
@@ -188,7 +162,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     const styles = salonStyles()
 
     return(
-        <View>
+        <ScrollView>
             {
                 salon.images.length === 0? <View h="100%"><Loading/></View>: <Center w="100%">
                     <Box safeArea p="2" py="8" w="100%" maxW="290">
@@ -221,7 +195,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                         </Modal>
                         <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
 
-                        <HStack >
+                        <HStack>
                             <VStack>
                                 <HStack mb={2}>
                                     <Icon as={<Feather name="phone"/>} size={25} name="phone" color="black"/>
@@ -251,14 +225,28 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
                         <Heading mt={5} italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
                         {
-                            salon.reviews.length > 0?  <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />:
-                                <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>
+                            salon.reviews.length > 0?
+                                <View>
+                                    {
+                                        salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
+                                                                                borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+                                            <HStack space={[2, 3]} justifyContent="space-between">
+                                                <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
+                                                <VStack alignItems={"flex-start"}>
+                                                    <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
+                                                    <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
+                                                    <Text style={{fontSize:12}}>{item.message}</Text>
+                                                </VStack>
+                                                <Spacer />
+                                            </HStack>
+                                        </Box>)
+                                    }
+                                </View>: <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>
                         }
-
+                        <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
                     </Box>
                 </Center>
             }
-        </View>
+        </ScrollView>
     )
-
 }
