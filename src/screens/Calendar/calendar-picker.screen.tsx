@@ -108,7 +108,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         const selectedServiceWithDuration = findSelectedServiceWithTime()
 
         // build array with all hours during a day
-        const allDayHours = [];
+        const allDayHours: Date[] = [];
         for (let dayHour = 0; dayHour < 24; dayHour++) {
             const hour = moment(`${dayHour}:00`, "HH:mm")
             allDayHours.push(hour.toDate())

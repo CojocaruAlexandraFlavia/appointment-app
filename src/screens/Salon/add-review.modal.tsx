@@ -68,7 +68,6 @@ const AddReviewModal = ({salonId, retrieveSalon}: AddReviewProp) => {
                     <Modal.Body>
                         <FormControl isInvalid={error}>
                             <View display={"flex"}>
-                                {/*<Text>Review the salon from 1 to 5</Text>*/}
                                 <VStack>
                                     <Rating minValue={1} startingValue={1} imageSize={15} onFinishRating={setReviewStars} />
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>

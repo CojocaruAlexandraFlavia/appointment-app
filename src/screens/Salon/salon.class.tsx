@@ -10,7 +10,6 @@ export class SalonClass {
 export const salonConverter: FirestoreDataConverter<SalonClass> = {
     toFirestore(salon: WithFieldValue<SalonClass>): DocumentData {
         return {
-            id: salon.id,
             name: salon.name,
             phoneNumber: salon.phoneNumber,
             rating: salon.rating,

@@ -9,13 +9,14 @@ import Appointments from "../../screens/Appointments/See appointments";
 import Reviews from "../../screens/Reviews"
 import Profile from "../../screens/Profile/See Profile";
 import Notifications from "../../screens/Notifications";
+import AddSalon from "../../screens/Salon/add-salon.screen";
 
 const Stack = createNativeStackNavigator<StackNavigatorParamList>();
 
 export const Authentication = () => {
 
     return(
-        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Drawer" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register"  component={Register}/>
             <Stack.Screen name="Drawer" component={Drawer}/>
@@ -25,6 +26,7 @@ export const Authentication = () => {
             <Stack.Screen name="Appointments" component={Appointments} />
             <Stack.Screen name="Reviews" component={Reviews} />
             <Stack.Screen name="Notifications" component={Notifications} />
+            <Stack.Screen name="AddSalon" component={AddSalon}/>
         </Stack.Navigator>
     )
 

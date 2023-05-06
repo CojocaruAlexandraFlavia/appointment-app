@@ -17,7 +17,8 @@ export type StackNavigatorParamList = {
     ConfirmAppointment: ConfirmAppointmentProp;
     Appointments: undefined;
     Reviews: undefined;
-    Drawer: undefined
+    Drawer: undefined;
+    AddSalon: undefined
 
 };
 export type SalonScreenRouteProp = RouteProp<StackNavigatorParamList, 'Salon'>;

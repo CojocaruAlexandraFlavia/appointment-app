@@ -155,7 +155,7 @@ const Register = ({navigation}: any): ReactElement => {
                     </FormControl>
 
                     <FormControl isRequired isInvalid={errors.password !== ""}>
-                        <FormControl.Label _text={{bold: true}} >Password</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}}>Password</FormControl.Label>
                         <Input value={credentials.password} isInvalid={errors.password !== ""}
                                onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"} InputLeftElement={
                             <Pressable onPress={() => setShowPassword(!showPassword)}>
