@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, SafeAreaView, ListRenderItemInfo} from 'react-native';
 import {Title, Caption, Text, TouchableRipple, Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useUserDataContext} from "../../../store/UserData.context";
+import {useUserDataContext} from "../../../store/user-data.context";
 import {Appointment, Salon} from "../../../utils/types";
 import {collection, doc, getDoc, getDocs, query, where} from "firebase/firestore";
 import {firestore} from "../../../utils/firebase";

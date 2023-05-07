@@ -76,7 +76,24 @@ export type RegisterData = {
     phoneNumber: string,
     city: string,
 }
+
 export type LoginData = {
     email: string,
     password: string
+}
+
+export type City = {
+    geo_id: number,
+    state_or_region: string,
+    name: string,
+    latitude: number,
+    longitude: number,
+    country: {
+        code: string,
+        name: string
+    },
+    division: {
+        code: string,
+        geonameid: number
+    }
 }

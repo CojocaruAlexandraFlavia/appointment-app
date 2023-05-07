@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Rating} from "react-native-ratings";
 import {ReviewClass} from "./review.class";
 import {userConverter} from "../Profile/user.class";
-import {useUserDataContext} from "../../store/UserData.context";
+import {useUserDataContext} from "../../store/user-data.context";
 import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
 import {firestore} from "../../utils/firebase";
 import {salonConverter} from "./salon.class";

@@ -2,7 +2,7 @@ import { Box, Button, Center, Heading, HStack, Text, View } from "native-base";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { ConfirmAppointmentRouteProp } from "../../../navigation/navigator.types";
-import { useUserDataContext } from "../../../store/UserData.context";
+import { useUserDataContext } from "../../../store/user-data.context";
 import { Loading } from "../../../components/activity-indicator.component";
 import confirmAppointmentStyle from "./confirm-appointment.style";
 import {addDoc, collection, doc, getDoc} from "firebase/firestore";

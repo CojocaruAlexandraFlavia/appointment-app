@@ -9,7 +9,7 @@ import Profile from '../../screens/Profile/See Profile';
 import Appointments from '../../screens/Appointments/See appointments';
 import Reviews from '../../screens/Reviews';
 import Notifications from '../../screens/Notifications';
-import {useUserDataContext} from "../../store/UserData.context";
+import {useUserDataContext} from "../../store/user-data.context";
 import {getAuth, signOut} from 'firebase/auth';
 import app from "../../utils/firebase";
 

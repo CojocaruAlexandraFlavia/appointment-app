@@ -10,7 +10,7 @@ import {
     Icon,
     Input,
     Link,
-    Pressable,
+    Pressable, Select,
     Text,
     VStack,
     WarningOutlineIcon
@@ -22,10 +22,11 @@ import IconGoogle from "../../components/IconGoogle";
 import IconFacebook from "../../components/IconFacebook";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth, firestore} from "../../utils/firebase";
-import {RegisterData} from "../../utils/types";
+import {City, RegisterData} from "../../utils/types";
 import {addDoc, collection, getDocs, orderBy, query, where} from "firebase/firestore";
 import {userConverter} from "../Profile/user.class";
 import {AlertComponent} from "../../components/alert.component";
+import * as euCountries from '../../utils/european-countries.json'
 
 const emptyState: RegisterData = {
     email: "",
@@ -44,6 +45,28 @@ const Register = ({navigation}: any): ReactElement => {
     const [errors, setErrors] = useState<RegisterData>(emptyState)
     const [registerError, setRegisterError] = useState("")
     const [added, setAdded] = useState(false)
+    const [citiesForSelectedState, setCitiesForSelectedState] = useState<string[]>([])
+
+    const getMajorCitiesForCountry = async (countryCode: string) => {
+        const headers = new Headers();
+        headers.append("apikey", process.env.EXTERNAL_API_AUTH_TOKEN);
+
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+            headers: headers
+        };
+
+        try {
+            const response = await fetch(`https://api.apilayer.com/geo/country/cities/${countryCode}`, requestOptions)
+            const result: City[] = await response.json()
+            const cityNames = result.map(item => item.name)
+            setCitiesForSelectedState(cityNames)
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
 
     const findFormErrors = () : RegisterData => {
         const errors = {...emptyState}
@@ -134,10 +157,8 @@ const Register = ({navigation}: any): ReactElement => {
         }
         setCredentials({...credentials, [key]: value})
     }
-
-    // @ts-ignore
     return (
-       <ScrollView > 
+        <ScrollView >
         <Center w="100%">
             <Box safeArea p="2" py="8" w="90%" maxW="290"> 
                 <Heading size="lg" fontWeight="500" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
@@ -201,6 +222,27 @@ const Register = ({navigation}: any): ReactElement => {
                                isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl>
+                        <FormControl.Label _text={{bold: true}}>Select your country</FormControl.Label>
+                        <Select placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
+                            {
+                                euCountries.countries.map((country, index) =>
+                                    <Select.Item key={index} label={country.name} value={country.code}/>)
+                            }
+                        </Select>
+                    </FormControl>
+
+                    <FormControl>
+                        <FormControl.Label _text={{bold: true}}>Select your city</FormControl.Label>
+                        <Select placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
+                                onValueChange={(value) => onChangeText("city", value)}>
+                            {
+                                citiesForSelectedState.length > 0? citiesForSelectedState.map((city, index) => <Select.Item key={index} label={city} value={city}/>):
+                                    <Select.Item label="First select your country!" value={""} disabled/>
+                            }
+                        </Select>
                     </FormControl>
 
                     <Checkbox alignItems="flex-start" defaultIsChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">

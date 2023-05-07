@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Animated from 'react-native-reanimated';
-import {useUserDataContext} from "../../../store/UserData.context";
+import {useUserDataContext} from "../../../store/user-data.context";
 import {userConverter} from "../user.class";
 import {User} from "../../../utils/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";

@@ -42,6 +42,7 @@ const AddSalon = () => {
     const [noImageUploadedError, setNoImageUploadedError] = useState(false)
     const [loading, setLoading] = useState(false)
     const [salonAddedAlert, setSalonAddedAlert] = useState(false)
+    const [savingError, setSavingError] = useState("")
 
     const openingHours = ["08:00", "09:00", "10:00", "11:00", "12:00"]
     const closingHours = ["16:00", "17:00", "18:00", "19:00", "20:00"]
@@ -109,25 +110,32 @@ const AddSalon = () => {
             setErrors(emptySalonState)
             setNoImageUploadedError(false)
             setLoading(true)
-            const collectionRef = collection(firestore, "salons").withConverter(salonConverter);
-            const addedSalon = await addDoc(collectionRef,
-                new SalonClass("", salon.name, salon.location, salon.phoneNumber, 0.0, salon.startTime, salon.endTime, "", []))
-            for (let i = 1; i < images.length; i++) {
-                uploadSalonImageAsync(images[i], addedSalon.id, `${i+1}`)
-            }
-            const firstPictureUrl = await uploadSalonImageAsync(images[0], addedSalon.id, "1")
-            const salonDocRef = doc(firestore, "salons", addedSalon.id).withConverter(salonConverter)
-            updateDoc(salonDocRef, {
-                image: firstPictureUrl
-            }).then(() => {
-                setLoading(false)
-                setSalon(emptySalonState)
-                setImages([])
-                setSalonAddedAlert(true)
+            try {
+                const collectionRef = collection(firestore, "salons").withConverter(salonConverter);
+                const addedSalon = await addDoc(collectionRef,
+                    new SalonClass("", salon.name, salon.location, salon.phoneNumber, 0.0, salon.startTime, salon.endTime, "", []))
+                for (let i = 1; i < images.length; i++) {
+                    uploadSalonImageAsync(images[i], addedSalon.id, `${i+1}`)
+                }
+                const firstPictureUrl = await uploadSalonImageAsync(images[0], addedSalon.id, "1")
+                const salonDocRef = doc(firestore, "salons", addedSalon.id).withConverter(salonConverter)
+                updateDoc(salonDocRef, {
+                    image: firstPictureUrl
+                }).then(() => {
+                    setLoading(false)
+                    setSalon(emptySalonState)
+                    setImages([])
+                    setSalonAddedAlert(true)
+                    setTimeout(() => {
+                        setSalonAddedAlert(false)
+                    }, 5000)
+                })
+            } catch (e: any) {
+                setSavingError(e.message)
                 setTimeout(() => {
-                    setSalonAddedAlert(false)
+                    setSavingError("")
                 }, 5000)
-            })
+            }
         }
     }
 
@@ -203,6 +211,11 @@ const AddSalon = () => {
                      {
                          salonAddedAlert && <AlertComponent status={"success"} text={"Salon added successfully!"}
                                                             onClose={() => setSalonAddedAlert(false)}/>
+                     }
+                     {
+                         savingError && <AlertComponent status={"error"}
+                                                        text={`Error occurred at saving: ${savingError}!`}
+                                                        onClose={() => setSavingError("")}/>
                      }
                  </Box>
              </Center>

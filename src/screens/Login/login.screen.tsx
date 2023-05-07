@@ -32,7 +32,7 @@ import {
 import app, {auth, firestore} from "../../utils/firebase";
 import {LoginData} from "../../utils/types";
 import {collection, getDocs, query, where} from "firebase/firestore";
-import {useUserDataContext} from "../../store/UserData.context";
+import {useUserDataContext} from "../../store/user-data.context";
 import {userConverter} from "../Profile/user.class";
 
 import {FirebaseError} from "@firebase/util";
