@@ -250,38 +250,38 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     }
 
     //animation for button
-    const [scaleValue] = useState(new Animated.Value(1));
-    const animateButton = () =>{
-        Animated.timing(scaleValue, {
-            toValue: 0.8,
-            duration: 200,
-            useNativeDriver: true
-        }).start(() => {
-            Animated.timing(scaleValue, {
-                toValue: 1,
-                duration: 200,
-                useNativeDriver: true
-            }).start();
-        });
-    };
-    const [rotateValue] = useState(new Animated.Value(0));
-    const animateButtonRotate = () =>{
-        Animated.timing(rotateValue, {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true
-        }).start(() => {
-            Animated.timing(rotateValue, {
-                toValue: 0,
-                duration: 500,
-                useNativeDriver: true
-            }).start();
-        });
-    };
-    const rotateInterpolate = rotateValue.interpolate({
-        inputRange: [0,1],
-        outputRange: ['0deg', '360deg']
-    });
+    // const [scaleValue] = useState(new Animated.Value(1));
+    // const animateButton = () =>{
+    //     Animated.timing(scaleValue, {
+    //         toValue: 0.8,
+    //         duration: 200,
+    //         useNativeDriver: true
+    //     }).start(() => {
+    //         Animated.timing(scaleValue, {
+    //             toValue: 1,
+    //             duration: 200,
+    //             useNativeDriver: true
+    //         }).start();
+    //     });
+    // };
+    // const [rotateValue] = useState(new Animated.Value(0));
+    // const animateButtonRotate = () =>{
+    //     Animated.timing(rotateValue, {
+    //         toValue: 1,
+    //         duration: 500,
+    //         useNativeDriver: true
+    //     }).start(() => {
+    //         Animated.timing(rotateValue, {
+    //             toValue: 0,
+    //             duration: 500,
+    //             useNativeDriver: true
+    //         }).start();
+    //     });
+    // };
+    // const rotateInterpolate = rotateValue.interpolate({
+    //     inputRange: [0,1],
+    //     outputRange: ['0deg', '360deg']
+    // });
 
 
 
@@ -353,11 +353,11 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                         <CalendarPicker salonId={id} selectedService={selectedService}
                                         setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
 
-                        <TouchableWithoutFeedback onPress={animateButton}>
-                            <Animated.View  style={[styles.button, {transform: [{ scale: scaleValue}]}]}>
-                                <Text style={styles.buttonText}>Clients Experience</Text>
-                            </Animated.View>
-                        </TouchableWithoutFeedback>
+                        {/*<TouchableWithoutFeedback onPress={animateButton}>*/}
+                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: scaleValue}]}]}>*/}
+                        {/*        <Text style={styles.buttonText}>Clients Experience</Text>*/}
+                        {/*    </Animated.View>*/}
+                        {/*</TouchableWithoutFeedback>*/}
 
                         {/*<TouchableWithoutFeedback onPress={animateButtonRotate}>*/}
                         {/*    <Animated.View  style={[styles.button, {transform: [{ scale: rotateInterpolate}]}]}>*/}

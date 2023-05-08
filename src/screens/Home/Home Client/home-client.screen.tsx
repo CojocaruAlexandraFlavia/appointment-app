@@ -1,10 +1,19 @@
 import {Avatar, Box, Center, FlatList, Heading, HStack, Pressable, VStack} from "native-base";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {Rating} from "react-native-ratings";
 import {Salon} from "../../../utils/types";
 import 'react-native-gesture-handler';
 import React from 'react'
-import {Image, ListRenderItemInfo, StyleSheet, Text, View} from "react-native";
+import {
+    Animated,
+    useAnimatedValue,
+    Image,
+    ListRenderItemInfo,
+    StyleSheet,
+    Text,
+    View,
+    TouchableWithoutFeedback
+} from "react-native";
 
 type Props = {
     data: Salon[],
@@ -34,25 +43,76 @@ const HomeClient = ({data, navigation}: Props) => {
         </Box>
     </Pressable>, [])
 
+    // const [showText, setShowText] = useState(true)
+    // useEffect(()=> {
+    //     const interval = setInterval(() => {
+    //         setShowText( (showText) => !showText)
+    //     }, 1000) //1000 = 1s
+    //     return () => {
+    //         clearInterval(interval)
+    //     }
+    // }, [])
 
-    const [showText, setShowText] = useState(true)
-    useEffect(()=> {
-        const interval = setInterval(() => {
-            setShowText( (showText) => !showText)
-        }, 1000) //1000 = 1s
-        return () => {
-            clearInterval(interval)
-        }
-    }, [])
+
+    const yPosition = useRef(new Animated.Value(0)).current;
+    const xPosition = useRef(new Animated.Value(0)).current;
+    const fadeAnim = useAnimatedValue(0)
+
+    const animateImage = () => {
+        Animated.timing(yPosition, {
+            toValue: 100,
+            useNativeDriver: true,
+            duration: 1000,
+        }).start(() => {
+            Animated.timing(yPosition, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: 500,
+            }).start(() => {
+                animateImage();
+            });
+        });
+    };
 
     return (
         <Center w="100%">
-            <View style={styles.container}>
-                <Image
-                    style={styles.logo}
-                    source={require('../../../../assets/logo.png')}
-                />
-            </View>
+
+            <TouchableWithoutFeedback onPress={animateImage}>
+            <Animated.View
+                style={[
+                    {
+                        opacity: fadeAnim.interpolate({
+                            inputRange: [0, 100],
+                            outputRange: [1, 0],
+                        }),
+                        transform: [
+                            {
+                                translateY: yPosition,
+                            },
+                            {
+                                translateX: xPosition,
+                            },
+                        ],
+                    },
+                ]}
+            >
+                    <Image
+                        style={styles.logo}
+                        source={require('../../../../assets/logo.png')}
+                    />
+            </Animated.View>
+            </TouchableWithoutFeedback>
+
+
+            {/*<View style={styles.container}>*/}
+            {/*    <Image*/}
+            {/*        style={styles.logo}*/}
+            {/*        source={require('../../../../assets/logo.png')}*/}
+            {/*    />*/}
+            {/*</View>*/}
+
+
+
             <Box safeArea p="3" py="1" w="100%" maxW="290">
                 <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
                 {
@@ -60,8 +120,8 @@ const HomeClient = ({data, navigation}: Props) => {
                         <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}>
                         </FlatList> : null
                 }
-                <Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Book now an appointment!
-                </Text>
+                {/*<Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Book now an appointment!*/}
+                {/*</Text>*/}
             </Box>
         </Center>
     )
@@ -77,12 +137,12 @@ const styles = StyleSheet.create({
         height: 150,
         alignSelf: 'center'
     },
-    AdvertisementText: {
-        fontSize: 18,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: '#FF5733'
-    },
+    // AdvertisementText: {
+    //     fontSize: 18,
+    //     textAlign: 'center',
+    //     fontWeight: 'bold',
+    //     color: '#FF5733'
+    // },
 });
 
 export default HomeClient;
