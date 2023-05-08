@@ -170,15 +170,15 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const styles = salonStyles()
 
-    // const [showText, setShowText] = useState(true)
-    // useEffect(()=> {
-    //     const interval = setInterval(() => {
-    //         setShowText( (showText) => !showText)
-    //     }, 1000) //1000 = 1s
-    //     return () => {
-    //         clearInterval(interval)
-    //     }
-    // }, [])
+    const [showText, setShowText] = useState(true)
+    useEffect(()=> {
+        const interval = setInterval(() => {
+            setShowText( (showText) => !showText)
+        }, 1000) //1000 = 1s
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
 
     // const handleAnimation = () => {
     //     Animated.timing(animation, {
@@ -290,7 +290,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     };
     const rotateInterpolate = rotateValue.interpolate({
         inputRange: [0,1],
-        outputRange: [0, 360]
+        outputRange: ['0deg', '360deg']
     });
 
 
@@ -333,13 +333,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                             </Modal.Content>
                         </Modal>
 
-
-                        {/*<TouchableWithoutFeedback onPress={animateButtonRotate}>*/}
-                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: rotateInterpolate}]}]}>*/}
-                        {/*        <Text style={styles.buttonText}>Ask for appointment</Text>*/}
-                        {/*    </Animated.View>*/}
-                        {/*</TouchableWithoutFeedback>*/}
-
                         <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
 
                         <HStack>
@@ -370,14 +363,17 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                         <CalendarPicker salonId={id} selectedService={selectedService}
                                         setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
 
-                        {/*<Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Limited availability!*/}
-                        {/*</Text>*/}
-
                         <TouchableWithoutFeedback onPress={animateButton}>
                             <Animated.View  style={[styles.button, {transform: [{ scale: scaleValue}]}]}>
                                 <Text style={styles.buttonText}>Clients Experience</Text>
                             </Animated.View>
                         </TouchableWithoutFeedback>
+
+                        {/*<TouchableWithoutFeedback onPress={animateButtonRotate}>*/}
+                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: rotateInterpolate}]}]}>*/}
+                        {/*        <Text style={styles.buttonText}>Clients Experience</Text>*/}
+                        {/*    </Animated.View>*/}
+                        {/*</TouchableWithoutFeedback>*/}
 
                         <Heading mt={5} italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
                         {
@@ -411,6 +407,10 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 {clapIcon}
                             </TouchableOpacity>
                         </View>
+
+                        <Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Book now!
+                        </Text>
+
                     </Box>
                 </Center>
             }
