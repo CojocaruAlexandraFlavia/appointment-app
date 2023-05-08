@@ -4,7 +4,7 @@ import {Rating} from "react-native-ratings";
 import {Salon} from "../../../utils/types";
 import 'react-native-gesture-handler';
 import React from 'react'
-import {Image, ListRenderItemInfo, StyleSheet, View} from "react-native";
+import {Image, ListRenderItemInfo, StyleSheet, Text, View} from "react-native";
 
 type Props = {
     data: Salon[],
@@ -34,17 +34,16 @@ const HomeClient = ({data, navigation}: Props) => {
         </Box>
     </Pressable>, [])
 
-    const styles = StyleSheet.create({
-        container: {
-            paddingTop: 10,
-            paddingBottom: 10
-        },
-        logo: {
-            width: 135,
-            height: 150,
-            alignSelf: 'center'
-        },
-    });
+
+    const [showText, setShowText] = useState(true)
+    useEffect(()=> {
+        const interval = setInterval(() => {
+            setShowText( (showText) => !showText)
+        }, 1000) //1000 = 1s
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
 
     return (
         <Center w="100%">
@@ -61,9 +60,29 @@ const HomeClient = ({data, navigation}: Props) => {
                         <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}>
                         </FlatList> : null
                 }
+                <Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Book now an appointment!
+                </Text>
             </Box>
         </Center>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    logo: {
+        width: 135,
+        height: 150,
+        alignSelf: 'center'
+    },
+    AdvertisementText: {
+        fontSize: 18,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#FF5733'
+    },
+});
 
 export default HomeClient;

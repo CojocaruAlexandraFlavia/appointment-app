@@ -13,12 +13,6 @@ const styles = () => StyleSheet.create({
         fontSize: 16,
         lineHeight: 26,
     },
-    AdvertisementText: {
-        fontSize: 18,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: '#FF5733'
-    },
     // container: {
     //     flex: 1,
     //     backgroundColor: '#fff',

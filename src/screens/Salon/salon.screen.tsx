@@ -170,16 +170,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const styles = salonStyles()
 
-    const [showText, setShowText] = useState(true)
-    useEffect(()=> {
-        const interval = setInterval(() => {
-            setShowText( (showText) => !showText)
-        }, 1000) //1000 = 1s
-        return () => {
-            clearInterval(interval)
-        }
-    }, [])
-
     // const handleAnimation = () => {
     //     Animated.timing(animation, {
     //         toValue:1,
@@ -407,9 +397,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 {clapIcon}
                             </TouchableOpacity>
                         </View>
-
-                        <Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Book now!
-                        </Text>
 
                     </Box>
                 </Center>
