@@ -15,6 +15,7 @@ import {
     VStack,
     WarningOutlineIcon
 } from "native-base"
+import {View, Image, StyleSheet} from 'react-native';
 import React, {ReactElement, useState} from "react"
 import {MaterialIcons} from "@expo/vector-icons";
 import IconGoogle from "../../components/IconGoogle";
@@ -165,6 +166,17 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
         setCredentials({...credentials, [key]: value})
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            paddingTop: 10,
+        },
+        logo: {
+            width: 125,
+            height: 140,
+            alignSelf: 'center'
+        },
+    });
+
     return (   
         <Center w="100%">
             <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -173,7 +185,14 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                     Sign in to continue!
                 </Heading>
 
-                <VStack space={3} mt="5">
+                <VStack space={1} mt="1">
+                <View style={styles.container}>
+                    <Image
+                        style={styles.logo}
+                        source={require('../../../assets/logo.png')}
+                    />
+                </View>
+
                     <FormControl isInvalid={errors.email !== ""}>
                         <FormControl.Label>Email</FormControl.Label>
                         <Input w={{base: "100%", md: "25%"}} size={5} color="muted.400"
@@ -207,7 +226,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                 </VStack>
             </Box>
 
-            <HStack space="2" mb={{ base: "6", md: "7" }} alignItems="center" justifyContent="center">
+            <HStack space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
                 <Divider w="30%" _light={{ bg: "coolGray.200" }} _dark={{ bg: "coolGray.700" }}></Divider>
                 <Text fontSize="sm" fontWeight="medium" _light={{ color: "coolGray.300" }} _dark={{ color: "coolGray.500" }}>
                     or
@@ -224,7 +243,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                 </Pressable>
             </HStack>
 
-            <VStack space={5} mt="5">
+            <VStack space={1} mt="1">
                     <HStack mt="6" justifyContent="center">
                         <Text fontSize="sm" color="coolGray.600" _dark={{color: "warmGray.200"}}>
                             I'm a new user.{" "}

@@ -4,7 +4,7 @@ import {Rating} from "react-native-ratings";
 import {Salon} from "../../../utils/types";
 import 'react-native-gesture-handler';
 import React from 'react'
-import {ListRenderItemInfo} from "react-native";
+import {Image, ListRenderItemInfo, StyleSheet, View} from "react-native";
 
 type Props = {
     data: Salon[],
@@ -34,10 +34,27 @@ const HomeClient = ({data, navigation}: Props) => {
         </Box>
     </Pressable>, [])
 
+    const styles = StyleSheet.create({
+        container: {
+            paddingTop: 10,
+            paddingBottom: 10
+        },
+        logo: {
+            width: 135,
+            height: 150,
+            alignSelf: 'center'
+        },
+    });
 
     return (
         <Center w="100%">
-            <Box safeArea p="2" py="8" w="100%" maxW="290">
+            <View style={styles.container}>
+                <Image
+                    style={styles.logo}
+                    source={require('../../../../assets/logo.png')}
+                />
+            </View>
+            <Box safeArea p="3" py="1" w="100%" maxW="290">
                 <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
                 {
                     allSalons.length > 0 ?

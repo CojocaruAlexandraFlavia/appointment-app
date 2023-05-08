@@ -17,7 +17,7 @@ import {
 } from "native-base"
 import React, {ReactElement, useState} from "react"
 import {Feather, MaterialIcons} from "@expo/vector-icons";
-import {ScrollView} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import IconGoogle from "../../components/IconGoogle";
 import IconFacebook from "../../components/IconFacebook";
 import {createUserWithEmailAndPassword} from "firebase/auth";
@@ -157,6 +157,18 @@ const Register = ({navigation}: any): ReactElement => {
         }
         setCredentials({...credentials, [key]: value})
     }
+
+    const styles = StyleSheet.create({
+        container: {
+            paddingTop: 10,
+        },
+        logo: {
+            width: 125,
+            height: 140,
+            alignSelf: 'center'
+        },
+    });
+
     return (
         <ScrollView >
         <Center w="100%">
@@ -166,7 +178,14 @@ const Register = ({navigation}: any): ReactElement => {
                     Sign up to continue!
                 </Heading>
 
-                <VStack space={5} mt="5">
+                <VStack space={1} mt="1">
+                    <View style={styles.container}>
+                        <Image
+                            style={styles.logo}
+                            source={require('../../../assets/logo.png')}
+                        />
+                    </View>
+
                     <FormControl isRequired isInvalid={errors.email !== ""}>
                         <FormControl.Label _text={{bold: true}} >Email</FormControl.Label>
                         <Input value={credentials.email} isInvalid={errors.email !== ""}
@@ -265,7 +284,7 @@ const Register = ({navigation}: any): ReactElement => {
                 </VStack>
             </Box>
 
-           <HStack space="2" mb={{ base: "6", md: "7" }} alignItems="center" justifyContent="center">
+           <HStack space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
                <Divider w="30%" _light={{ bg: "coolGray.200" }} _dark={{ bg: "coolGray.700" }}></Divider>
                <Text fontSize="sm" fontWeight="medium" _light={{ color: "coolGray.300" }} _dark={{ color: "coolGray.500" }}>
                    or
