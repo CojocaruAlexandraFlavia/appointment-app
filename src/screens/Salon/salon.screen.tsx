@@ -45,7 +45,9 @@ import * as servicesJson from '../../utils/all-services.json'
 //     withSequence,
 //     withTiming,
 // } from 'react-native-reanimated';
-import { StyleSheet, Animated, TouchableWithoutFeedback, Image } from 'react-native';
+import { StyleSheet, Animated, TouchableWithoutFeedback, Image, Easing } from 'react-native';
+import {StatusBar} from 'expo-status-bar';
+
 
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
@@ -199,6 +201,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     // }
 
 
+        //animation for clapping button
         const [countClaps, setCountClaps]=useState(1);
         const [claps, setClaps]=useState([]);
         const clapHand=()=>{
@@ -256,8 +259,39 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
         )
     }
 
-
-
+    //animation for button
+    const [scaleValue] = useState(new Animated.Value(1));
+    const animateButton = () =>{
+        Animated.timing(scaleValue, {
+            toValue: 0.8,
+            duration: 200,
+            useNativeDriver: true
+        }).start(() => {
+            Animated.timing(scaleValue, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true
+            }).start();
+        });
+    };
+    const [rotateValue] = useState(new Animated.Value(0));
+    const animateButtonRotate = () =>{
+        Animated.timing(rotateValue, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true
+        }).start(() => {
+            Animated.timing(rotateValue, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true
+            }).start();
+        });
+    };
+    const rotateInterpolate = rotateValue.interpolate({
+        inputRange: [0,1],
+        outputRange: [0, 360]
+    });
 
 
 
@@ -299,6 +333,13 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                             </Modal.Content>
                         </Modal>
 
+
+                        {/*<TouchableWithoutFeedback onPress={animateButtonRotate}>*/}
+                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: rotateInterpolate}]}]}>*/}
+                        {/*        <Text style={styles.buttonText}>Ask for appointment</Text>*/}
+                        {/*    </Animated.View>*/}
+                        {/*</TouchableWithoutFeedback>*/}
+
                         <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
 
                         <HStack>
@@ -331,6 +372,12 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
                         {/*<Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Limited availability!*/}
                         {/*</Text>*/}
+
+                        <TouchableWithoutFeedback onPress={animateButton}>
+                            <Animated.View  style={[styles.button, {transform: [{ scale: scaleValue}]}]}>
+                                <Text style={styles.buttonText}>Clients Experience</Text>
+                            </Animated.View>
+                        </TouchableWithoutFeedback>
 
                         <Heading mt={5} italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
                         {

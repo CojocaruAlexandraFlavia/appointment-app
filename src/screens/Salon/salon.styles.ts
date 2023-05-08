@@ -52,7 +52,7 @@ const styles = () => StyleSheet.create({
         backgroundColor:"white",
         position:"absolute",
         left:180,
-        bottom:350,
+        bottom:400,
         justifyContent:"center",
         alignItems:"center",
         shadowColor:"black",
@@ -69,7 +69,20 @@ const styles = () => StyleSheet.create({
     text:{
         color:"white",
         fontSize:22
-    }
+    },
+    button:{
+        backgroundColor: '#50d0c3',
+        padding: 7,
+        borderRadius:5,
+        margin:3,
+        elevation:5,
+        marginTop:8,
+    },
+    buttonText:{
+        color: 'black',
+        fontSize: 15,
+        alignSelf: 'center'
+    },
 })
 
 export default styles
