@@ -113,7 +113,9 @@ const HomeClient = ({data, navigation}: Props) => {
 
 
 
-            <Box safeArea p="3" py="1" w="100%" maxW="290">
+            <Box safeArea p="3" py="12" w="100%" maxW="290">
+
+                <View style={styles.container}>
                 <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
                 {
                     allSalons.length > 0 ?
@@ -122,6 +124,7 @@ const HomeClient = ({data, navigation}: Props) => {
                 }
                 {/*<Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Book now an appointment!*/}
                 {/*</Text>*/}
+                </View>
             </Box>
         </Center>
     )
