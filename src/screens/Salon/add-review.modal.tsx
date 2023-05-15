@@ -58,6 +58,7 @@ const AddReviewModal = ({salonId, retrieveSalon}: AddReviewProp) => {
     return(
         <View>
             <Button colorScheme={"darkBlue"} onPress={() => setOpenModal(true)}>Add review</Button>
+
             <Modal isOpen={openModal} onClose={closeModal} size={"xl"}>
                 <Modal.Content>
                     {
@@ -69,7 +70,7 @@ const AddReviewModal = ({salonId, retrieveSalon}: AddReviewProp) => {
                         <FormControl isInvalid={error}>
                             <View display={"flex"}>
                                 <VStack>
-                                    <Rating minValue={1} startingValue={1} imageSize={15} onFinishRating={setReviewStars} />
+                                    <Rating minValue={1} startingValue={1} imageSize={30} onFinishRating={setReviewStars} />
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
                                 </VStack>
                             </View>
@@ -86,5 +87,4 @@ const AddReviewModal = ({salonId, retrieveSalon}: AddReviewProp) => {
     )
 
 }
-
 export default AddReviewModal

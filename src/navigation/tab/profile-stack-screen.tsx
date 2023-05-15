@@ -25,7 +25,7 @@ export const ProfileStackScreen = ({navigation}: any) => {
                 name="Profile"
                 component={Profile}
                 options={{
-                    title: '',
+                    title: 'Profile',
                     headerLeft: () => (
                         <View style={{marginLeft: 10}}>
                             <Icon.Button
@@ -44,7 +44,7 @@ export const ProfileStackScreen = ({navigation}: any) => {
                         <View style={{marginRight: 10}}>
                             <MaterialCommunityIcons.Button
                                 name="account-edit"
-                                size={25}
+                                size={27}
                                 backgroundColor={colors.background}
                                 color="black"
                                 onPress={() => navigation.navigate('EditProfile')}

@@ -12,14 +12,14 @@ import {
     ScrollView,
     SectionList,
     Spacer,
-    Text,
     View,
     VStack,
     WarningOutlineIcon,
     Icon
 } from "native-base";
+import {Text, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, {ReactElement, useCallback, useEffect, useRef, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
 import { Review, Salon, ServicesListData, ServiceWithTime } from "../../utils/types";
 import { Rating } from "react-native-ratings";
@@ -39,6 +39,13 @@ import salonStyles from "./salon.styles"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AddReviewModal from "./add-review.modal";
 import * as servicesJson from '../../utils/all-services.json'
+// import Animated, {
+//     useAnimatedStyle,
+//     withRepeat,
+//     withSequence,
+//     withTiming,
+// } from 'react-native-reanimated';
+import { StyleSheet, Animated, TouchableWithoutFeedback, Image, Easing } from 'react-native';
 
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
@@ -161,13 +168,135 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const styles = salonStyles()
 
+    // const handleAnimation = () => {
+    //     Animated.timing(animation, {
+    //         toValue:1,
+    //         duration: 2000
+    //     }).start( () => {
+    //         Animated.timing(animation,{
+    //             toValue:0,
+    //             duration: 2000
+    //         }).start()
+    //     })
+    // }
+    // const [animation, setAnimation] = useState(new Animated.Value(0))
+    // const boxInterpolation =  animation.interpolate({
+    //     inputRange: [0, 1],
+    //     outputRange:["rgb(90,210,244)" , "rgb(224,82,99)"]
+    // })
+    // const animatedStyle = {
+    //     backgroundColor: boxInterpolation
+    // }
+
+
+        //animation for clapping button
+        const [countClaps, setCountClaps]=useState(1);
+        const [claps, setClaps]=useState([]);
+        const clapHand=()=>{
+            setCountClaps(
+                countClaps+1
+            )
+            // @ts-ignore
+            claps.push(countClaps);
+        }
+        const clapIcon = countClaps > 1 ? <Image source={require("../../../assets/clapping.png")} style={styles.img} />
+            : <Image source={require("../../../assets/clap.png")} style={styles.img} />
+        const RenderBubble=()=>{
+            return(
+                claps.map(newCount=><BubbleHand animationCompleted={animationCompleted} newCount={newCount}  key={newCount}/>)
+            )
+        }
+        const animationCompleted=(newCount: any)=>{
+            // @ts-ignore
+            claps.splice(claps.indexOf(newCount), 1)
+            setClaps([])
+        }
+
+    const BubbleHand=(props:any)=>{
+        const [bubbleAnimaiton, setBubbAnimation] = useState(new Animated.Value(0));
+        const [bubbleAnimaitonOpacity, setBubbleAnimationOpacity] = useState(new Animated.Value(0));
+        useEffect(()=>{
+            Animated.parallel([
+                Animated.timing(bubbleAnimaiton,{
+                    toValue:-550,
+                    duration:2000,
+                    useNativeDriver:true,
+                }),
+                Animated.timing(bubbleAnimaitonOpacity, {
+                    toValue:1,
+                    duration:2000,
+                    useNativeDriver:true,
+                })
+            ]).start(()=>{
+                setTimeout(()=>{
+                    props.animationCompleted(props.newCount)
+                }, 500)
+
+            });
+        })
+        const bubble ={
+            transform:[
+                {translateY:bubbleAnimaiton}
+            ],
+            opacity:bubbleAnimaitonOpacity,
+        }
+        return(
+            <Animated.View style={[styles.bubble, bubble]}>
+                <Text style={styles.text}>
+                    +{props.newCount}
+                </Text>
+            </Animated.View>
+        )
+    }
+
+    //animation for button
+    // const [scaleValue] = useState(new Animated.Value(1));
+    // const animateButton = () =>{
+    //     Animated.timing(scaleValue, {
+    //         toValue: 0.8,
+    //         duration: 200,
+    //         useNativeDriver: true
+    //     }).start(() => {
+    //         Animated.timing(scaleValue, {
+    //             toValue: 1,
+    //             duration: 200,
+    //             useNativeDriver: true
+    //         }).start();
+    //     });
+    // };
+    // const [rotateValue] = useState(new Animated.Value(0));
+    // const animateButtonRotate = () =>{
+    //     Animated.timing(rotateValue, {
+    //         toValue: 1,
+    //         duration: 500,
+    //         useNativeDriver: true
+    //     }).start(() => {
+    //         Animated.timing(rotateValue, {
+    //             toValue: 0,
+    //             duration: 500,
+    //             useNativeDriver: true
+    //         }).start();
+    //     });
+    // };
+    // const rotateInterpolate = rotateValue.interpolate({
+    //     inputRange: [0,1],
+    //     outputRange: ['0deg', '360deg']
+    // });
+
+
+
     return(
         <ScrollView>
             {
                 salon.images.length === 0? <View h="100%"><Loading/></View>: <Center w="100%">
                     <Box safeArea p="2" py="8" w="100%" maxW="290">
-                        <HStack justifyContent={"space-between"} mb={2}>
-                            <Heading  size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>
+                        <HStack justifyContent={"space-between"} mb={3} >
+
+                                {/*<TouchableWithoutFeedback onPress={handleAnimation}>*/}
+                                {/*    <Animated.View style={{...styles.box, ...animatedStyle}} />*/}
+                                {/*</TouchableWithoutFeedback>*/}
+
+                            <Heading size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>
                             <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating} imageSize={20} readonly />
                         </HStack>
 
@@ -193,6 +322,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 </Modal.Footer>
                             </Modal.Content>
                         </Modal>
+
                         <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
 
                         <HStack>
@@ -223,7 +353,19 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                         <CalendarPicker salonId={id} selectedService={selectedService}
                                         setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
 
-                        <Heading mt={5} italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
+                        {/*<TouchableWithoutFeedback onPress={animateButton}>*/}
+                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: scaleValue}]}]}>*/}
+                        {/*        <Text style={styles.buttonText}>Clients Experience</Text>*/}
+                        {/*    </Animated.View>*/}
+                        {/*</TouchableWithoutFeedback>*/}
+
+                        {/*<TouchableWithoutFeedback onPress={animateButtonRotate}>*/}
+                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: rotateInterpolate}]}]}>*/}
+                        {/*        <Text style={styles.buttonText}>Clients Experience</Text>*/}
+                        {/*    </Animated.View>*/}
+                        {/*</TouchableWithoutFeedback>*/}
+
+                        <Heading mt={3} italic bold  mb={2}>Reviews</Heading>
                         {
                             salon.reviews.length > 0?
                                 <View>
@@ -233,6 +375,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                             <HStack space={[2, 3]} justifyContent="space-between">
                                                 <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
                                                 <VStack alignItems={"flex-start"}>
+                                                    {/*@ts-ignore*/}
                                                     <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
                                                     <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
                                                     <Text style={{fontSize:12}}>{item.message}</Text>
@@ -244,7 +387,21 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 </View>: <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>
                         }
                         <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
+
                     </Box>
+
+                    <View style={styles.container}>
+                        {RenderBubble()}
+                        <TouchableOpacity
+                            style={styles.clapButton}
+                            activeOpacity={0.8}
+                            onPress={clapHand}
+                        >
+                            {clapIcon}
+                        </TouchableOpacity>
+                    </View>
+
+
                 </Center>
             }
         </ScrollView>
