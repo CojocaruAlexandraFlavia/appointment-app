@@ -46,8 +46,6 @@ import * as servicesJson from '../../utils/all-services.json'
 //     withTiming,
 // } from 'react-native-reanimated';
 import { StyleSheet, Animated, TouchableWithoutFeedback, Image, Easing } from 'react-native';
-import {StatusBar} from 'expo-status-bar';
-
 
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
@@ -198,6 +196,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             setCountClaps(
                 countClaps+1
             )
+            // @ts-ignore
             claps.push(countClaps);
         }
         const clapIcon = countClaps > 1 ? <Image source={require("../../../assets/clapping.png")} style={styles.img} />
@@ -207,7 +206,8 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                 claps.map(newCount=><BubbleHand animationCompleted={animationCompleted} newCount={newCount}  key={newCount}/>)
             )
         }
-        const animationCompleted=(newCount)=>{
+        const animationCompleted=(newCount: any)=>{
+            // @ts-ignore
             claps.splice(claps.indexOf(newCount), 1)
             setClaps([])
         }
@@ -365,7 +365,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                         {/*    </Animated.View>*/}
                         {/*</TouchableWithoutFeedback>*/}
 
-                        <Heading mt={5} italic bold alignSelf={"center"} mb={2}>Reviews</Heading>
+                        <Heading mt={3} italic bold  mb={2}>Reviews</Heading>
                         {
                             salon.reviews.length > 0?
                                 <View>
@@ -375,6 +375,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                             <HStack space={[2, 3]} justifyContent="space-between">
                                                 <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
                                                 <VStack alignItems={"flex-start"}>
+                                                    {/*@ts-ignore*/}
                                                     <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
                                                     <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
                                                     <Text style={{fontSize:12}}>{item.message}</Text>
@@ -387,18 +388,20 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                         }
                         <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
 
-                        <View style={styles.container}>
-                            {RenderBubble()}
-                            <TouchableOpacity
-                                style={styles.clapButton}
-                                activeOpacity={0.8}
-                                onPress={clapHand}
-                            >
-                                {clapIcon}
-                            </TouchableOpacity>
-                        </View>
-
                     </Box>
+
+                    <View style={styles.container}>
+                        {RenderBubble()}
+                        <TouchableOpacity
+                            style={styles.clapButton}
+                            activeOpacity={0.8}
+                            onPress={clapHand}
+                        >
+                            {clapIcon}
+                        </TouchableOpacity>
+                    </View>
+
+
                 </Center>
             }
         </ScrollView>
