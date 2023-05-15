@@ -97,13 +97,14 @@ export const Appointments: React.FC = ({navigation}: any): ReactElement => {
     const retrieveFinaleAppointments = async () => {
         // @ts-ignore
         let appointments: Appointment[] = await retrieveUserAppointments()
-        if (appointments === undefined){
+       // if (appointments === undefined)
+        {
             setAppointments(appointments)
         }
     }
 
     useEffect(() => {
-        if (appointments === null)
+        //if (appointments === null)
         {
             retrieveFinaleAppointments().catch(e=> console.log(e))
         }
