@@ -12,7 +12,7 @@ import {appointmentConverter} from "../Appointments/appointment.class";
 import {AlertComponent} from "../../components/alert.component";
 import * as servicesJson from '../../utils/all-services.json'
 
-const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show, navigation, setShow}: CalendarProps) => {
+const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show, navigation, setShow, setSelectedService}: CalendarProps) => {
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isHourSelectionModalVisible, setHourSelectionVisibility] = useState(false)
@@ -26,7 +26,8 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
         phoneNumber: "",
         rating: 0,
         startTime: "",
-        reviews: []
+        reviews: [],
+        nrOfReviews: 0
     })
     const [selectedAppointmentTime, setSelectedAppointmentTime] = useState("")
     const [selectedAppointmentDate, setSelectedAppointmentDate] = useState("")
@@ -56,6 +57,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
+        setSelectedService("")
     };
 
     const filterForAvailableHours = (appHour: Date[], workingHour: Date, selectedServiceWithDuration: ServiceWithTime) => {
@@ -169,6 +171,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
             setAvailableTimeSlots([])
             setDatePickerVisibility(false)
             setShow(false)
+            setSelectedService("")
         }
     }
 

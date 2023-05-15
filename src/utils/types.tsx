@@ -7,7 +7,8 @@ export type Salon = {
     images: string[],
     startTime: string,
     endTime: string,
-    reviews: Review[]
+    reviews: Review[],
+    nrOfReviews: number
 }
 
 export type CalendarProps = {
@@ -15,7 +16,8 @@ export type CalendarProps = {
     selectedService: string,
     show: boolean,
     navigation: any,
-    setShow: Function
+    setShow: Function,
+    setSelectedService: Function
 }
 
 export type ServiceWithTime = {

@@ -45,7 +45,10 @@ const AddReviewModal = ({salonId, retrieveSalon}: AddReviewProp) => {
         const salonDocument = await getDoc(salonRef)
         if (salonDocument.exists()) {
             updateDoc(salonRef, {
-                reviews: arrayUnion({...review, client: userRef, id: salonDocument.data().reviews.length + 1})
+                reviews: arrayUnion({...review, client: userRef, id: salonDocument.data().reviews.length + 1}),
+                nrOfReviews: salonDocument.data()?.nrOfReviews + 1,
+                // @ts-ignore
+                rating: (salonDocument.data()?.rating + review.stars) / 2
             }).then( async () => {
                 retrieveSalon().then(() => {
                     setLoading(false)

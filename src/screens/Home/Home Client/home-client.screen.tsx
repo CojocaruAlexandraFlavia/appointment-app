@@ -29,19 +29,23 @@ const HomeClient = ({data, navigation}: Props) => {
     }, [data])
 
 
-    const renderItem = useCallback(({item}: ListRenderItemInfo<Salon>) => <Pressable
-        onPress={() => navigation.navigate('Salon', {id: item.id})}>
-        <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]}
-             pr={["0", "5"]} py="2">
-            <HStack space={"sm"}>
-                <Avatar size="48px" source={{uri: item.images[0]}} mr={7}/>
-                <VStack>
-                    <Heading style={{alignSelf: "center", fontSize: 20}}>{item.name}</Heading>
-                    <Rating type="custom" startingValue={item.rating} imageSize={25} readonly/>
-                </VStack>
-            </HStack>
-        </Box>
-    </Pressable>, [])
+    const renderItem = useCallback(({item}: ListRenderItemInfo<Salon>) => {
+        return (<Pressable
+            onPress={() =>
+                navigation.navigate('Salon', {id: item.id})
+            }>
+            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]}
+                 pr={["0", "5"]} py="2">
+                <HStack space={"sm"}>
+                    <Avatar size="48px" source={{uri: item.images[0]}} mr={7}/>
+                    <VStack>
+                        <Heading style={{alignSelf: "center", fontSize: 20}}>{item.name}</Heading>
+                        <Rating type="custom" startingValue={item.rating} imageSize={25} readonly/>
+                    </VStack>
+                </HStack>
+            </Box>
+        </Pressable>)
+    }, [])
 
     // const [showText, setShowText] = useState(true)
     // useEffect(()=> {

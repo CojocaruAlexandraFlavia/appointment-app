@@ -11,6 +11,7 @@ import {salonConverter} from "../../Salon/salon.class";
 import {userConverter} from "../user.class";
 import {Box, FlatList, Heading, HStack, Pressable} from 'native-base';
 import profileStyles from "./profile.styles";
+import {Loading} from "../../../components/activity-indicator.component";
 
 type RecordType = Record<string, number>
 
@@ -23,17 +24,21 @@ const Profile = ({navigation}: any) => {
     const [favoriteSalons, setFavoriteSalons] = useState<Salon[] | null>(null)
     const [favoritesOccurrencesMapping, setFavoritesOccurrencesMapping] = useState<RecordType>({})
 
-    const retrieveUserAppointments = async () => {
+    const retrieveUserAppointments = useCallback(async () => {
         let appointmentList: Appointment[] = []
         const collectionRef = collection(firestore, "appointments")
         const appointmentsQuery = query(collectionRef, where("clientId", "==", user.id))
             .withConverter(appointmentConverter)
         const appointmentsSnapshot = await getDocs(appointmentsQuery)
         appointmentsSnapshot.forEach(documentSnapshot => {
+            console.log("appointment")
+            console.log(documentSnapshot.data())
+
             appointmentList.push({...documentSnapshot.data(), id: documentSnapshot.id})
         })
+
         return appointmentList
-    }
+    }, [user.id])
 
     const buildFavoriteSalonOccurrencesMapping = (salonIds: string[]) => {
         let occurrencesMapping: RecordType = {}
@@ -74,6 +79,7 @@ const Profile = ({navigation}: any) => {
 
     const retrieveUserAppointmentsAndFavoriteSalons = async () => {
         let appointmentList = await retrieveUserAppointments()
+        console.log("profile appointments: " + appointmentList.length)
         setAppointments(appointmentList)
 
         const salonIds = appointmentList.map(app => app.salonId)
@@ -101,13 +107,19 @@ const Profile = ({navigation}: any) => {
         setNrOfReviews(userReviewsNumber)
     }
 
+    const retrieveData = () => {
+        retrieveUserAppointmentsAndFavoriteSalons()
+        retrieveUserReviews()
+    }
+
     useEffect(() => {
-        if (favoriteSalons === null) {
-            retrieveUserAppointmentsAndFavoriteSalons()
-        }
-        if (nrOfReviews === -1) {
-            retrieveUserReviews()
-        }
+        // if (favoriteSalons === null) {
+            //retrieveUserAppointmentsAndFavoriteSalons()
+        //}
+        //if (nrOfReviews === -1) {
+            //()
+        //}
+        retrieveData()
     }, [])
 
     const renderSalonItem = useCallback(({item}: ListRenderItemInfo<Salon>) => <Pressable
@@ -129,64 +141,70 @@ const Profile = ({navigation}: any) => {
     return (
         <SafeAreaView style={styles.container}>
 
-            <View style={styles.userInfoSection}>
-                <View style={{flexDirection: 'row', marginTop: 15}}>
-                    <Avatar.Image
-                        source={ !user.profilePicture? { uri: 'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg'}:
-                            { uri: user.profilePicture} }
-                        size={80}
-                    />
-                    <View style={{marginLeft: 20}}>
-                        <Title style={[styles.title, { marginTop:15, marginBottom: 5, }]} >
-                            {user.firstName} {user.lastName}
-                        </Title>
-                        <Caption style={styles.caption}>@{user.username}</Caption>
+            {
+                nrOfReviews == -1? <Loading/> : <View>
+                    <View style={styles.userInfoSection}>
+                        <View style={{flexDirection: 'row', marginTop: 15}}>
+                            <Avatar.Image
+                                source={ !user.profilePicture? { uri: 'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg'}:
+                                    { uri: user.profilePicture} }
+                                size={80}
+                            />
+                            <View style={{marginLeft: 20}}>
+                                <Title style={[styles.title, { marginTop:15, marginBottom: 5, }]} >
+                                    {user.firstName} {user.lastName}
+                                </Title>
+                                <Caption style={styles.caption}>@{user.username}</Caption>
+                            </View>
+                        </View>
+                    </View>
+
+                    <View style={styles.userInfoSection}>
+                        <View style={styles.row}>
+                            <Icon name="map-marker-radius" color="#777777" size={20}/>
+                            <Text style={{color:"#777777", marginLeft: 20}}>{user.city}</Text>
+                        </View>
+                        <View style={styles.row}>
+                            <Icon name="phone" color="#777777" size={20}/>
+                            <Text style={{color:"#777777", marginLeft: 20}}>{user.phoneNumber}</Text>
+                        </View>
+                        <View style={styles.row}>
+                            <Icon name="email" color="#777777" size={20}/>
+                            <Text style={{color:"#777777", marginLeft: 20}}>{user.email}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.infoBoxWrapper}>
+                        <View style={[styles.infoBox, {
+                            borderRightColor: '#dddddd',
+                            borderRightWidth: 1
+                        }]}>
+                            <Title>{appointments.length}</Title>
+                            <Caption>Appointments</Caption>
+                        </View>
+                        <View style={styles.infoBox}>
+                            <Title>{nrOfReviews === -1? 0 : nrOfReviews}</Title>
+                            <Caption>Reviews</Caption>
+                        </View>
+                    </View>
+
+                    <View style={styles.menuWrapper}>
+                        <TouchableRipple onPress={() => setShowFavorites(!showFavorites)}>
+                            <View style={styles.menuItem}>
+                                <Icon name="heart-outline" color="#FF6347" size={25}/>
+                                <Text style={styles.menuItemText}>Your Favorites</Text>
+                            </View>
+                        </TouchableRipple>
+                        {
+                            Object.keys(favoritesOccurrencesMapping).length > 0 && showFavorites? <View style={styles.menuItem}>
+                                <FlatList data={favoriteSalons} renderItem={renderSalonItem} keyExtractor={item => item.id.toString()}/>
+                            </View>: null
+                        }
                     </View>
                 </View>
-            </View>
+            }
 
-            <View style={styles.userInfoSection}>
-                <View style={styles.row}>
-                    <Icon name="map-marker-radius" color="#777777" size={20}/>
-                    <Text style={{color:"#777777", marginLeft: 20}}>{user.city}</Text>
-                </View>
-                <View style={styles.row}>
-                    <Icon name="phone" color="#777777" size={20}/>
-                    <Text style={{color:"#777777", marginLeft: 20}}>{user.phoneNumber}</Text>
-                </View>
-                <View style={styles.row}>
-                    <Icon name="email" color="#777777" size={20}/>
-                    <Text style={{color:"#777777", marginLeft: 20}}>{user.email}</Text>
-                </View>
-            </View>
 
-            <View style={styles.infoBoxWrapper}>
-                <View style={[styles.infoBox, {
-                    borderRightColor: '#dddddd',
-                    borderRightWidth: 1
-                }]}>
-                    <Title>{appointments? appointments.length: 0}</Title>
-                    <Caption>Appointments</Caption>
-                </View>
-                <View style={styles.infoBox}>
-                    <Title>{nrOfReviews === -1? 0 : nrOfReviews}</Title>
-                    <Caption>Reviews</Caption>
-                </View>
-            </View>
-
-            <View style={styles.menuWrapper}>
-                <TouchableRipple onPress={() => setShowFavorites(!showFavorites)}>
-                    <View style={styles.menuItem}>
-                        <Icon name="heart-outline" color="#FF6347" size={25}/>
-                        <Text style={styles.menuItemText}>Your Favorites</Text>
-                    </View>
-                </TouchableRipple>
-                {
-                    Object.keys(favoritesOccurrencesMapping).length > 0 && showFavorites? <View style={styles.menuItem}>
-                        <FlatList data={favoriteSalons} renderItem={renderSalonItem} keyExtractor={item => item.id.toString()}/>
-                    </View>: null
-                }
-            </View>
         </SafeAreaView>
     );
 };

@@ -1,78 +1,108 @@
-import {Avatar, Box, Button, Center, FlatList, FormControl, Heading, HStack, Icon, Link, Modal, Radio, ScrollView, SectionList, Spacer, Text, VStack, WarningOutlineIcon
-} from "native-base";
+import {Box, Center, FlatList, Heading, HStack, ScrollView, Spacer, Text, View, VStack} from "native-base";
+import * as React from "react";
 import {ReactElement, useCallback, useEffect, useState} from "react";
-import { Rating } from "react-native-ratings";
-import {Review, Salon, ServicesListData, ServiceWithTime} from "../../utils/types";
-import * as React from 'react';
-import {Linking, ListRenderItemInfo, SectionListData, SectionListRenderItemInfo, View} from 'react-native';
+import {Rating} from "react-native-ratings";
+import {Review, Salon, User} from "../../utils/types";
+import {ListRenderItemInfo} from 'react-native';
 import 'react-native-gesture-handler';
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {ReviewsScreenRouteProp} from "../../navigation/navigator.types";
 import {useRoute} from "@react-navigation/native";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {collection, doc, getDoc, getDocs, query, where} from "firebase/firestore";
+import {firestore} from "../../utils/firebase";
+import {useUserDataContext} from "../../store/user-data.context";
+import {SalonClass, salonConverter} from "../Salon/salon.class";
+import {userConverter} from "../Profile/user.class";
+import {ReviewClass} from "../Salon/review.class";
+import salon from "../Salon";
 
-export const Reviews: React.FC = ({navigation}: any): ReactElement => {
+export const Reviews: React.FC = (): ReactElement => {
 
-    const [reviews] = useState<Review[]>([
-        {
-            salonName:"Salon Salon1",
-            id: "1",
-            stars: 4,
-            message: "Superb, I had an amazing experience at this salon!",
-            client: {
-                id: "2",
-                email: "email@email.com",
-                firstName: "John",
-                lastName: "Smith",
-                phoneNumber: "+343654765",
-                role: "CLIENT",
-                profilePicture: 'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg',
-                city: "Bucharest"
+    // const [reviews, setReviews] = useState<Review[]>([])
+    const [error, setError] = useState(null)
+    const [filteredSalons, setFilteredSalons] = useState<Salon[]>([])
+
+    const {user} = useUserDataContext()
+
+    const retrieveSalonsWithReviews = async () => {
+        let firestoreSalons: SalonClass[] = []
+
+        try {
+            const collectionRef = collection(firestore, "salons")
+            const salonsQuery = query(collectionRef, where("nrOfReviews", ">", 0))
+                .withConverter(salonConverter)
+            const result = await getDocs(salonsQuery)
+            const userDocRef = doc(firestore, "users", user.id).withConverter(userConverter)
+
+            result.forEach(documentSnapshot => {
+                const filteredReviews = documentSnapshot.data().reviews.filter(review => review.client.path == userDocRef.path)
+                if (filteredReviews.length > 0) {
+                    firestoreSalons.push({...documentSnapshot.data(), id: documentSnapshot.id})
+                }
+            })
+
+            let salonList: Salon[] = []
+            // @ts-ignore
+            for (const salon of firestoreSalons) {
+                let reviewList: Review[] = []
+                salon.reviews.forEach(review => reviewList.push({
+                    client: {} as User,
+                    id: review.id,
+                    message: review.message,
+                    stars: review.stars
+                }))
+                // @ts-ignore
+                salonList.push({
+                    id: salon.id,
+                    name: salon.name,
+                    phoneNumber: "",
+                    location: "",
+                    rating: salon.rating,
+                    endTime: "",
+                    images: [],
+                    startTime: "",
+                    // @ts-ignore
+                    reviews: reviewList
+                })
             }
-        },
-        {
-            salonName:"Salon Salon2",
-            id: "2",
-            stars: 4.5,
-            message: "professional team and relaxing atmosphere",
-            client: {
-                id: "1",
-                email: "email@email.com",
-                firstName: "Maria",
-                lastName: "Kim",
-                phoneNumber: "+343654765",
-                role: "CLIENT",
-                profilePicture: 'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg',
-                city: "Brasov"
-            }
+            setFilteredSalons(salonList)
+    } catch (e: any) {
+        console.log("Error at retrieving reviews: " + e)
+        setError(e)
         }
-    ])
+    }
 
-    const route = useRoute<ReviewsScreenRouteProp>()
+    useEffect(() => {
+            retrieveSalonsWithReviews()
+    }, [])
 
     const renderItemReview = useCallback(({item}: ListRenderItemInfo<Review>) =>
         (
-            <ScrollView>
                 <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
                     <HStack space={[3, 4]} justifyContent="space-between">
-                        {/*<Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />*/}
                         <MaterialCommunityIcons alignSelf={"center"} name="hair-dryer-outline" size={24} color="black" />
                         <VStack alignItems={"flex-start"}>
-                            {/*<Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>*/}
-                            <Text style={{fontSize:15}} mb={1}> {"SalonName: ..."} </Text>
                             <Rating type="custom" startingValue={item.stars} imageSize={16} readonly />
                             <Text style={{fontSize:13}}>{item.message}</Text>
                         </VStack>
                         <Spacer />
                     </HStack>
                 </Box>
-            </ScrollView>
         ), [])
 
     return(
         <Center w="100%">
-                {/*<Heading italic bold alignSelf={"center"} mt={3} mb={4}>My Reviews</Heading>*/}
-                <FlatList data={reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
+            <ScrollView>
+                {
+                    filteredSalons.map((salon, index) => <View key={index}>
+                            <Text style={{fontSize:15}} mb={1}> {"SalonName: " + salon.name} </Text>
+                            <ScrollView horizontal={true}>
+                                <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
+                            </ScrollView>
+                        </View>
+                    )
+                }
+            </ScrollView>
         </Center>
     )
 }

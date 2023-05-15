@@ -17,7 +17,7 @@ import {
     WarningOutlineIcon,
     Icon
 } from "native-base";
-import {Text, TouchableOpacity} from 'react-native';
+import {BackHandler, Text, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import React, {ReactElement, useCallback, useEffect, useRef, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
@@ -47,19 +47,22 @@ import * as servicesJson from '../../utils/all-services.json'
 // } from 'react-native-reanimated';
 import { StyleSheet, Animated, TouchableWithoutFeedback, Image, Easing } from 'react-native';
 
+const emptyState: Salon = {
+    nrOfReviews: 0,
+    endTime: "",
+    id: "",
+    images: [],
+    location: "",
+    name: "",
+    phoneNumber: "",
+    rating: 0,
+    startTime: "",
+    reviews: []
+}
+
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
-    const [salon, setSalon] = useState<Salon>({
-        endTime: "",
-        id: "",
-        images: [],
-        location: "",
-        name: "",
-        phoneNumber: "",
-        rating: 0,
-        startTime: "",
-        reviews: []
-    })
+    const [salon, setSalon] = useState<Salon>(emptyState)
 
     const [allSalonServices, setAllSalonServices] = useState<ServicesListData[]>([])
 
@@ -69,7 +72,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     const [formValidation, setFormValidation] = useState(true)
 
     const route = useRoute<SalonScreenRouteProp>()
-    const { id } = route.params;
+    let { id } = route.params;
 
     const retrieveAllServices = useCallback(() =>  {
         let listData: ServicesListData[] = []
@@ -118,12 +121,32 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
         } catch (e: any) {
             console.log("error " + e)
         }
-    }, [])
+    }, [id])
+
 
     useEffect(() => {
         retrieveSalon().catch(e => console.log(e))
         retrieveAllServices()
     }, [id])
+
+    useEffect(() => {
+        const backAction = () => {
+            setShowSelectServiceModal(false)
+            setShowCalendar(false)
+            setSelectedService("")
+            setFormValidation(true)
+            navigation.navigate("HomeClient")
+            setSalon(emptyState)
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+
+        return () => backHandler.remove();
+    }, []);
 
     const handleValidateOption = () => {
         const validOption = selectedService !== ""
@@ -168,49 +191,28 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const styles = salonStyles()
 
-    // const handleAnimation = () => {
-    //     Animated.timing(animation, {
-    //         toValue:1,
-    //         duration: 2000
-    //     }).start( () => {
-    //         Animated.timing(animation,{
-    //             toValue:0,
-    //             duration: 2000
-    //         }).start()
-    //     })
-    // }
-    // const [animation, setAnimation] = useState(new Animated.Value(0))
-    // const boxInterpolation =  animation.interpolate({
-    //     inputRange: [0, 1],
-    //     outputRange:["rgb(90,210,244)" , "rgb(224,82,99)"]
-    // })
-    // const animatedStyle = {
-    //     backgroundColor: boxInterpolation
-    // }
-
-
-        //animation for clapping button
-        const [countClaps, setCountClaps]=useState(1);
-        const [claps, setClaps]=useState([]);
-        const clapHand=()=>{
-            setCountClaps(
-                countClaps+1
-            )
-            // @ts-ignore
-            claps.push(countClaps);
-        }
-        const clapIcon = countClaps > 1 ? <Image source={require("../../../assets/clapping.png")} style={styles.img} />
-            : <Image source={require("../../../assets/clap.png")} style={styles.img} />
-        const RenderBubble=()=>{
-            return(
-                claps.map(newCount=><BubbleHand animationCompleted={animationCompleted} newCount={newCount}  key={newCount}/>)
-            )
-        }
-        const animationCompleted=(newCount: any)=>{
-            // @ts-ignore
-            claps.splice(claps.indexOf(newCount), 1)
-            setClaps([])
-        }
+    //animation for clapping button
+    const [countClaps, setCountClaps]=useState(1);
+    const [claps, setClaps]=useState([]);
+    const clapHand=()=>{
+        setCountClaps(
+            countClaps+1
+        )
+        // @ts-ignore
+        claps.push(countClaps);
+    }
+    const clapIcon = countClaps > 1 ? <Image source={require("../../../assets/clapping.png")} style={styles.img} />
+        : <Image source={require("../../../assets/clap.png")} style={styles.img} />
+    const RenderBubble=()=>{
+        return(
+            claps.map(newCount=><BubbleHand animationCompleted={animationCompleted} newCount={newCount}  key={newCount}/>)
+        )
+    }
+    const animationCompleted=(newCount: any)=>{
+        // @ts-ignore
+        claps.splice(claps.indexOf(newCount), 1)
+        setClaps([])
+    }
 
     const BubbleHand=(props:any)=>{
         const [bubbleAnimaiton, setBubbAnimation] = useState(new Animated.Value(0));
@@ -248,42 +250,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             </Animated.View>
         )
     }
-
-    //animation for button
-    // const [scaleValue] = useState(new Animated.Value(1));
-    // const animateButton = () =>{
-    //     Animated.timing(scaleValue, {
-    //         toValue: 0.8,
-    //         duration: 200,
-    //         useNativeDriver: true
-    //     }).start(() => {
-    //         Animated.timing(scaleValue, {
-    //             toValue: 1,
-    //             duration: 200,
-    //             useNativeDriver: true
-    //         }).start();
-    //     });
-    // };
-    // const [rotateValue] = useState(new Animated.Value(0));
-    // const animateButtonRotate = () =>{
-    //     Animated.timing(rotateValue, {
-    //         toValue: 1,
-    //         duration: 500,
-    //         useNativeDriver: true
-    //     }).start(() => {
-    //         Animated.timing(rotateValue, {
-    //             toValue: 0,
-    //             duration: 500,
-    //             useNativeDriver: true
-    //         }).start();
-    //     });
-    // };
-    // const rotateInterpolate = rotateValue.interpolate({
-    //     inputRange: [0,1],
-    //     outputRange: ['0deg', '360deg']
-    // });
-
-
 
     return(
         <ScrollView>
@@ -350,20 +316,8 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                             </VStack>
                         </HStack>
 
-                        <CalendarPicker salonId={id} selectedService={selectedService}
+                        <CalendarPicker salonId={id} selectedService={selectedService} setSelectedService={setSelectedService}
                                         setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
-
-                        {/*<TouchableWithoutFeedback onPress={animateButton}>*/}
-                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: scaleValue}]}]}>*/}
-                        {/*        <Text style={styles.buttonText}>Clients Experience</Text>*/}
-                        {/*    </Animated.View>*/}
-                        {/*</TouchableWithoutFeedback>*/}
-
-                        {/*<TouchableWithoutFeedback onPress={animateButtonRotate}>*/}
-                        {/*    <Animated.View  style={[styles.button, {transform: [{ scale: rotateInterpolate}]}]}>*/}
-                        {/*        <Text style={styles.buttonText}>Clients Experience</Text>*/}
-                        {/*    </Animated.View>*/}
-                        {/*</TouchableWithoutFeedback>*/}
 
                         <Heading mt={3} italic bold  mb={2}>Reviews</Heading>
                         {

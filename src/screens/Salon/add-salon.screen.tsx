@@ -31,7 +31,8 @@ const emptySalonState: Salon = {
     id: "",
     rating: 0.0,
     images: [],
-    reviews: []
+    reviews: [],
+    nrOfReviews: 0
 }
 
 const AddSalon = () => {
@@ -113,7 +114,7 @@ const AddSalon = () => {
             try {
                 const collectionRef = collection(firestore, "salons").withConverter(salonConverter);
                 const addedSalon = await addDoc(collectionRef,
-                    new SalonClass("", salon.name, salon.location, salon.phoneNumber, 0.0, salon.startTime, salon.endTime, "", []))
+                    new SalonClass("", salon.name, salon.location, salon.phoneNumber, 0.0, salon.startTime, salon.endTime, "", [], 0))
                 for (let i = 1; i < images.length; i++) {
                     uploadSalonImageAsync(images[i], addedSalon.id, `${i+1}`)
                 }

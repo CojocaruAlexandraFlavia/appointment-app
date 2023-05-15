@@ -5,12 +5,13 @@ import { ConfirmAppointmentRouteProp } from "../../../navigation/navigator.types
 import { useUserDataContext } from "../../../store/user-data.context";
 import { Loading } from "../../../components/activity-indicator.component";
 import confirmAppointmentStyle from "./confirm-appointment.style";
-import {addDoc, collection, doc, getDoc} from "firebase/firestore";
+import {addDoc, collection, doc, getDoc, getDocs, query, where} from "firebase/firestore";
 import { firestore } from "../../../utils/firebase";
 import { Salon } from "../../../utils/types";
 import {salonConverter} from "../../Salon/salon.class";
+import {userConverter} from "../../Profile/user.class";
 
-export const ConfirmAppointment = () => {
+export const ConfirmAppointment = ({navigation}: any) => {
 
     const route = useRoute<ConfirmAppointmentRouteProp>()
     const { service, time, date, idSalon } = route.params;
@@ -23,7 +24,6 @@ export const ConfirmAppointment = () => {
     const [firebaseError, setFirebaseError] = useState("")
 
     const retrieveSalon = useCallback(async () => {
-        console.log(idSalon)
         try {
             const docRef = doc(firestore, "salons", idSalon).withConverter(salonConverter);
             const salonDoc = await getDoc(docRef)
@@ -40,6 +40,14 @@ export const ConfirmAppointment = () => {
         retrieveSalon().then(() => console.log("retrieve salon id: " + salon?.id)).catch(e => console.log(e))
     }, [])
 
+    const retrieveUserByFieldFromFirestore = async (field: string, value: string) => {
+        const collectionRef = collection(firestore, "users");
+        const firestoreUserQuery = query(collectionRef, where(field, "==", value)).withConverter(userConverter);
+        const firestoreUserSnapshot = await getDocs(firestoreUserQuery)
+        const userDocumentSnapshot = firestoreUserSnapshot.docs[0]
+        return {...userDocumentSnapshot.data(), id: userDocumentSnapshot.id}
+    }
+
     const confirmAppointment = async () => {
         try {
             const collectionRef = collection(firestore, "appointments");
@@ -48,11 +56,13 @@ export const ConfirmAppointment = () => {
                 date: date,
                 time: time,
                 clientId: user.id,
-                serviceName: salon?.name
+                serviceName: service
             });
             setShowConfirmationModal(true)
+            // const updatedUser = retrieveUserByFieldFromFirestore("email", user.email)
             setTimeout(() => {
                 setShowConfirmationModal(false)
+                navigation.navigate("Salon", {id: salon?.id})
             }, 3000)
         } catch (e) {
             const errorCode = (e as { code: string }).code

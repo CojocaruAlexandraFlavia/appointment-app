@@ -4,7 +4,8 @@ import {ReviewClass} from "./review.class";
 
 export class SalonClass {
     constructor(readonly id: string, readonly name: string, readonly location: string, readonly phoneNumber: string, readonly rating: number,
-                readonly startTime: string, readonly endTime: string, readonly image: string, readonly reviews: ReviewClass[]) {}
+                readonly startTime: string, readonly endTime: string, readonly image: string, readonly reviews: ReviewClass[],
+                readonly nrOfReviews: number) {}
 }
 
 export const salonConverter: FirestoreDataConverter<SalonClass> = {
@@ -17,7 +18,8 @@ export const salonConverter: FirestoreDataConverter<SalonClass> = {
             startTime: salon.startTime,
             endTime: salon.endTime,
             image: salon.image,
-            reviews: salon.reviews
+            reviews: salon.reviews,
+            nrOfReviews: salon.nrOfReviews
         };
     },
     fromFirestore(
@@ -25,6 +27,6 @@ export const salonConverter: FirestoreDataConverter<SalonClass> = {
     ): SalonClass {
         const data = snapshot.data(options)!
         return new SalonClass(data.id, data.name, data.location, data.phoneNumber, data.rating, data.startTime,
-            data.endTime, data.image, data.reviews)
+            data.endTime, data.image, data.reviews, data.nrOfReviews)
     }
 };
