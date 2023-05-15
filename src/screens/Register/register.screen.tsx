@@ -51,7 +51,7 @@ const Register = ({navigation}: any): ReactElement => {
         const headers = new Headers();
         headers.append("apikey", process.env.EXTERNAL_API_AUTH_TOKEN);
 
-        const requestOptions = {
+        const requestOptions: RequestInit = {
             method: 'GET',
             redirect: 'follow',
             headers: headers
