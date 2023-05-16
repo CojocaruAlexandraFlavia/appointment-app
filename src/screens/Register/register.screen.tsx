@@ -188,7 +188,7 @@ const Register = ({navigation}: any): ReactElement => {
 
                     <FormControl isRequired isInvalid={errors.email !== ""}>
                         <FormControl.Label _text={{bold: true}} >Email</FormControl.Label>
-                        <Input value={credentials.email} isInvalid={errors.email !== ""}
+                        <Input value={credentials.email} isInvalid={errors.email !== ""} size={5}
                                InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
                                onChangeText={text => onChangeText("email", text)}/>
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
@@ -196,7 +196,7 @@ const Register = ({navigation}: any): ReactElement => {
 
                     <FormControl isRequired isInvalid={errors.password !== ""}>
                         <FormControl.Label _text={{bold: true}}>Password</FormControl.Label>
-                        <Input value={credentials.password} isInvalid={errors.password !== ""}
+                        <Input value={credentials.password} isInvalid={errors.password !== ""} size={5}
                                onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"} InputLeftElement={
                             <Pressable onPress={() => setShowPassword(!showPassword)}>
                                 <Icon as={
@@ -213,21 +213,23 @@ const Register = ({navigation}: any): ReactElement => {
 
                      <FormControl isRequired isInvalid={errors.firstName !== ""}>
                         <FormControl.Label _text={{bold: true}} >First Name</FormControl.Label>
-                        <Input value={credentials.firstName} isInvalid={errors.firstName !== ""} onChangeText={text => onChangeText("firstName", text)}/>
+                        <Input value={credentials.firstName} isInvalid={errors.firstName !== ""} size={5}
+                               onChangeText={text => onChangeText("firstName", text)}/>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>First Name should contain at least 3 characters. </FormControl.HelperText>
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.firstName}</FormControl.ErrorMessage>
                     </FormControl>
 
                     <FormControl isRequired isInvalid={errors.lastName !== ""}>
                         <FormControl.Label _text={{bold: true}} >Last Name</FormControl.Label>
-                        <Input value={credentials.lastName} isInvalid={errors.lastName !== ""} onChangeText={text => onChangeText("lastName", text)}/>
+                        <Input value={credentials.lastName} isInvalid={errors.lastName !== ""} size={5}
+                               onChangeText={text => onChangeText("lastName", text)}/>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>Last Name should contain at least 3 characters. </FormControl.HelperText>
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.lastName}</FormControl.ErrorMessage>
                     </FormControl>
 
                     <FormControl isRequired isInvalid={errors.phoneNumber !== ""}>
                         <FormControl.Label _text={{bold: true}} >Phone Number</FormControl.Label>
-                        <Input value={credentials.phoneNumber}
+                        <Input value={credentials.phoneNumber} size={5}
                                InputLeftElement={ <Icon as={<Feather name="phone" />} ml={2}/>}
                                isInvalid={errors.phoneNumber !== ""} onChangeText={text => onChangeText("phoneNumber", text)}/>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>Phone Number should contain 10 characters. </FormControl.HelperText>
@@ -236,7 +238,7 @@ const Register = ({navigation}: any): ReactElement => {
 
                     <FormControl isRequired isInvalid={errors.city !== ""}>
                         <FormControl.Label _text={{bold: true}} >City</FormControl.Label>
-                        <Input value={credentials.city}
+                        <Input value={credentials.city} size={5}
                                InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}
                                isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>
@@ -265,7 +267,7 @@ const Register = ({navigation}: any): ReactElement => {
                     </FormControl>
 
                     <Checkbox alignItems="flex-start" defaultIsChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
-                        <HStack alignItems="center">
+                        <HStack alignItems="center" marginBottom={4} marginTop={4}>
                             <Text fontSize="sm" color="coolGray.400" pl="2">
                                 I accept the{" "}
                             </Text>

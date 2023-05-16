@@ -46,6 +46,7 @@ import * as servicesJson from '../../utils/all-services.json'
 //     withTiming,
 // } from 'react-native-reanimated';
 import { StyleSheet, Animated, TouchableWithoutFeedback, Image, Easing } from 'react-native';
+import {yellow200} from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
 
 const emptyState: Salon = {
     nrOfReviews: 0,
@@ -137,6 +138,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             setFormValidation(true)
             navigation.navigate("HomeClient")
             setSalon(emptyState)
+            setCountClaps(1)
             return true;
         };
 
@@ -254,16 +256,17 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     return(
         <ScrollView>
             {
-                salon.images.length === 0? <View h="100%"><Loading/></View>: <Center w="100%">
-                    <Box safeArea p="2" py="8" w="100%" maxW="290">
-                        <HStack justifyContent={"space-between"} mb={3} >
+                salon.images.length === 0? <View h="100%"><Loading/></View>: <><Center w="100%">
+                    <Box safeArea p="2" py="8" w="100%" maxW="290" marginTop={-19.5}>
+                        <HStack justifyContent={"space-between"} mb={3}>
 
-                                {/*<TouchableWithoutFeedback onPress={handleAnimation}>*/}
-                                {/*    <Animated.View style={{...styles.box, ...animatedStyle}} />*/}
-                                {/*</TouchableWithoutFeedback>*/}
+                            {/*<TouchableWithoutFeedback onPress={handleAnimation}>*/}
+                            {/*    <Animated.View style={{...styles.box, ...animatedStyle}} />*/}
+                            {/*</TouchableWithoutFeedback>*/}
 
                             <Heading size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>
-                            <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating} imageSize={20} readonly />
+                            <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating}
+                                    imageSize={20} readonly/>
                         </HStack>
 
                         <SliderBox alignSelf={"center"} ImageComponentStyle={{borderRadius: 15, width: '75%'}} w="90%"
@@ -272,15 +275,19 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                             <Modal.Content flexGrow={1}>
                                 <Modal.CloseButton/>
                                 <Modal.Header>Choose service</Modal.Header>
-                                <Modal.Body >
+                                <Modal.Body>
                                     <FormControl maxW="300" isInvalid={!formValidation}>
-                                        <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)} value={selectedService}>
+                                        <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)}
+                                                     value={selectedService}>
                                             <ScrollView horizontal={true}>
-                                                <SectionList sections={allSalonServices} keyExtractor={(item) => item.name}
-                                                             renderItem={ renderItemServiceList } renderSectionHeader={ renderHeaderServiceList } />
+                                                <SectionList sections={allSalonServices}
+                                                             keyExtractor={(item) => item.name}
+                                                             renderItem={renderItemServiceList}
+                                                             renderSectionHeader={renderHeaderServiceList}/>
                                             </ScrollView>
                                         </Radio.Group>
-                                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Please make a selection!</FormControl.ErrorMessage>
+                                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs"/>}>Please make
+                                            a selection!</FormControl.ErrorMessage>
                                     </FormControl>
                                 </Modal.Body>
                                 <Modal.Footer>
@@ -289,74 +296,74 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                             </Modal.Content>
                         </Modal>
 
-                        <Button mt={4} mb={2} onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
+                        <Button mt={5} mb={5} borderWidth={1} borderBottomWidth={2} borderColor={"#f1c40f"}
+                                onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
 
-                        <HStack>
+                        <HStack marginBottom={1}>
                             <VStack>
                                 <HStack mb={2}>
                                     <Icon as={<Feather name="phone"/>} size={25} name="phone" color="black"/>
                                     <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}}
                                           _light={{_text: {color: "primary.900",},}}
                                           _dark={{_text: {color: "primary.500",},}}
-                                          onPress={doCall}>{salon?.phoneNumber}
+                                          onPress={doCall}> {salon?.phoneNumber}
                                     </Link>
                                 </HStack>
                                 <HStack>
                                     <Icon as={<Entypo name="location"/>} size={25} name="location" color="black"/>
-                                    <Text>{salon.location}</Text>
+                                    <Text style={styles.salonProfileItemText}>{salon.location}</Text>
                                 </HStack>
-                            </VStack>
-                            <VStack>
-                                <TouchableRipple onPress={onShare}>
-                                    <View style={styles.menuItem}>
-                                        <Icon as={<MaterialCommunityIcons name="share-outline"/>} size={25}/>
-                                        <Text style={styles.menuItemText}>Share details</Text>
-                                    </View>
-                                </TouchableRipple>
+                                <HStack>
+                                    <TouchableRipple onPress={onShare}>
+                                        <View flexDirection={"row"} marginTop={3}>
+                                            <Icon as={<MaterialCommunityIcons name="share-outline"/>} color={"black"} size={28}/>
+                                            <Text style={styles.salonProfileItemText}>Share details</Text>
+                                        </View>
+                                    </TouchableRipple>
+                                </HStack>
                             </VStack>
                         </HStack>
 
-                        <CalendarPicker salonId={id} selectedService={selectedService} setSelectedService={setSelectedService}
+                        <CalendarPicker salonId={id} selectedService={selectedService}
+                                        setSelectedService={setSelectedService}
                                         setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
 
-                        <Heading mt={3} italic bold  mb={2}>Reviews</Heading>
-                        {
-                            salon.reviews.length > 0?
-                                <View>
-                                    {
-                                        salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
-                                                                                borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-                                            <HStack space={[2, 3]} justifyContent="space-between">
-                                                <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
-                                                <VStack alignItems={"flex-start"}>
-                                                    {/*@ts-ignore*/}
-                                                    <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                                                    <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
-                                                    <Text style={{fontSize:12}}>{item.message}</Text>
-                                                </VStack>
-                                                <Spacer />
-                                            </HStack>
-                                        </Box>)
-                                    }
-                                </View>: <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>
-                        }
+                        <Heading mt={3} italic bold marginBottom={2} mb={2}>Reviews</Heading>
+                        {salon.reviews.length > 0 ?
+                            <View>
+                                {salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" marginBottom={2}
+                                                                  _dark={{borderColor: "muted.50"}}
+                                                                  borderColor="muted.800" pl={["0", "4"]}
+                                                                  pr={["0", "5"]} py="2">
+                                    <HStack space={[2, 3]} justifyContent="space-between">
+                                        <Avatar alignSelf={"center"} size="48px"
+                                                source={{uri: item.client.profilePicture}}/>
+                                        <VStack alignItems={"flex-start"}>
+                                            {/*@ts-ignore*/}
+                                            <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
+                                            <Rating type="custom" startingValue={item.stars} imageSize={15} readonly/>
+                                            <Text style={{fontSize: 12}}>{item.message}</Text>
+                                        </VStack>
+                                        <Spacer/>
+                                    </HStack>
+                                </Box>)}
+                            </View> : <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>}
                         <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
 
+                        <View style={styles.container}>
+                            {RenderBubble()}
+                            <TouchableOpacity
+                                style={styles.clapButton}
+                                activeOpacity={0.8}
+                                onPress={clapHand}
+                            >
+                                {clapIcon}
+                            </TouchableOpacity>
+                        </View>
+
                     </Box>
-
-                    <View style={styles.container}>
-                        {RenderBubble()}
-                        <TouchableOpacity
-                            style={styles.clapButton}
-                            activeOpacity={0.8}
-                            onPress={clapHand}
-                        >
-                            {clapIcon}
-                        </TouchableOpacity>
-                    </View>
-
-
                 </Center>
+                </>
             }
         </ScrollView>
     )

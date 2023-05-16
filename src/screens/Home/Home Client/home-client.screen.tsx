@@ -120,7 +120,7 @@ const HomeClient = ({data, navigation}: Props) => {
             <Box safeArea p="3" py="12" w="100%" maxW="290">
 
                 <View style={styles.container}>
-                <Heading size={"lg"} mb={4} alignSelf={"center"}>Salons</Heading>
+                <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
                 {
                     allSalons.length > 0 ?
                         <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}>

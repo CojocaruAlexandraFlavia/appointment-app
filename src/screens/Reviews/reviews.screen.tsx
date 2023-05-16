@@ -78,24 +78,26 @@ export const Reviews: React.FC = (): ReactElement => {
 
     const renderItemReview = useCallback(({item}: ListRenderItemInfo<Review>) =>
         (
-                <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-                    <HStack space={[3, 4]} justifyContent="space-between">
+                <Box style={{ marginRight: 90,  marginLeft: 10, marginTop:2 }} marginBottom={2} width={200}
+                     _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+                    <HStack space={[4, 5]} justifyContent="space-between">
                         <MaterialCommunityIcons alignSelf={"center"} name="hair-dryer-outline" size={24} color="black" />
                         <VStack alignItems={"flex-start"}>
                             <Rating type="custom" startingValue={item.stars} imageSize={16} readonly />
                             <Text style={{fontSize:13}}>{item.message}</Text>
                         </VStack>
-                        <Spacer />
+                        <Spacer  />
                     </HStack>
                 </Box>
         ), [])
 
     return(
-        <Center w="100%">
+        <Center w="100%" >
             <ScrollView>
                 {
-                    filteredSalons.map((salon, index) => <View key={index}>
-                            <Text style={{fontSize:15}} mb={1}> {"SalonName: " + salon.name} </Text>
+                    filteredSalons.map((salon, index) =>
+                        <View key={index} borderBottomWidth="1"  marginBottom={2}>
+                            <Text italic style={{fontSize:15, fontWeight: 'bold'}} mb={1}> {"Salon name:   " + salon.name} </Text>
                             <ScrollView horizontal={true}>
                                 <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
                             </ScrollView>

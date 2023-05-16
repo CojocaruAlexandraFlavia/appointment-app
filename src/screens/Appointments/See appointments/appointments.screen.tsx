@@ -112,12 +112,12 @@ export const Appointments: React.FC = ({navigation}: any): ReactElement => {
 
     const renderAppointmentItem = useCallback(({item}: ListRenderItemInfo<Appointment>) =>
             <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
-                 borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+                 borderColor="muted.800" pl={["0", "2"]} pr={["0", "2"]} py="2">
                 <HStack space={[4, 5]} justifyContent="space-between">
                     <Feather alignSelf={"center"} name="check-circle" size={20} color="black" />
                     <VStack alignItems={"flex-start"}>
-                        <Text italic mb={1} style={{fontSize:15}}>Service: {item.serviceName}</Text>
-                        <Text mb={1} style={{fontSize:15}}>Date: {item.date}     Time: {item.time}</Text>
+                        <Text italic mb={1} style={{fontSize:15, fontWeight: 'bold'}} >Service:  {item.serviceName}</Text>
+                        <Text mb={1} style={{fontSize:15}}>Date: {item.date}                 Time: {item.time}</Text>
                     </VStack>
                     <Spacer />
                 </HStack>

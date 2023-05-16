@@ -195,7 +195,8 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
 
                     <FormControl isInvalid={errors.email !== ""}>
                         <FormControl.Label>Email</FormControl.Label>
-                        <Input w={{base: "100%", md: "25%"}} size={5} color="muted.400"
+                        <Input w={{base: "100%", md: "25%"}} size={5}
+                               // color="muted.400"
                                InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
                                value={credentials.email}  isInvalid={errors.email !== ""}
                                onChangeText={text => onChangeText("email", text)}/>
@@ -204,16 +205,18 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
 
                     <FormControl isInvalid={errors.password !== ""}>
                         <FormControl.Label>Password</FormControl.Label>
-                        <Input w={{ base: "100%", md: "25%"}} value={credentials.password} isInvalid={errors.password !== ""} 
-                            onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"} InputLeftElement={
+                        <Input w={{ base: "100%", md: "25%"}} size={5}
+                               value={credentials.password} isInvalid={errors.password !== ""}
+                               onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"}
+                               InputLeftElement={
                             <Pressable onPress={() => setShowPassword(!showPassword)}>
                             <Icon as={
                                 <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} size={5} mr="1" ml={2} color="muted.400" />
                             </Pressable>} />
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
-                        <Link _text={{fontSize: "xs", fontWeight: "500", color: "indigo.500"}} alignSelf="flex-end" mt="1">
-                            Forget Password?
-                        </Link>
+                        {/*<Link _text={{fontSize: "xs", fontWeight: "500", color: "indigo.500"}} alignSelf="flex-end" mt="1">*/}
+                        {/*    Forget Password?*/}
+                        {/*</Link>*/}
                     </FormControl>
 
                     <Checkbox alignItems="flex-start" mt="5" isChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
@@ -221,7 +224,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                             Remember me and keep me logged in
                         </Text>
                     </Checkbox>
-                    <Button mt="2" colorScheme="indigo" onPress={signInUsingEmailAndPassword}>Sign in</Button>
+                    <Button mt="4" colorScheme="indigo" onPress={signInUsingEmailAndPassword}>Sign in</Button>
                     {firebaseLoginError && <Text mt={4} alignSelf='center' fontSize='xl' color='red.500'>Error: {firebaseLoginError}</Text>}
                 </VStack>
             </Box>

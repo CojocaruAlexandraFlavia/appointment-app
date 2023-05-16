@@ -13,6 +13,15 @@ const styles = () => StyleSheet.create({
         fontSize: 16,
         lineHeight: 26,
     },
+    salonProfileItemText: {
+        color: '#000',
+        marginLeft: 10,
+        fontWeight: '600',
+        fontSize: 16,
+        lineHeight: 26,
+
+    },
+
     // container: {
     //     flex: 1,
     //     backgroundColor: '#fff',
@@ -30,7 +39,7 @@ const styles = () => StyleSheet.create({
         borderRadius:50,
         backgroundColor:"#fc5c64",
         position:"absolute",
-        left:30,
+        left:190,
         bottom:150,
         justifyContent:"center",
         alignItems:"center",
@@ -45,8 +54,8 @@ const styles = () => StyleSheet.create({
         borderRadius:50,
         backgroundColor:"white",
         position:"absolute",
-        left:30,
-        bottom:100,
+        left:220,
+        bottom:190,
         justifyContent:"center",
         alignItems:"center",
         shadowColor:"black",
