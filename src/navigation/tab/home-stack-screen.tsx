@@ -7,7 +7,7 @@ import {View} from "react-native-animatable";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {StackNavigatorParamList} from "../navigator.types";
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, query, where} from "firebase/firestore";
 import {firestore} from "../../utils/firebase";
 import {Salon} from "../../utils/types";
 import {salonConverter} from "../../screens/Salon/salon.class";
@@ -21,7 +21,8 @@ export const HomeStackScreen = ({navigation}: any) => {
 
     const retrieveAllSalons = async () => {
         const salonCollectionRef = collection(firestore, "salons").withConverter(salonConverter)
-        const salonDocs = await getDocs(salonCollectionRef)
+        const salonDocs = await getDocs(query(salonCollectionRef,
+            where("enabled", "==", true)))
 
         try {
             let salonList: Salon[] = []

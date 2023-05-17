@@ -86,7 +86,11 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
 
                 setFirebaseLoginError("")
                 setCredentials({ email: "", password: ""})
-                navigation.navigate('Drawer')
+                if (user.role === "CLIENT") {
+                    navigation.navigate('Drawer')
+                } else {
+                    navigation.navigate("HomeAdmin")
+                }
             } catch (e) {
                 console.log(e)
                 const errorCode = (e as { code: string }).code

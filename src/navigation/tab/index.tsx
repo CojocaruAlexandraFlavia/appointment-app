@@ -43,17 +43,7 @@ const MainTab = () => (
                     ),
                 }}
             />
-            {/*<Tab.Screen*/}
-            {/*    name="ExploreScreen"*/}
-            {/*    component={HomeStackScreen}*/}
-            {/*    options={{*/}
-            {/*        tabBarLabel: 'Explore',*/}
-            {/*        tabBarColor: '#d02860',*/}
-            {/*        tabBarIcon: ({color}) => (*/}
-            {/*            <Icon name="ios-aperture" color={color} size={26} />*/}
-            {/*        ),*/}
-            {/*    }}*/}
-            {/*/>*/}
+
         </Tab.Navigator>
     )
 

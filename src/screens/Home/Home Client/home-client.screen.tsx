@@ -34,29 +34,17 @@ const HomeClient = ({data, navigation}: Props) => {
             onPress={() =>
                 navigation.navigate('Salon', {id: item.id})
             }>
-            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]}
-                 pr={["0", "5"]} py="2">
-                <HStack space={"sm"}>
+            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py="2">
+                <HStack space={"md"}>
                     <Avatar size="48px" source={{uri: item.images[0]}} mr={7}/>
                     <VStack>
-                        <Heading style={{alignSelf: "center", fontSize: 20}}>{item.name}</Heading>
+                        <Heading style={{alignSelf: "center", fontSize: 15}}>{item.name}</Heading>
                         <Rating type="custom" startingValue={item.rating} imageSize={25} readonly/>
                     </VStack>
                 </HStack>
             </Box>
         </Pressable>)
     }, [])
-
-    // const [showText, setShowText] = useState(true)
-    // useEffect(()=> {
-    //     const interval = setInterval(() => {
-    //         setShowText( (showText) => !showText)
-    //     }, 1000) //1000 = 1s
-    //     return () => {
-    //         clearInterval(interval)
-    //     }
-    // }, [])
-
 
     const yPosition = useRef(new Animated.Value(0)).current;
     const xPosition = useRef(new Animated.Value(0)).current;
@@ -80,54 +68,39 @@ const HomeClient = ({data, navigation}: Props) => {
 
     return (
         <Center w="100%">
-
             <TouchableWithoutFeedback onPress={animateImage}>
-            <Animated.View
-                style={[
-                    {
-                        opacity: fadeAnim.interpolate({
-                            inputRange: [0, 100],
-                            outputRange: [1, 0],
-                        }),
-                        transform: [
-                            {
-                                translateY: yPosition,
-                            },
-                            {
-                                translateX: xPosition,
-                            },
-                        ],
-                    },
-                ]}
-            >
-                    <Image
-                        style={styles.logo}
-                        source={require('../../../../assets/logo.png')}
-                    />
-            </Animated.View>
+                <Animated.View
+                    style={[
+                        {
+                            opacity: fadeAnim.interpolate({
+                                inputRange: [0, 100],
+                                outputRange: [1, 0],
+                            }),
+                            transform: [
+                                {
+                                    translateY: yPosition,
+                                },
+                                {
+                                    translateX: xPosition,
+                                },
+                            ],
+                        },
+                    ]}
+                >
+                        <Image
+                            style={styles.logo}
+                            source={require('../../../../assets/logo.png')}
+                        />
+                </Animated.View>
             </TouchableWithoutFeedback>
 
-
-            {/*<View style={styles.container}>*/}
-            {/*    <Image*/}
-            {/*        style={styles.logo}*/}
-            {/*        source={require('../../../../assets/logo.png')}*/}
-            {/*    />*/}
-            {/*</View>*/}
-
-
-
             <Box safeArea p="3" py="12" w="100%" maxW="290">
-
                 <View style={styles.container}>
-                <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
-                {
-                    allSalons.length > 0 ?
-                        <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}>
-                        </FlatList> : null
-                }
-                {/*<Text style={[ styles.AdvertisementText,  {display: showText ? 'none' : 'flex'} ]} >Book now an appointment!*/}
-                {/*</Text>*/}
+                    <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
+                    {
+                        allSalons.length > 0 ?
+                            <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>: null
+                    }
                 </View>
             </Box>
         </Center>
@@ -143,13 +116,7 @@ const styles = StyleSheet.create({
         width: 135,
         height: 150,
         alignSelf: 'center'
-    },
-    // AdvertisementText: {
-    //     fontSize: 18,
-    //     textAlign: 'center',
-    //     fontWeight: 'bold',
-    //     color: '#FF5733'
-    // },
+    }
 });
 
 export default HomeClient;

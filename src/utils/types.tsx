@@ -8,7 +8,8 @@ export type Salon = {
     startTime: string,
     endTime: string,
     reviews: Review[],
-    nrOfReviews: number
+    nrOfReviews: number,
+    enabled: boolean
 }
 
 export type CalendarProps = {

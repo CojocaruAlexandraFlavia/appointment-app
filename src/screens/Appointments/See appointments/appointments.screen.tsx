@@ -78,7 +78,7 @@ export const Appointments: React.FC = ({navigation}: any): ReactElement => {
         try {
             let appointments: Appointment[] = []
 
-            const collectionRef = collection(firestore, "appointments")
+            const collectionRef = collection(firestore, "appointments").withConverter(appointmentConverter)
             const appointmentsQuery = query(collectionRef, where("clientId", "==", user.id))
                 .withConverter(appointmentConverter)
             const result = await getDocs(appointmentsQuery)

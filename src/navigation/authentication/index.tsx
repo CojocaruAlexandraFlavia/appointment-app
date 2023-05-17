@@ -10,6 +10,7 @@ import Reviews from "../../screens/Reviews"
 import Profile from "../../screens/Profile/See Profile";
 import Notifications from "../../screens/Notifications";
 import AddSalon from "../../screens/Salon/add-salon.screen";
+import HomeAdmin from "../../screens/Home/Home Admin/home-admin.screen";
 
 const Stack = createNativeStackNavigator<StackNavigatorParamList>();
 
@@ -27,6 +28,7 @@ export const Authentication = () => {
             <Stack.Screen name="Reviews" component={Reviews} />
             <Stack.Screen name="Notifications" component={Notifications} />
             <Stack.Screen name="AddSalon" component={AddSalon}/>
+            <Stack.Screen name="HomeAdmin" component={HomeAdmin}/>
         </Stack.Navigator>
     )
 
