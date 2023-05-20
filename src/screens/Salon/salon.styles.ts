@@ -86,6 +86,14 @@ const styles = () => StyleSheet.create({
         fontSize: 15,
         alignSelf: 'center'
     },
+    backgroundImage: {
+        flex: 1,
+        width: 355,
+        // height: 700,
+        resizeMode: 'cover', // or 'stretch'
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 })
 
 export default styles

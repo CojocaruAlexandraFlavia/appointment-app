@@ -17,7 +17,7 @@ import {
     WarningOutlineIcon,
     Icon
 } from "native-base";
-import {BackHandler, Text, TouchableOpacity} from 'react-native';
+import {BackHandler, ImageBackground, SafeAreaView, Text, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import React, {ReactElement, useCallback, useEffect, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
@@ -253,10 +253,15 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     return(
         <ScrollView>
             {
-                salon.images.length === 0? <View h="100%"><Loading/></View>: <><Center w="100%">
-                    <Box safeArea p="2" py="8" w="100%" maxW="290" marginTop={-19.5}>
+                salon.images.length === 0? <View h="100%"><Loading/></View>:
+                <>
+                <Center w="100%">
+                    <SafeAreaView >
+                        <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
+
+                            <Box safeArea p="2" py="8" w="100%" maxW="290" marginTop={-19.5}>
                         <HStack justifyContent={"space-between"} mb={3}>
-                            <Heading size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>
+                            <Heading size={"lg"} mb={2} alignSelf={"center"}>{salon?.name}</Heading>
                             <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating}
                                     imageSize={20} readonly/>
                         </HStack>
@@ -354,6 +359,9 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                         </View>
 
                     </Box>
+
+                        </ImageBackground>
+                    </SafeAreaView>
                 </Center>
                 </>
             }

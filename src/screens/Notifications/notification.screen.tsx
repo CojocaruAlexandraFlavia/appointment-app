@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Animated, TouchableHighlight, TouchableOpacity, StatusBar,} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Animated,
+    TouchableHighlight,
+    TouchableOpacity,
+    StatusBar,
+    ImageBackground,
+} from 'react-native';
 
 import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -208,6 +217,9 @@ const Notifications = () => {
 
     return (
         <View style={styles.container}>
+            <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
+
+
             <StatusBar barStyle="dark-content"/>
             {/* <StatusBar backgroundColor="#FF6347" barStyle="light-content"/> */}
 
@@ -228,6 +240,8 @@ const Notifications = () => {
                 onLeftActionStatusChange={onLeftActionStatusChange}
                 onRightActionStatusChange={onRightActionStatusChange}
             />
+            </ImageBackground>
+
         </View>
     );
 };
@@ -306,4 +320,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#999',
     },
+    backgroundImage: {
+        flex: 1,
+        width: 400,
+        // height: null,
+        resizeMode: 'cover', // or 'stretch'
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });

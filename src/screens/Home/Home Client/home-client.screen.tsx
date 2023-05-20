@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        width: 400,
+        width: 355,
         // height: null,
         resizeMode: 'cover', // or 'stretch'
         justifyContent: 'center',

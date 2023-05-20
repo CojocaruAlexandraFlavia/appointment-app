@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ImageBackground, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, ImageBackground, TextInput, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -151,21 +151,13 @@ const EditProfile = () => {
     // );
 
     return (
-        <View style={styles.container}>
-            {/*<BottomSheet*/}
-            {/*    ref={bs}*/}
-            {/*    snapPoints={[330, 0]} // @ts-ignore*/}
-            {/*    renderContent={renderInner} // @ts-ignore*/}
-            {/*    renderHeader={renderHeader}*/}
-            {/*    initialSnap={1} // @ts-ignore*/}
-            {/*    callbackNode={fall}*/}
-            {/*    enabledGestureInteraction={true}*/}
-            {/*/>*/}
 
-            <Animated.View
-                style={{margin: 20,
-                opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
-            }}>
+            <View style={styles.container}>
+
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
+
+                <Animated.View
+                style={{ margin: 20, opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)), }}>
                 <View style={{alignItems: 'center'}}>
                     <TouchableOpacity  // @ts-ignore
                         onPress={() => bs.current.snapTo(0)}>
@@ -207,7 +199,6 @@ const EditProfile = () => {
                         {user.firstName} {user.lastName}
                     </Text>
                 </View>
-
                 <View style={styles.action}>
                     <FontAwesome name="user-o" color="#000" size={20} />
                     <TextInput
@@ -268,8 +259,11 @@ const EditProfile = () => {
                 <TouchableOpacity style={styles.commandButton} onPress={submitEdit}>
                     <Text style={styles.panelButtonTitle}>Submit</Text>
                 </TouchableOpacity>
-            </Animated.View>
-        </View>
+                </Animated.View>
+
+                </ImageBackground>
+
+            </View>
     );
 };
 

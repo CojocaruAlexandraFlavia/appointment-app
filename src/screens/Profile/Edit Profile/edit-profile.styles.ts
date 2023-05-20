@@ -86,6 +86,14 @@ const styles = () => StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    backgroundImage: {
+        flex: 1,
+        width: 355,
+        // height: null,
+        resizeMode: 'cover', // or 'stretch'
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });
 

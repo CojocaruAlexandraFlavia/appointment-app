@@ -3,7 +3,7 @@ import * as React from "react";
 import {ReactElement, useCallback, useEffect, useState} from "react";
 import {Rating} from "react-native-ratings";
 import {Review, Salon, User} from "../../utils/types";
-import {ListRenderItemInfo} from 'react-native';
+import {ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet} from 'react-native';
 import 'react-native-gesture-handler';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {collection, doc, getDocs, query, where} from "firebase/firestore";
@@ -81,9 +81,23 @@ export const Reviews: React.FC = (): ReactElement => {
                 </Box>
         ), [])
 
+    const styles = StyleSheet.create({
+        backgroundImage: {
+            flex: 1,
+            width: 400,
+            // height: null,
+            resizeMode: 'cover', // or 'stretch'
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
+    });
+
     return(
         <Center w="100%" >
-            <ScrollView>
+            <SafeAreaView >
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
+
+                <ScrollView>
                 {
                     filteredSalons.map((salon, index) =>
                         <View key={index} borderBottomWidth="1"  marginBottom={2}>
@@ -95,6 +109,9 @@ export const Reviews: React.FC = (): ReactElement => {
                     )
                 }
             </ScrollView>
+
+                </ImageBackground>
+            </SafeAreaView>
         </Center>
     )
 }

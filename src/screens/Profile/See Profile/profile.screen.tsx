@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, SafeAreaView, ListRenderItemInfo} from 'react-native';
+import {View, SafeAreaView, ListRenderItemInfo, ImageBackground} from 'react-native';
 import {Title, Caption, Text, TouchableRipple, Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useUserDataContext} from "../../../store/user-data.context";
@@ -122,15 +122,16 @@ const Profile = ({navigation}: any) => {
         retrieveData()
     }, [])
 
-    const renderSalonItem = useCallback(({item}: ListRenderItemInfo<Salon>) => <Pressable
-        onPress={() => navigation.navigate('Salon', {id: item.id})}>
-        <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]}
-             pr={["0", "5"]} py="2">
-            <HStack space={"lg"}>
+
+    const renderSalonItem = useCallback(({item}: ListRenderItemInfo<Salon>) =>
+    <Pressable onPress={() => navigation.navigate('Salon', {id: item.id})}>
+        <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+            <HStack space={"md"}>
                 <Avatar.Image size={60} source={{uri: item.images[0]}} style={{marginRight: 6}}/>
-                <Heading alignSelf="center" fontSize={20}>{item.name}</Heading>
+                <Heading alignSelf="center" fontSize={20}>{item.name}{"\n"}</Heading>
                 {
-                    favoritesOccurrencesMapping[item.id] && <Heading alignSelf="flex-end" fontSize={15}>Appointments: {favoritesOccurrencesMapping[item.id]}</Heading>
+                    favoritesOccurrencesMapping[item.id] &&
+                    <Heading alignSelf="flex-end" fontSize={15}>Appointments: {favoritesOccurrencesMapping[item.id]}</Heading>
                 }
             </HStack>
         </Box>
@@ -140,6 +141,7 @@ const Profile = ({navigation}: any) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
 
             {
                 nrOfReviews == -1? <Loading/> : <View>
@@ -161,30 +163,29 @@ const Profile = ({navigation}: any) => {
 
                     <View style={styles.userInfoSection}>
                         <View style={styles.row}>
-                            <Icon name="map-marker-radius" color="#777777" size={20}/>
-                            <Text style={{color:"#777777", marginLeft: 20}}>{user.city}</Text>
+                            <Icon name="map-marker-radius" color="black" size={20}/>
+                            <Text style={{color:"black", marginLeft: 20 }}>{user.city}</Text>
                         </View>
                         <View style={styles.row}>
-                            <Icon name="phone" color="#777777" size={20}/>
-                            <Text style={{color:"#777777", marginLeft: 20}}>{user.phoneNumber}</Text>
+                            <Icon name="phone" color="black" size={20}/>
+                            <Text style={{color:"black", marginLeft: 20}}>{user.phoneNumber}</Text>
                         </View>
                         <View style={styles.row}>
-                            <Icon name="email" color="#777777" size={20}/>
-                            <Text style={{color:"#777777", marginLeft: 20}}>{user.email}</Text>
+                            <Icon name="email" color="black" size={20}/>
+                            <Text style={{color:"black", marginLeft: 20}}>{user.email}</Text>
                         </View>
                     </View>
 
                     <View style={styles.infoBoxWrapper}>
                         <View style={[styles.infoBox, {
-                            borderRightColor: '#dddddd',
-                            borderRightWidth: 1
-                        }]}>
-                            <Title>{appointments.length}</Title>
-                            <Caption>Appointments</Caption>
+                            borderRightColor: 'black',
+                            borderRightWidth: 1 }]}>
+                            <Title selectionColor={"black"} > {appointments.length} </Title>
+                            <Caption selectionColor={"black"} > Appointments </Caption>
                         </View>
                         <View style={styles.infoBox}>
-                            <Title>{nrOfReviews === -1? 0 : nrOfReviews}</Title>
-                            <Caption>Reviews</Caption>
+                            <Title selectionColor={"black"} > {nrOfReviews === -1? 0 : nrOfReviews} </Title>
+                            <Caption selectionColor={"black"} > Reviews </Caption>
                         </View>
                     </View>
 
@@ -203,7 +204,7 @@ const Profile = ({navigation}: any) => {
                     </View>
                 </View>
             }
-
+            </ImageBackground>
 
         </SafeAreaView>
     );

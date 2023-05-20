@@ -1,7 +1,7 @@
 import {
     Box,
     Center,
-    FlatList,
+    FlatList, Heading,
     HStack,
     ScrollView,
     Spacer,
@@ -11,7 +11,7 @@ import {
 import {ReactElement, useCallback, useEffect, useState} from "react";
 import {Appointment} from "../../../utils/types";
 import * as React from 'react';
-import {ListRenderItemInfo} from 'react-native';
+import {ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet} from 'react-native';
 import 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import {collection, getDocs, query, where} from "firebase/firestore";
@@ -76,15 +76,30 @@ export const Appointments: React.FC = (): ReactElement => {
     , [])
 
 
+    const styles = StyleSheet.create({
+        backgroundImage: {
+            flex: 1,
+            width: 400,
+            // height: null,
+            resizeMode: 'cover', // or 'stretch'
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
+    });
+
     return(
         <Center w="100%">
-            {/*<Heading italic bold alignSelf={"center"} mt={3} mb={4}>My Appointments</Heading>*/}
-            {/*<FlatList data={appointmentExamples} renderItem={renderItemAppointment} keyExtractor={item => item.id.toString()} />*/}
+            <SafeAreaView >
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
+
+                {/*<Heading italic bold alignSelf={"center"} mt={3} mb={4}>My Appointments</Heading>*/}
 
             <ScrollView horizontal={true}>
                 <FlatList data={appointments} renderItem={renderAppointmentItem} keyExtractor={item => item.id.toString()} />
             </ScrollView>
 
+                </ImageBackground>
+            </SafeAreaView>
         </Center>
     )
 }
