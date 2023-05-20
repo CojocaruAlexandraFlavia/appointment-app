@@ -15,7 +15,7 @@ import {
     VStack,
     WarningOutlineIcon
 } from "native-base"
-import {View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, ImageBackground, SafeAreaView} from 'react-native';
 import React, {ReactElement, useState} from "react"
 import {MaterialIcons} from "@expo/vector-icons";
 import IconGoogle from "../../components/IconGoogle";
@@ -177,92 +177,108 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
         logo: {
             width: 125,
             height: 140,
-            alignSelf: 'center'
+            alignSelf: 'center',
+            borderRadius: 200/2
         },
+        backgroundImage: {
+            flex: 1,
+            width: 400,
+            // height: null,
+            resizeMode: 'cover', // or 'stretch'
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
     });
 
-    return (   
+    return (
         <Center w="100%">
-            <Box safeArea p="2" py="8" w="90%" maxW="290">
-                <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
-                <Heading mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
-                    Sign in to continue!
-                </Heading>
+            <SafeAreaView >
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
+                    <View style={styles.container} >
 
-                <VStack space={1} mt="1">
-                <View style={styles.container}>
-                    <Image
-                        style={styles.logo}
-                        source={require('../../../assets/logo.png')}
-                    />
-                </View>
+                        <Box safeArea p="2" py="8" w="90%" maxW="290">
 
-                    <FormControl isInvalid={errors.email !== ""}>
-                        <FormControl.Label>Email</FormControl.Label>
-                        <Input w={{base: "100%", md: "25%"}} size={5}
-                               // color="muted.400"
-                               InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
-                               value={credentials.email}  isInvalid={errors.email !== ""}
-                               onChangeText={text => onChangeText("email", text)}/>
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
-                    </FormControl>
+                            <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
+                            <Heading mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
+                                Sign in to continue!
+                            </Heading>
 
-                    <FormControl isInvalid={errors.password !== ""}>
-                        <FormControl.Label>Password</FormControl.Label>
-                        <Input w={{ base: "100%", md: "25%"}} size={5}
-                               value={credentials.password} isInvalid={errors.password !== ""}
-                               onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"}
-                               InputLeftElement={
-                            <Pressable onPress={() => setShowPassword(!showPassword)}>
-                            <Icon as={
-                                <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} size={5} mr="1" ml={2} color="muted.400" />
-                            </Pressable>} />
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
-                        {/*<Link _text={{fontSize: "xs", fontWeight: "500", color: "indigo.500"}} alignSelf="flex-end" mt="1">*/}
-                        {/*    Forget Password?*/}
-                        {/*</Link>*/}
-                    </FormControl>
+                            <VStack space={1} mt="1">
+                            <View style={styles.container}>
+                                <Image style={styles.logo} source={require('../../../assets/logo.png')} />
+                            </View>
 
-                    <Checkbox alignItems="flex-start" mt="5" isChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
-                        <Text pl="3" fontWeight="normal" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
-                            Remember me and keep me logged in
-                        </Text>
-                    </Checkbox>
-                    <Button mt="4" colorScheme="indigo" onPress={signInUsingEmailAndPassword}>Sign in</Button>
-                    {firebaseLoginError && <Text mt={4} alignSelf='center' fontSize='xl' color='red.500'>Error: {firebaseLoginError}</Text>}
-                </VStack>
-            </Box>
+                                <FormControl isInvalid={errors.email !== ""}>
+                                    <FormControl.Label>Email</FormControl.Label>
+                                    <Input w={{base: "100%", md: "25%"}} size={5}
+                                           // color="muted.400"
+                                           InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
+                                           value={credentials.email}  isInvalid={errors.email !== ""}
+                                           backgroundColor={"white"}
+                                           onChangeText={text => onChangeText("email", text)}/>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
+                                </FormControl>
 
-            <HStack space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
-                <Divider w="30%" _light={{ bg: "coolGray.200" }} _dark={{ bg: "coolGray.700" }}></Divider>
-                <Text fontSize="sm" fontWeight="medium" _light={{ color: "coolGray.300" }} _dark={{ color: "coolGray.500" }}>
-                    or
-                </Text>
-                <Divider w="30%" _light={{ bg: "coolGray.200" }} _dark={{ bg: "coolGray.700" }}></Divider>
-            </HStack>
+                                <FormControl isInvalid={errors.password !== ""}>
+                                    <FormControl.Label>Password</FormControl.Label>
+                                    <Input w={{ base: "100%", md: "25%"}} size={5}
+                                           value={credentials.password} isInvalid={errors.password !== ""}
+                                           backgroundColor={"white"}
+                                           onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"}
+                                           InputLeftElement={
+                                        <Pressable onPress={() => setShowPassword(!showPassword)}>
+                                        <Icon as={
+                                            <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} size={5} mr="1" ml={2} color="muted.400" />
+                                        </Pressable>} />
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
+                                    {/*<Link _text={{fontSize: "xs", fontWeight: "500", color: "indigo.500"}} alignSelf="flex-end" mt="1">*/}
+                                    {/*    Forget Password?*/}
+                                    {/*</Link>*/}
+                                </FormControl>
 
-            <HStack space="4" alignItems="center" justifyContent="center">
-                <Pressable onPress={signInUsingFacebook}>
-                    <IconFacebook />
-                </Pressable>
-                <Pressable onPress={signInUsingGoogle}>
-                    <IconGoogle />
-                </Pressable>
-            </HStack>
+                                <Checkbox alignItems="flex-start" mt="5" isChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
+                                    <Text pl="3" fontWeight="normal" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
+                                        Remember me and keep me logged in
+                                    </Text>
+                                </Checkbox>
+                                <Button mt="4" colorScheme="indigo" onPress={signInUsingEmailAndPassword}>Sign in</Button>
+                                {firebaseLoginError && <Text mt={4} alignSelf='center' fontSize='xl' color='red.500'>Error: {firebaseLoginError}</Text>}
+                            </VStack>
+                        </Box>
 
-            <VStack space={1} mt="1">
-                    <HStack mt="6" justifyContent="center">
-                        <Text fontSize="sm" color="coolGray.600" _dark={{color: "warmGray.200"}}>
-                            I'm a new user.{" "}
-                        </Text>
-                        <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
-                              _dark={{_text: {color: "primary.500",},}}
-                              onPress={() => navigation.navigate('Register')}>
-                            Register
-                        </Link>
-                    </HStack>
-            </VStack>
+                        <HStack space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
+                            <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
+                            <Text fontSize="sm" fontWeight="medium" _light={{ color: "black" }} _dark={{ color: "black" }}>
+                                or
+                            </Text>
+                            <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
+                        </HStack>
 
+                        <HStack space="4" alignItems="center" justifyContent="center">
+                            <Pressable onPress={signInUsingFacebook}>
+                                <IconFacebook />
+                            </Pressable>
+                            <Pressable onPress={signInUsingGoogle}>
+                                <IconGoogle />
+                            </Pressable>
+                        </HStack>
+
+                        <VStack space={1} mt="1">
+                                <HStack mt="6" justifyContent="center">
+                                    <Text fontSize="sm" color="black" _dark={{color: "warmGray.200"}}>
+                                        I'm a new user.{" "}
+                                    </Text>
+                                    <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
+                                          _dark={{_text: {color: "primary.500",},}}
+                                          onPress={() => navigation.navigate('Register')}>
+                                        Register
+                                    </Link>
+                                </HStack>
+                        </VStack>
+
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
         </Center>
     )
 }

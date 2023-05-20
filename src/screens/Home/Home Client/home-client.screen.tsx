@@ -12,7 +12,7 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback, SafeAreaView, ImageBackground
 } from "react-native";
 
 type Props = {
@@ -68,41 +68,49 @@ const HomeClient = ({data, navigation}: Props) => {
 
     return (
         <Center w="100%">
-            <TouchableWithoutFeedback onPress={animateImage}>
-                <Animated.View
-                    style={[
-                        {
-                            opacity: fadeAnim.interpolate({
-                                inputRange: [0, 100],
-                                outputRange: [1, 0],
-                            }),
-                            transform: [
-                                {
-                                    translateY: yPosition,
-                                },
-                                {
-                                    translateX: xPosition,
-                                },
-                            ],
-                        },
-                    ]}
-                >
-                        <Image
-                            style={styles.logo}
-                            source={require('../../../../assets/logo.png')}
-                        />
-                </Animated.View>
-            </TouchableWithoutFeedback>
+            <SafeAreaView >
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
+                    <View style={styles.container} >
 
-            <Box safeArea p="3" py="12" w="100%" maxW="290">
-                <View style={styles.container}>
-                    <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
-                    {
-                        allSalons.length > 0 ?
-                            <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>: null
-                    }
-                </View>
-            </Box>
+                        <TouchableWithoutFeedback onPress={animateImage}>
+                            <Animated.View
+                                style={[
+                                    {
+                                        opacity: fadeAnim.interpolate({
+                                            inputRange: [0, 100],
+                                            outputRange: [1, 0],
+                                        }),
+                                        transform: [
+                                            {
+                                                translateY: yPosition,
+                                            },
+                                            {
+                                                translateX: xPosition,
+                                            },
+                                        ],
+                                    },
+                                ]}
+                            >
+                                    <Image
+                                        style={styles.logo}
+                                        source={require('../../../../assets/logo.png')}
+                                    />
+                            </Animated.View>
+                        </TouchableWithoutFeedback>
+
+                        <Box safeArea p="3" py="12" w="100%" maxW="290">
+                            <View style={styles.container}>
+                                <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
+                                {
+                                    allSalons.length > 0 ?
+                                        <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>: null
+                                }
+                            </View>
+                        </Box>
+
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
         </Center>
     )
 }
@@ -115,7 +123,16 @@ const styles = StyleSheet.create({
     logo: {
         width: 135,
         height: 150,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderRadius: 200/2,
+    },
+    backgroundImage: {
+        flex: 1,
+        width: 400,
+        // height: null,
+        resizeMode: 'cover', // or 'stretch'
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });
 

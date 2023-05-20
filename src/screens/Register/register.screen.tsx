@@ -17,7 +17,7 @@ import {
 } from "native-base"
 import React, {ReactElement, useState} from "react"
 import {Feather, MaterialIcons} from "@expo/vector-icons";
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import IconGoogle from "../../components/IconGoogle";
 import IconFacebook from "../../components/IconFacebook";
 import {createUserWithEmailAndPassword} from "firebase/auth";
@@ -165,157 +165,175 @@ const Register = ({navigation}: any): ReactElement => {
         logo: {
             width: 125,
             height: 140,
-            alignSelf: 'center'
+            alignSelf: 'center',
+            borderRadius: 200/2
         },
+        backgroundImage: {
+            flex: 1,
+            width: 400,
+            // height: null,
+            resizeMode: 'cover', // or 'stretch'
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
     });
 
     return (
         <ScrollView >
         <Center w="100%">
-            <Box safeArea p="2" py="8" w="90%" maxW="290"> 
-                <Heading size="lg" fontWeight="500" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
-                <Heading mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
-                    Sign up to continue!
-                </Heading>
+            <SafeAreaView >
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
+                    <View style={styles.container} >
 
-                <VStack space={1} mt="1">
-                    <View style={styles.container}>
-                        <Image
-                            style={styles.logo}
-                            source={require('../../../assets/logo.png')}
-                        />
-                    </View>
+                        <Box safeArea p="2" py="8" w="90%" maxW="290">
+                            <Heading size="lg" fontWeight="500" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
+                            <Heading mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
+                                Sign up to continue!
+                            </Heading>
 
-                    <FormControl isRequired isInvalid={errors.email !== ""}>
-                        <FormControl.Label _text={{bold: true}} >Email</FormControl.Label>
-                        <Input value={credentials.email} isInvalid={errors.email !== ""} size={5}
-                               InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
-                               onChangeText={text => onChangeText("email", text)}/>
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
-                    </FormControl>
+                            <VStack space={1} mt="1">
+                                <View style={styles.container}>
+                                    <Image
+                                        style={styles.logo}
+                                        source={require('../../../assets/logo.png')}
+                                    />
+                                </View>
 
-                    <FormControl isRequired isInvalid={errors.password !== ""}>
-                        <FormControl.Label _text={{bold: true}}>Password</FormControl.Label>
-                        <Input value={credentials.password} isInvalid={errors.password !== ""} size={5}
-                               onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"} InputLeftElement={
-                            <Pressable onPress={() => setShowPassword(!showPassword)}>
-                                <Icon as={
-                                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} size={5} mr="1" ml={2} color="muted.400" />
-                            </Pressable>}></Input>
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
-                    </FormControl>
+                                <FormControl isRequired isInvalid={errors.email !== ""}>
+                                    <FormControl.Label _text={{bold: true}} >Email</FormControl.Label>
+                                    <Input value={credentials.email} isInvalid={errors.email !== ""} size={5}
+                                           backgroundColor={"white"}
+                                           InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
+                                           onChangeText={text => onChangeText("email", text)}/>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
+                                </FormControl>
 
-                    {/* <FormControl isRequired isInvalid={errors.password !== ""}>
-                        <FormControl.Label _text={{bold: true}} >Confirm Password</FormControl.Label>
-                        <Input type="password" value={credentials.password} isInvalid={errors.password !== ""} onChangeText={text => onChangeText("password", text)} />
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
-                     </FormControl> */}
+                                <FormControl isRequired isInvalid={errors.password !== ""}>
+                                    <FormControl.Label _text={{bold: true}}>Password</FormControl.Label>
+                                    <Input value={credentials.password} isInvalid={errors.password !== ""} size={5}
+                                           backgroundColor={"white"}
+                                           onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"} InputLeftElement={
+                                        <Pressable onPress={() => setShowPassword(!showPassword)}>
+                                            <Icon as={
+                                                <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} size={5} mr="1" ml={2} color="muted.400" />
+                                        </Pressable>}></Input>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
+                                </FormControl>
 
-                     <FormControl isRequired isInvalid={errors.firstName !== ""}>
-                        <FormControl.Label _text={{bold: true}} >First Name</FormControl.Label>
-                        <Input value={credentials.firstName} isInvalid={errors.firstName !== ""} size={5}
-                               onChangeText={text => onChangeText("firstName", text)}/>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>First Name should contain at least 3 characters. </FormControl.HelperText>
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.firstName}</FormControl.ErrorMessage>
-                    </FormControl>
+                                {/* <FormControl isRequired isInvalid={errors.password !== ""}>
+                                    <FormControl.Label _text={{bold: true}} >Confirm Password</FormControl.Label>
+                                    <Input type="password" value={credentials.password} isInvalid={errors.password !== ""} onChangeText={text => onChangeText("password", text)} />
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
+                                 </FormControl> */}
 
-                    <FormControl isRequired isInvalid={errors.lastName !== ""}>
-                        <FormControl.Label _text={{bold: true}} >Last Name</FormControl.Label>
-                        <Input value={credentials.lastName} isInvalid={errors.lastName !== ""} size={5}
-                               onChangeText={text => onChangeText("lastName", text)}/>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>Last Name should contain at least 3 characters. </FormControl.HelperText>
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.lastName}</FormControl.ErrorMessage>
-                    </FormControl>
+                                 <FormControl isRequired isInvalid={errors.firstName !== ""}>
+                                    <FormControl.Label _text={{bold: true}} >First Name</FormControl.Label>
+                                    <Input value={credentials.firstName} isInvalid={errors.firstName !== ""} size={5}
+                                           backgroundColor={"white"} onChangeText={text => onChangeText("firstName", text)}/>
+                                    <FormControl.HelperText _text={{fontSize: 'xs'}}>First Name should contain at least 3 characters. </FormControl.HelperText>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.firstName}</FormControl.ErrorMessage>
+                                </FormControl>
 
-                    <FormControl isRequired isInvalid={errors.phoneNumber !== ""}>
-                        <FormControl.Label _text={{bold: true}} >Phone Number</FormControl.Label>
-                        <Input value={credentials.phoneNumber} size={5}
-                               InputLeftElement={ <Icon as={<Feather name="phone" />} ml={2}/>}
-                               isInvalid={errors.phoneNumber !== ""} onChangeText={text => onChangeText("phoneNumber", text)}/>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>Phone Number should contain 10 characters. </FormControl.HelperText>
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
-                    </FormControl>
+                                <FormControl isRequired isInvalid={errors.lastName !== ""}>
+                                    <FormControl.Label _text={{bold: true}} >Last Name</FormControl.Label>
+                                    <Input value={credentials.lastName} isInvalid={errors.lastName !== ""} size={5}
+                                           backgroundColor={"white"} onChangeText={text => onChangeText("lastName", text)}/>
+                                    <FormControl.HelperText _text={{fontSize: 'xs'}}>Last Name should contain at least 3 characters. </FormControl.HelperText>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.lastName}</FormControl.ErrorMessage>
+                                </FormControl>
 
-                    <FormControl isRequired isInvalid={errors.city !== ""}>
-                        <FormControl.Label _text={{bold: true}} >City</FormControl.Label>
-                        <Input value={credentials.city} size={5}
-                               InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}
-                               isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>
-                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>
-                    </FormControl>
+                                <FormControl isRequired isInvalid={errors.phoneNumber !== ""}>
+                                    <FormControl.Label _text={{bold: true}} >Phone Number</FormControl.Label>
+                                    <Input value={credentials.phoneNumber} size={5} backgroundColor={"white"}
+                                           InputLeftElement={ <Icon as={<Feather name="phone" />} ml={2}/>}
+                                           isInvalid={errors.phoneNumber !== ""} onChangeText={text => onChangeText("phoneNumber", text)}/>
+                                    <FormControl.HelperText _text={{fontSize: 'xs'}}>Phone Number should contain 10 characters. </FormControl.HelperText>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
+                                </FormControl>
 
-                    <FormControl>
-                        <FormControl.Label _text={{bold: true}}>Select your country</FormControl.Label>
-                        <Select placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
-                            {
-                                euCountries.countries.map((country, index) =>
-                                    <Select.Item key={index} label={country.name} value={country.code}/>)
-                            }
-                        </Select>
-                    </FormControl>
+                                <FormControl isRequired isInvalid={errors.city !== ""}>
+                                    <FormControl.Label _text={{bold: true}} >City</FormControl.Label>
+                                    <Input value={credentials.city} size={5} backgroundColor={"white"}
+                                           InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}
+                                           isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>
+                                    <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>
+                                </FormControl>
 
-                    <FormControl>
-                        <FormControl.Label _text={{bold: true}}>Select your city</FormControl.Label>
-                        <Select placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
-                                onValueChange={(value) => onChangeText("city", value)}>
-                            {
-                                citiesForSelectedState.length > 0? citiesForSelectedState.map((city, index) => <Select.Item key={index} label={city} value={city}/>):
-                                    <Select.Item label="First select your country!" value={""} disabled/>
-                            }
-                        </Select>
-                    </FormControl>
+                                <FormControl>
+                                    <FormControl.Label _text={{bold: true}} >Select your country</FormControl.Label>
+                                    <Select backgroundColor={"white"} placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
+                                        {
+                                            euCountries.countries.map((country, index) =>
+                                                <Select.Item key={index} label={country.name} value={country.code}/>)
+                                        }
+                                    </Select>
+                                </FormControl>
 
-                    <Checkbox alignItems="flex-start" defaultIsChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
-                        <HStack alignItems="center" marginBottom={4} marginTop={4}>
-                            <Text fontSize="sm" color="coolGray.400" pl="2">
-                                I accept the{" "}
+                                <FormControl>
+                                    <FormControl.Label _text={{bold: true}}>Select your city</FormControl.Label>
+                                    <Select backgroundColor={"white"} placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
+                                            onValueChange={(value) => onChangeText("city", value)}>
+                                        {
+                                            citiesForSelectedState.length > 0? citiesForSelectedState.map((city, index) => <Select.Item key={index} label={city} value={city}/>):
+                                                <Select.Item label="First select your country!" value={""} disabled/>
+                                        }
+                                    </Select>
+                                </FormControl>
+
+                                <Checkbox alignItems="flex-start" defaultIsChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
+                                    <HStack alignItems="center" marginBottom={4} marginTop={4}>
+                                        <Text fontSize="sm" color="black" pl="2" >
+                                            I accept the{" "}
+                                        </Text>
+                                        <Link _text={{fontSize: "sm", fontWeight: "semibold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}>
+                                            Terms of Use
+                                        </Link>
+                                        <Text fontSize="sm"> & </Text>
+                                        <Link _text={{fontSize: "sm", fontWeight: "semibold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}>
+                                            Privacy Policy
+                                        </Link>
+                                    </HStack>
+                                </Checkbox>
+                                <Button mt="2" colorScheme="indigo" onPress={signUp}>Sign up</Button>
+                                {registerError && <AlertComponent status={"error"} text={registerError} onClose={() => setRegisterError("")}/>}
+                                {added && <AlertComponent status={"success"} text={"User created successfully!"} onClose={() => setAdded(false)}/>}
+                            </VStack>
+                        </Box>
+
+                       <HStack space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
+                           <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
+                           <Text fontSize="sm" fontWeight="medium" _light={{ color: "black" }} _dark={{ color: "black" }}>
+                               or
+                           </Text>
+                           <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
+                       </HStack>
+
+                        <HStack space="4" alignItems="center" justifyContent="center">
+                            <Pressable>
+                                <IconFacebook />
+                            </Pressable>
+                            <Pressable>
+                                <IconGoogle />
+                            </Pressable>
+                        </HStack>
+
+                        <VStack space={5} mt="5">
+                        <HStack mb='4' space="1" alignItems="center" justifyContent="center" mt={{ base: "auto", md: "8" }}>
+                            <Text fontSize="sm" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
+                                Already have an account?
                             </Text>
-                            <Link _text={{fontSize: "sm", fontWeight: "semibold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}>
-                                Terms of Use
-                            </Link>
-                            <Text fontSize="sm"> & </Text>
-                            <Link _text={{fontSize: "sm", fontWeight: "semibold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}>
-                                Privacy Policy
+                            <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
+                                _dark={{_text: {color: "primary.500",},}}
+                                  onPress={() => navigation.navigate('Login')}>
+                                Login
                             </Link>
                         </HStack>
-                    </Checkbox>
-                    <Button mt="2" colorScheme="indigo" onPress={signUp}>Sign up</Button>
-                    {registerError && <AlertComponent status={"error"} text={registerError} onClose={() => setRegisterError("")}/>}
-                    {added && <AlertComponent status={"success"} text={"User created successfully!"} onClose={() => setAdded(false)}/>}
-                </VStack>
-            </Box>
+                        </VStack>
 
-           <HStack space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
-               <Divider w="30%" _light={{ bg: "coolGray.200" }} _dark={{ bg: "coolGray.700" }}></Divider>
-               <Text fontSize="sm" fontWeight="medium" _light={{ color: "coolGray.300" }} _dark={{ color: "coolGray.500" }}>
-                   or
-               </Text>
-               <Divider w="30%" _light={{ bg: "coolGray.200" }} _dark={{ bg: "coolGray.700" }}></Divider>
-           </HStack>
-
-            <HStack space="4" alignItems="center" justifyContent="center">
-                <Pressable>
-                    <IconFacebook />
-                </Pressable>
-                <Pressable>
-                    <IconGoogle />
-                </Pressable>
-            </HStack>
-
-            <VStack space={5} mt="5">
-            <HStack mb='4' space="1" alignItems="center" justifyContent="center" mt={{ base: "auto", md: "8" }}>
-                <Text fontSize="sm" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
-                    Already have an account?
-                </Text>
-                <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
-                    _dark={{_text: {color: "primary.500",},}}
-                      onPress={() => navigation.navigate('Login')}>
-                    Login
-                </Link>
-            </HStack>
-            </VStack>
-
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
         </Center>
        </ScrollView>
     )

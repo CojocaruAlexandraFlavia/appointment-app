@@ -3,8 +3,8 @@ import {firestore} from "../../../utils/firebase";
 import {salonConverter} from "../../Salon/salon.class";
 import {Salon} from "../../../utils/types";
 import React, {useCallback, useEffect, useState} from "react";
-import {Avatar, Box, Button, Center, FlatList, Heading, HStack, Modal, Text, VStack} from "native-base";
-import {ListRenderItemInfo} from "react-native";
+import {Avatar, Box, Button, Center, FlatList, Heading, HStack, Modal, Text, View, VStack} from "native-base";
+import {Image, ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {AlertComponent} from "../../../components/alert.component";
 
@@ -86,24 +86,57 @@ const HomeAdmin = () => {
         }
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            paddingTop: 0,
+        },
+        logo: {
+            width: 125,
+            height: 140,
+            alignSelf: 'center',
+            borderRadius: 200/2
+        },
+        backgroundImage: {
+            flex: 1,
+            width: 400,
+            // height: null,
+            resizeMode: 'cover', // or 'stretch'
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
+    });
+
     return(
         <Center w="100%">
-            <Box safeArea p="3" py="12" w="100%">
-                <FlatList data={salons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
-                <Modal isOpen={showDeleteConfirmationModal} onClose={handleCloseConfirmationModal}>
-                    <Modal.Content>
-                        {/*<Modal.CloseButton/>*/}
-                        <Modal.Body>
-                            <AlertComponent status={"warning"} text={`Are you sure you want to disable this item? \n Name: ${salon?.name} \n Location: ${salon?.location} \n Phone number: ${salon?.phoneNumber}`}
-                                            onClose={handleCloseConfirmationModal}/>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button mr={2} colorScheme={"gray"} onPress={handleCloseConfirmationModal}>Cancel</Button>
-                            <Button colorScheme={"green"} onPress={() => changeSalonAvailability(false)}>Confirm</Button>
-                        </Modal.Footer>
-                    </Modal.Content>
-                </Modal>
+            <SafeAreaView >
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
+                    <View style={styles.container} >
+
+                        <Box safeArea p="3" py="12" w="100%">
+
+                            <View style={styles.container}>
+                                <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
+                            </View>
+
+                            <FlatList data={salons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                            <Modal isOpen={showDeleteConfirmationModal} onClose={handleCloseConfirmationModal}>
+                                <Modal.Content>
+                                    {/*<Modal.CloseButton/>*/}
+                                    <Modal.Body>
+                                        <AlertComponent status={"warning"} text={`Are you sure you want to disable this item? \n Name: ${salon?.name} \n Location: ${salon?.location} \n Phone number: ${salon?.phoneNumber}`}
+                                                        onClose={handleCloseConfirmationModal}/>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button mr={2} colorScheme={"gray"} onPress={handleCloseConfirmationModal}>Cancel</Button>
+                                        <Button colorScheme={"green"} onPress={() => changeSalonAvailability(false)}>Confirm</Button>
+                                    </Modal.Footer>
+                                </Modal.Content>
+                            </Modal>
             </Box>
+
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
         </Center>
 
     )
