@@ -4,14 +4,14 @@ import { Avatar, Title, Caption, Drawer} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import HomeClient from '../../screens/Home/Home Client';
-import Profile from '../../screens/Profile/See Profile';
-import Appointments from '../../screens/Appointments/See appointments';
-import Reviews from '../../screens/Reviews';
-import Notifications from '../../screens/Notifications';
-import {useUserDataContext} from "../../store/user-data.context";
+import HomeClient from '../../../screens/Home/Home Client';
+import Profile from '../../../screens/Profile/See Profile';
+import Appointments from '../../../screens/Appointments/See appointments';
+import Reviews from '../../../screens/Reviews';
+import Notifications from '../../../screens/Notifications';
+import {useUserDataContext} from "../../../store/user-data.context";
 import {getAuth, signOut} from 'firebase/auth';
-import app from "../../utils/firebase";
+import app from "../../../utils/firebase";
 
 export const DrawerContent = (props:any) => {
 

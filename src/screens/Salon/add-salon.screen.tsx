@@ -12,7 +12,7 @@ import {
     Button,
     Box, Icon, Heading
 } from "native-base";
-import {Salon} from "../../utils/types";
+import {City, Salon} from "../../utils/types";
 import * as ImagePicker from "expo-image-picker";
 import {AntDesign, Feather, MaterialIcons} from "@expo/vector-icons";
 import {TouchableOpacity} from "react-native";
@@ -21,10 +21,11 @@ import {firestore, storage} from "../../utils/firebase";
 import {addDoc, collection, doc, updateDoc} from "firebase/firestore";
 import {AlertComponent} from "../../components/alert.component";
 import {Loading} from "../../components/activity-indicator.component";
+import * as euCountries from "../../utils/european-countries.json";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const emptySalonState: Salon = {
     endTime: "",
-    location: "",
     name: "",
     phoneNumber: "",
     startTime: "",
@@ -32,12 +33,17 @@ const emptySalonState: Salon = {
     rating: 0.0,
     images: [],
     reviews: [],
-    nrOfReviews: 0
+    nrOfReviews: 0,
+    enabled: true,
+    city: "",
+    country: "",
+    address: ""
 }
 
 const AddSalon = () => {
 
     const [salon, setSalon] = useState<Salon>(emptySalonState)
+    const [citiesForSelectedState, setCitiesForSelectedState] = useState<string[]>([])
     const [images, setImages] = useState<string[]>([])
     const [errors, setErrors] = useState<Partial<Salon>>(emptySalonState)
     const [noImageUploadedError, setNoImageUploadedError] = useState(false)
@@ -58,19 +64,44 @@ const AddSalon = () => {
         if (!result.canceled) {
             const imageURIs = result.assets.map(asset => asset.uri)
             setImages([...images, ...imageURIs])
+            setNoImageUploadedError(false)
         }
-    };
+    }
+
+    const getMajorCitiesForCountry = async (countryCode: string) => {
+        const headers = new Headers();
+        headers.append("apikey", process.env.EXTERNAL_API_AUTH_TOKEN);
+
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            redirect: 'follow',
+            headers: headers
+        };
+
+        try {
+            const response = await fetch(`https://api.apilayer.com/geo/country/cities/${countryCode}`, requestOptions)
+            const result: City[] = await response.json()
+            const cityNames = result.map(item => item.name)
+            setCitiesForSelectedState(cityNames)
+            onChangeFormValues(countryCode, "country")
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
     
     const findFormErrors = () => {
-        const newErrors = {...emptySalonState}
-        const {name, startTime, endTime, location, phoneNumber} = salon
+        const newErrors: Partial<Salon> = {}
+        const {name, startTime, endTime, city, country, address, phoneNumber} = salon
         const requiredField = "Required field!"
 
         if (name === "") newErrors.name = requiredField
         if (startTime === "") newErrors.startTime = requiredField
         if (endTime === "") newErrors.endTime = requiredField
-        if (location === "") newErrors.location = requiredField
+        if (country === "") newErrors.country = requiredField
         if (phoneNumber === "") newErrors.phoneNumber = requiredField
+        if (city === "") newErrors.city = requiredField
+        if (address === "") newErrors.address = requiredField
 
         return newErrors
     }
@@ -103,9 +134,9 @@ const AddSalon = () => {
 
     const submit = async() => {
         const formErrors = findFormErrors()
-        if (!Object.values(formErrors).includes("") ) {
+        if (Object.values(formErrors).some(item => item !== "")) {
             setErrors(formErrors)
-        } else if(images.length === 0) {
+        } else if (images.length === 0) {
             setNoImageUploadedError(true)
         } else {
             setErrors(emptySalonState)
@@ -114,7 +145,8 @@ const AddSalon = () => {
             try {
                 const collectionRef = collection(firestore, "salons").withConverter(salonConverter);
                 const addedSalon = await addDoc(collectionRef,
-                    new SalonClass("", salon.name, salon.location, salon.phoneNumber, 0.0, salon.startTime, salon.endTime, "", [], 0))
+                    new SalonClass("", salon.name, salon.phoneNumber, 0.0, salon.startTime, salon.endTime,
+                        "", [], 0, salon.enabled, salon.city, salon.country, salon.address))
                 for (let i = 1; i < images.length; i++) {
                     uploadSalonImageAsync(images[i], addedSalon.id, `${i+1}`)
                 }
@@ -147,18 +179,37 @@ const AddSalon = () => {
                      {
                          loading && <Loading/>
                      }
-                     <Heading alignSelf="center">Add new salon</Heading>
+                     <Heading py={5} alignSelf="center">Add new salon</Heading>
                      <FormControl isInvalid={errors.name !== ""} mb={3}>
                          <FormControl.Label _text={{bold: true}}>Name</FormControl.Label>
                          <Input value={salon.name} onChangeText={text => onChangeFormValues(text, "name")}
                                 InputLeftElement={ <Icon as={<MaterialIcons name="drive-file-rename-outline" />} ml={2}/>}/>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.name}</FormControl.ErrorMessage>
                      </FormControl>
-                     <FormControl mb={3} isInvalid={errors.location !== ""}>
-                         <FormControl.Label _text={{bold: true}}>Location</FormControl.Label>
-                         <Input value={salon.location} onChangeText={text => onChangeFormValues(text, "location")}
-                                InputLeftElement={ <Icon as={<MaterialIcons name="location-on" />} ml={2}/>}/>
-                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.location}</FormControl.ErrorMessage>
+                     <FormControl isInvalid={errors.country !== ""}>
+                         <FormControl.Label _text={{bold: true}}>Select the country</FormControl.Label>
+                         <Select selectedValue={salon.country} placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
+                             {
+                                 euCountries.countries.map((country, index) =>
+                                     <Select.Item key={index} label={country.name} value={country.code}/>)
+                             }
+                         </Select>
+                     </FormControl>
+                     <FormControl isInvalid={errors.city !== ""}>
+                         <FormControl.Label _text={{bold: true}}>Select the city</FormControl.Label>
+                         <Select selectedValue={salon.city} placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
+                                 onValueChange={(value) => onChangeFormValues(value, "city")}>
+                             {
+                                 citiesForSelectedState.length > 0? citiesForSelectedState.map((city, index) => <Select.Item key={index} label={city} value={city}/>):
+                                     <Select.Item label="First select your country!" value={""} disabled/>
+                             }
+                         </Select>
+                     </FormControl>
+                     <FormControl isInvalid={errors.address !== ""} mb={3}>
+                         <FormControl.Label _text={{bold: true}}>Address</FormControl.Label>
+                         <Input value={salon.address} onChangeText={text => onChangeFormValues(text, "address")}
+                                InputLeftElement={ <Icon as={<Ionicons name="location" />} ml={2}/>}/>
+                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.address}</FormControl.ErrorMessage>
                      </FormControl>
                      <FormControl mb={3} isInvalid={errors.phoneNumber !== ""}>
                          <FormControl.Label _text={{bold: true}}>Phone number</FormControl.Label>
@@ -168,7 +219,7 @@ const AddSalon = () => {
                      </FormControl>
                      <FormControl mb={3} isInvalid={errors.startTime !== ""}>
                          <FormControl.Label _text={{bold: true}}>Select opening time</FormControl.Label>
-                         <Select onValueChange={value => onChangeFormValues(value, "startTime")} placeholder={"Choose one hour"}
+                         <Select selectedValue={salon.startTime} onValueChange={value => onChangeFormValues(value, "startTime")} placeholder={"Choose one hour"}
                                  _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={5} />}}>
                              {
                                  openingHours.map((hour, index) => <Select.Item key={index} label={hour} value={hour}/>)
@@ -178,7 +229,7 @@ const AddSalon = () => {
                      </FormControl>
                      <FormControl mb={3} isInvalid={errors.endTime !== ""}>
                          <FormControl.Label _text={{bold: true}}>Select closing time</FormControl.Label>
-                         <Select onValueChange={value => onChangeFormValues(value, "endTime")} placeholder={"Choose one hour"}
+                         <Select selectedValue={salon.endTime} onValueChange={value => onChangeFormValues(value, "endTime")} placeholder={"Choose one hour"}
                                  _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={5} />}}>
                              {
                                  closingHours.map((hour, index) => <Select.Item key={index} label={hour} value={hour}/>)

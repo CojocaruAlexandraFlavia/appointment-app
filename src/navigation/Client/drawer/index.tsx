@@ -1,11 +1,11 @@
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import {DrawerContent} from "./drawer-content";
 import MainTab from "../tab";
-import Salons from "../../screens/Salon";
-import Profile from "../../screens/Profile/See Profile";
-import Appointments from "../../screens/Appointments/See appointments";
-import Reviews from "../../screens/Reviews"
-import Notifications from "../../screens/Notifications";
+import Salons from "../../../screens/Salon";
+import Profile from "../../../screens/Profile/See Profile";
+import Appointments from "../../../screens/Appointments/See appointments";
+import Reviews from "../../../screens/Reviews"
+import Notifications from "../../../screens/Notifications";
 
 const DrawerNav = createDrawerNavigator()
 

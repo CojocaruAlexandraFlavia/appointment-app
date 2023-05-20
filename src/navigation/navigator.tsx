@@ -1,5 +1,5 @@
 import {DefaultTheme, NavigationContainer} from "@react-navigation/native";
-import {Authentication} from "./authentication";
+import {Authentication} from "./Client/authentication";
 
 const CustomTheme = {
     ...DefaultTheme,

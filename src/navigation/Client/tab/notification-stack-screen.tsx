@@ -1,8 +1,8 @@
-import Notifications from "../../screens/Notifications";
+import Notifications from "../../../screens/Notifications";
 import Icon from "react-native-vector-icons/Ionicons";
 import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {StackNavigatorParamList} from "../navigator.types";
+import {StackNavigatorParamList} from "../../navigator.types";
 
 const NotificationStack =  createNativeStackNavigator<StackNavigatorParamList>();
 
