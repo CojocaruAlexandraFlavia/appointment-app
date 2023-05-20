@@ -9,7 +9,6 @@ import {addDoc, collection, doc, getDoc, getDocs, query, where} from "firebase/f
 import { firestore } from "../../../utils/firebase";
 import { Salon } from "../../../utils/types";
 import {salonConverter} from "../../Salon/salon.class";
-import {userConverter} from "../../Profile/user.class";
 
 export const ConfirmAppointment = ({navigation}: any) => {
 
@@ -35,18 +34,9 @@ export const ConfirmAppointment = ({navigation}: any) => {
         }
     }, [])
 
-
     useEffect(() => {
         retrieveSalon().then(() => console.log("retrieve salon id: " + salon?.id)).catch(e => console.log(e))
     }, [])
-
-    const retrieveUserByFieldFromFirestore = async (field: string, value: string) => {
-        const collectionRef = collection(firestore, "users");
-        const firestoreUserQuery = query(collectionRef, where(field, "==", value)).withConverter(userConverter);
-        const firestoreUserSnapshot = await getDocs(firestoreUserQuery)
-        const userDocumentSnapshot = firestoreUserSnapshot.docs[0]
-        return {...userDocumentSnapshot.data(), id: userDocumentSnapshot.id}
-    }
 
     const confirmAppointment = async () => {
         try {
@@ -59,7 +49,6 @@ export const ConfirmAppointment = ({navigation}: any) => {
                 serviceName: service
             });
             setShowConfirmationModal(true)
-            // const updatedUser = retrieveUserByFieldFromFirestore("email", user.email)
             setTimeout(() => {
                 setShowConfirmationModal(false)
                 navigation.navigate("Salon", {id: salon?.id})

@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import NotificationsList from '../../utils/NotificationsList';
 
-const Notifications = ({navigation}:any) => {
+const Notifications = () => {
     const [listData, setListData] = useState(
         NotificationsList.map((NotificationItem, index) => ({
             key: `${index}`,
