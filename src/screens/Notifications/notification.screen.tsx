@@ -219,7 +219,6 @@ const Notifications = () => {
         <View style={styles.container}>
             <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
 
-
             <StatusBar barStyle="dark-content"/>
             {/* <StatusBar backgroundColor="#FF6347" barStyle="light-content"/> */}
 
