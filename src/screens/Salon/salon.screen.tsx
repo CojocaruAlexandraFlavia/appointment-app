@@ -19,7 +19,7 @@ import {
 } from "native-base";
 import {BackHandler, Text, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import React, {ReactElement, useCallback, useEffect, useRef, useState} from "react";
+import React, {ReactElement, useCallback, useEffect, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
 import { Review, Salon, ServicesListData, ServiceWithTime } from "../../utils/types";
 import { Rating } from "react-native-ratings";
@@ -39,26 +39,23 @@ import salonStyles from "./salon.styles"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AddReviewModal from "./add-review.modal";
 import * as servicesJson from '../../utils/all-services.json'
-// import Animated, {
-//     useAnimatedStyle,
-//     withRepeat,
-//     withSequence,
-//     withTiming,
-// } from 'react-native-reanimated';
-import { StyleSheet, Animated, TouchableWithoutFeedback, Image, Easing } from 'react-native';
-import {yellow200} from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
+
+import { Animated, Image } from 'react-native';
 
 const emptyState: Salon = {
     nrOfReviews: 0,
     endTime: "",
     id: "",
     images: [],
-    location: "",
     name: "",
     phoneNumber: "",
     rating: 0,
     startTime: "",
-    reviews: []
+    reviews: [],
+    city: "",
+    country: "",
+    address: "",
+    enabled: true
 }
 
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
@@ -179,7 +176,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const onShare = async () => {
         try {
-            const shareMessage = `Name: ${salon.name},\nLocation: ${salon.location}\nPhone number: ${salon.phoneNumber}\nRating: ${salon.rating}/5.00`
+            const shareMessage = `Name: ${salon.name},\nLocation: ${salon.address}, ${salon.city}, ${salon.country}\nPhone number: ${salon.phoneNumber}\nRating: ${salon.rating}/5.00`
             const result = await Share.share({
                 message: shareMessage
             }, {
@@ -216,17 +213,17 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
         setClaps([])
     }
 
-    const BubbleHand=(props:any)=>{
-        const [bubbleAnimaiton, setBubbAnimation] = useState(new Animated.Value(0));
-        const [bubbleAnimaitonOpacity, setBubbleAnimationOpacity] = useState(new Animated.Value(0));
-        useEffect(()=>{
+    const BubbleHand = (props:any)=>{
+        const [bubbleAnimation, setBubbleAnimation] = useState(new Animated.Value(0));
+        const [bubbleAnimationOpacity, setBubbleAnimationOpacity] = useState(new Animated.Value(0));
+        useEffect(() => {
             Animated.parallel([
-                Animated.timing(bubbleAnimaiton,{
+                Animated.timing(bubbleAnimation,{
                     toValue:-550,
                     duration:2000,
                     useNativeDriver:true,
                 }),
-                Animated.timing(bubbleAnimaitonOpacity, {
+                Animated.timing(bubbleAnimationOpacity, {
                     toValue:1,
                     duration:2000,
                     useNativeDriver:true,
@@ -240,9 +237,9 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
         })
         const bubble ={
             transform:[
-                {translateY:bubbleAnimaiton}
+                {translateY:bubbleAnimation}
             ],
-            opacity:bubbleAnimaitonOpacity,
+            opacity:bubbleAnimationOpacity,
         }
         return(
             <Animated.View style={[styles.bubble, bubble]}>
@@ -259,11 +256,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                 salon.images.length === 0? <View h="100%"><Loading/></View>: <><Center w="100%">
                     <Box safeArea p="2" py="8" w="100%" maxW="290" marginTop={-19.5}>
                         <HStack justifyContent={"space-between"} mb={3}>
-
-                            {/*<TouchableWithoutFeedback onPress={handleAnimation}>*/}
-                            {/*    <Animated.View style={{...styles.box, ...animatedStyle}} />*/}
-                            {/*</TouchableWithoutFeedback>*/}
-
                             <Heading size={"lg"} mb={2} alignSelf={"center"}>Salon {salon?.name}</Heading>
                             <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating}
                                     imageSize={20} readonly/>
@@ -311,7 +303,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 </HStack>
                                 <HStack>
                                     <Icon as={<Entypo name="location"/>} size={25} name="location" color="black"/>
-                                    <Text style={styles.salonProfileItemText}>{salon.location}</Text>
+                                    <Text style={styles.salonProfileItemText}>{salon.address}, {salon.city}, {salon.country}</Text>
                                 </HStack>
                                 <HStack>
                                     <TouchableRipple onPress={onShare}>

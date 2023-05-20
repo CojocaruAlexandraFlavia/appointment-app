@@ -10,7 +10,6 @@ import {
     Image,
     ListRenderItemInfo,
     StyleSheet,
-    Text,
     View,
     TouchableWithoutFeedback
 } from "react-native";
