@@ -10,12 +10,12 @@ import {
     WarningOutlineIcon,
     Image,
     Button,
-    Box, Icon, Heading
+    Box, Icon, Heading, View
 } from "native-base";
 import {City, Salon} from "../../utils/types";
 import * as ImagePicker from "expo-image-picker";
 import {AntDesign, Feather, MaterialIcons} from "@expo/vector-icons";
-import {TouchableOpacity} from "react-native";
+import {ImageBackground, SafeAreaView, StyleSheet, TouchableOpacity} from "react-native";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
 import {firestore, storage} from "../../utils/firebase";
 import {addDoc, collection, doc, updateDoc} from "firebase/firestore";
@@ -172,23 +172,52 @@ const AddSalon = () => {
         }
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            paddingTop: 10,
+        },
+        logo: {
+            width: 125,
+            height: 140,
+            alignSelf: 'center',
+            borderRadius: 200/2
+        },
+        backgroundImage: {
+            flex: 1,
+            width: 400,
+            // height: null,
+            resizeMode: 'cover', // or 'stretch'
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
+    });
+
+
     return(
          <ScrollView>
              <Center w="100%">
-                 <Box safeArea p="2" py="8" w="100%" maxW="290">
+                 <SafeAreaView >
+                     <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
+
+                             <Box safeArea p="2" py="8" w="100%" maxW="290">
                      {
                          loading && <Loading/>
                      }
+
+                                 <View style={styles.container}>
+                                     <Image style={styles.logo} source={require('../../../assets/logo.png')} />
+                                 </View>
+
                      <Heading py={5} alignSelf="center">Add new salon</Heading>
                      <FormControl isInvalid={errors.name !== ""} mb={3}>
                          <FormControl.Label _text={{bold: true}}>Name</FormControl.Label>
                          <Input value={salon.name} onChangeText={text => onChangeFormValues(text, "name")}
-                                InputLeftElement={ <Icon as={<MaterialIcons name="drive-file-rename-outline" />} ml={2}/>}/>
+                                backgroundColor={"white"} InputLeftElement={ <Icon as={<MaterialIcons name="drive-file-rename-outline" />} ml={2}/>}/>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.name}</FormControl.ErrorMessage>
                      </FormControl>
                      <FormControl isInvalid={errors.country !== ""}>
                          <FormControl.Label _text={{bold: true}}>Select the country</FormControl.Label>
-                         <Select selectedValue={salon.country} placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
+                         <Select backgroundColor={"white"} selectedValue={salon.country} placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
                              {
                                  euCountries.countries.map((country, index) =>
                                      <Select.Item key={index} label={country.name} value={country.code}/>)
@@ -197,7 +226,7 @@ const AddSalon = () => {
                      </FormControl>
                      <FormControl isInvalid={errors.city !== ""}>
                          <FormControl.Label _text={{bold: true}}>Select the city</FormControl.Label>
-                         <Select selectedValue={salon.city} placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
+                         <Select backgroundColor={"white"} selectedValue={salon.city} placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
                                  onValueChange={(value) => onChangeFormValues(value, "city")}>
                              {
                                  citiesForSelectedState.length > 0? citiesForSelectedState.map((city, index) => <Select.Item key={index} label={city} value={city}/>):
@@ -207,19 +236,19 @@ const AddSalon = () => {
                      </FormControl>
                      <FormControl isInvalid={errors.address !== ""} mb={3}>
                          <FormControl.Label _text={{bold: true}}>Address</FormControl.Label>
-                         <Input value={salon.address} onChangeText={text => onChangeFormValues(text, "address")}
+                         <Input backgroundColor={"white"} value={salon.address} onChangeText={text => onChangeFormValues(text, "address")}
                                 InputLeftElement={ <Icon as={<Ionicons name="location" />} ml={2}/>}/>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.address}</FormControl.ErrorMessage>
                      </FormControl>
                      <FormControl mb={3} isInvalid={errors.phoneNumber !== ""}>
                          <FormControl.Label _text={{bold: true}}>Phone number</FormControl.Label>
-                         <Input value={salon.phoneNumber} onChangeText={text => onChangeFormValues(text, "phoneNumber")}
+                         <Input backgroundColor={"white"} value={salon.phoneNumber} onChangeText={text => onChangeFormValues(text, "phoneNumber")}
                                 InputLeftElement={ <Icon as={<Feather name="phone"/>} ml={2}/>}/>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
                      </FormControl>
                      <FormControl mb={3} isInvalid={errors.startTime !== ""}>
                          <FormControl.Label _text={{bold: true}}>Select opening time</FormControl.Label>
-                         <Select selectedValue={salon.startTime} onValueChange={value => onChangeFormValues(value, "startTime")} placeholder={"Choose one hour"}
+                         <Select backgroundColor={"white"} selectedValue={salon.startTime} onValueChange={value => onChangeFormValues(value, "startTime")} placeholder={"Choose one hour"}
                                  _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={5} />}}>
                              {
                                  openingHours.map((hour, index) => <Select.Item key={index} label={hour} value={hour}/>)
@@ -229,7 +258,7 @@ const AddSalon = () => {
                      </FormControl>
                      <FormControl mb={3} isInvalid={errors.endTime !== ""}>
                          <FormControl.Label _text={{bold: true}}>Select closing time</FormControl.Label>
-                         <Select selectedValue={salon.endTime} onValueChange={value => onChangeFormValues(value, "endTime")} placeholder={"Choose one hour"}
+                         <Select backgroundColor={"white"} selectedValue={salon.endTime} onValueChange={value => onChangeFormValues(value, "endTime")} placeholder={"Choose one hour"}
                                  _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={5} />}}>
                              {
                                  closingHours.map((hour, index) => <Select.Item key={index} label={hour} value={hour}/>)
@@ -239,7 +268,7 @@ const AddSalon = () => {
                      </FormControl>
                      <FormControl isInvalid={noImageUploadedError}>
                          <FormControl.Label _text={{bold: true}}>Upload salon pictures</FormControl.Label>
-                         <TouchableOpacity style={{borderWidth: 1, padding: 10 , borderColor: "lightgrey", borderRadius: 10}}
+                         <TouchableOpacity  style={{borderWidth: 1, padding: 10 , borderColor: "lightgrey", borderRadius: 10, backgroundColor: "white"}}
                                            activeOpacity={0.5} onPress={pickImages}>
                              <Icon alignSelf={"center"} as={AntDesign} name="camera" size={35} color="black"
                                    style={{
@@ -270,6 +299,9 @@ const AddSalon = () => {
                                                         onClose={() => setSavingError("")}/>
                      }
                  </Box>
+
+                     </ImageBackground>
+                 </SafeAreaView>
              </Center>
 
          </ScrollView>

@@ -3,8 +3,8 @@ import {firestore} from "../../../utils/firebase";
 import {salonConverter} from "../../Salon/salon.class";
 import {Salon} from "../../../utils/types";
 import React, {useCallback, useEffect, useState} from "react";
-import {Avatar, Box, Button, Center, FlatList, Heading, Row, Text, Column} from "native-base";
-import {ListRenderItemInfo} from "react-native";
+import {Avatar, Box, Button, Center, FlatList, Heading, Row, Text, Column, ScrollView} from "native-base";
+import {Image, ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {Loading} from "../../../components/activity-indicator.component";
 
@@ -75,19 +75,51 @@ const HomeAdmin = () => {
         }
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            paddingTop: 0,
+        },
+        logo: {
+            width: 125,
+            height: 140,
+            alignSelf: 'center',
+            borderRadius: 200/2
+        },
+        backgroundImage: {
+            flex: 1,
+            width: 400,
+            // height: null,
+            resizeMode: 'cover', // or 'stretch'
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
+    });
+
     return(
+        <ScrollView>
         <Center px={4} w="100%">
-            <Box safeArea p="5" py="5" w="100%">
-                {
-                    loading && <Loading/>
-                }
-                <Heading mb={5} alignSelf="center">Salons</Heading>
-                <FlatList data={salons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
-            </Box>
+            <SafeAreaView >
+                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
+                    <View style={styles.container} >
+
+                        <Box safeArea p="5" py="5" w="100%">
+                    {
+                        loading && <Loading/>
+                    }
+                    <View style={styles.container}>
+                        <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
+                    </View>
+                    <Heading paddingTop={3} mb={5} alignSelf="center">Salons</Heading>
+                    <FlatList data={salons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                </Box>
+
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
         </Center>
+        </ScrollView>
 
     )
-
 }
 
 export default HomeAdmin
