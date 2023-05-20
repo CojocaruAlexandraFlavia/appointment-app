@@ -89,7 +89,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                 if (user.role === "CLIENT") {
                     navigation.navigate('Drawer')
                 } else {
-                    navigation.navigate("HomeAdmin")
+                    navigation.navigate("Tabs")
                 }
             } catch (e) {
                 console.log(e)

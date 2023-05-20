@@ -86,7 +86,7 @@ const EditProfile = () => {
 
     const submitEdit = async() => {
         const formErrors = findFormErrors()
-        if (!Object.values(formErrors).includes("")) {
+        if (Object.values(formErrors).some(item => item !== "")) {
             setErrors(formErrors)
         } else {
             setErrors(emptyState)

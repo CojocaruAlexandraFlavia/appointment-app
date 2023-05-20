@@ -1,12 +1,12 @@
 import {useTheme} from "react-native-paper";
-import Profile from "../../screens/Profile/See Profile";
+import Profile from "../../../screens/Profile/See Profile";
 import {View} from "react-native-animatable";
 import Icon from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import EditProfile from "../../screens/Profile/Edit Profile/edit-profile.screen";
+import EditProfile from "../../../screens/Profile/Edit Profile/edit-profile.screen";
 import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {StackNavigatorParamList} from "../navigator.types";
+import {StackNavigatorParamList} from "../../navigator.types";
 
 const ProfileStack = createNativeStackNavigator<StackNavigatorParamList>();
 

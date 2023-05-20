@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {Avatar, useTheme} from "react-native-paper";
-import HomeClient from "../../screens/Home/Home Client/home-client.screen";
+import HomeClient from "../../../screens/Home/Home Client/home-client.screen";
 import {HStack, Input} from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 import {View} from "react-native-animatable";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {StackNavigatorParamList} from "../navigator.types";
+import {StackNavigatorParamList} from "../../navigator.types";
 import {collection, getDocs, query, where} from "firebase/firestore";
-import {firestore} from "../../utils/firebase";
-import {Salon} from "../../utils/types";
-import {salonConverter} from "../../screens/Salon/salon.class";
+import {firestore} from "../../../utils/firebase";
+import {Salon} from "../../../utils/types";
+import {salonConverter} from "../../../screens/Salon/salon.class";
 
 const HomeStack = createNativeStackNavigator<StackNavigatorParamList>();
 

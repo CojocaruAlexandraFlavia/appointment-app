@@ -3,13 +3,16 @@ export type Salon = {
     name: string,
     phoneNumber: string,
     rating: number,
-    location: string,
+    // location: string,
     images: string[],
     startTime: string,
     endTime: string,
     reviews: Review[],
     nrOfReviews: number,
-    enabled: boolean
+    enabled: boolean,
+    city: string,
+    country: string,
+    address: string
 }
 
 export type CalendarProps = {

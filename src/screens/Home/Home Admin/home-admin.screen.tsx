@@ -3,16 +3,15 @@ import {firestore} from "../../../utils/firebase";
 import {salonConverter} from "../../Salon/salon.class";
 import {Salon} from "../../../utils/types";
 import React, {useCallback, useEffect, useState} from "react";
-import {Avatar, Box, Button, Center, FlatList, Heading, HStack, Modal, Text, View, VStack} from "native-base";
-import {Image, ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet} from "react-native";
+import {Avatar, Box, Button, Center, FlatList, Heading, Row, Text, Column} from "native-base";
+import {ListRenderItemInfo} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import {AlertComponent} from "../../../components/alert.component";
+import {Loading} from "../../../components/activity-indicator.component";
 
 const HomeAdmin = () => {
 
     const [salons, setSalons] = useState<Salon[]>([])
-    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false)
-    const [salon, setSalon] = useState<Salon|undefined>(undefined)
+    const [loading, setLoading] = useState(false)
 
     const retrieveAllSalons = async () => {
         const salonCollectionRef = collection(firestore, "salons").withConverter(salonConverter)
@@ -30,113 +29,61 @@ const HomeAdmin = () => {
         }
     }
 
-    const handleShowDeleteModal = (salon: Salon) => {
-        setSalon(salon)
-        setShowDeleteConfirmationModal(true)
-    }
-
-    const handleEnable = async (item: Salon) => {
-        setSalon(item)
-        await changeSalonAvailability(true)
-    }
-
     const renderItem = useCallback(({item}: ListRenderItemInfo<Salon>) => {
         return (
-            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py="2">
-                <HStack space={"sm"} justifyContent={"space-evenly"}>
-                    <Avatar alignSelf="center" size="48px" source={{uri: item.images[0]}} mr={1}/>
-                    <VStack>
-                        <Heading style={{alignSelf: "center", fontSize: 18}}>{item.name}</Heading>
-                        <Text>{item.location}</Text>
+            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py="2" w="100%">
+                <Row alignItems={"center"}>
+                    <Column w="1/4">
+                        <Avatar size="48px" source={{uri: item.images[0]}}/>
+                    </Column>
+                    <Column w="1/2">
+                        <Heading style={{ fontSize: 15}}>{item.name}</Heading>
+                        <Text>{item.address}, {item.city}, {item.country}</Text>
                         <Text>{item.phoneNumber}</Text>
-                    </VStack>
-                    {
-                        item.enabled? <Button alignSelf="center" colorScheme="red" onPress={() => handleShowDeleteModal(item)}>)
-                            <Icon name="trash-bin"/>
-                        </Button>: <Button alignSelf="center" colorScheme="green" onPress={() => handleEnable(item)}>)
-                            <Icon name="checkmark"/>
-                        </Button>
-                    }
-                </HStack>
+                    </Column>
+                    <Column w="1/4">
+                        {
+                            item.enabled? <Button alignSelf="center" colorScheme="red" onPress={() => changeSalonAvailability(item, false)}>
+                                <Icon name="trash-bin"/>
+                            </Button>: <Button alignSelf="center" colorScheme="green" onPress={() => changeSalonAvailability(item, true)}>
+                                <Icon name="checkmark"/>
+                            </Button>
+                        }
+                    </Column>
+                </Row>
             </Box>)
     }, [])
-
-    const handleCloseConfirmationModal = () => {
-        setShowDeleteConfirmationModal(false)
-    }
 
     useEffect(() => {
         retrieveAllSalons()
     }, [])
 
-    const changeSalonAvailability = async (status: boolean) => {
+    const changeSalonAvailability = async (salon: Salon, status: boolean) => {
         try {
             if (salon !== undefined) {
+                setLoading(true)
                 const salonRef = doc(firestore, "salons", salon.id).withConverter(salonConverter)
                 await updateDoc(salonRef, {
                     ...salon,
                     enabled: status
                 })
                 await retrieveAllSalons()
-                setSalon(undefined)
-                setShowDeleteConfirmationModal(false)
+                setLoading(false)
             }
         } catch (e: any) {
             console.log(e)
         }
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            paddingTop: 0,
-        },
-        logo: {
-            width: 125,
-            height: 140,
-            alignSelf: 'center',
-            borderRadius: 200/2
-        },
-        backgroundImage: {
-            flex: 1,
-            width: 400,
-            // height: null,
-            resizeMode: 'cover', // or 'stretch'
-            justifyContent: 'center',
-            alignItems: 'center',
-        }
-    });
-
     return(
-        <Center w="100%">
-            <SafeAreaView >
-                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
-                    <View style={styles.container} >
-
-                        <Box safeArea p="3" py="12" w="100%">
-
-                            <View style={styles.container}>
-                                <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
-                            </View>
-
-                            <FlatList data={salons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
-                            <Modal isOpen={showDeleteConfirmationModal} onClose={handleCloseConfirmationModal}>
-                                <Modal.Content>
-                                    {/*<Modal.CloseButton/>*/}
-                                    <Modal.Body>
-                                        <AlertComponent status={"warning"} text={`Are you sure you want to disable this item? \n Name: ${salon?.name} \n Location: ${salon?.location} \n Phone number: ${salon?.phoneNumber}`}
-                                                        onClose={handleCloseConfirmationModal}/>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button mr={2} colorScheme={"gray"} onPress={handleCloseConfirmationModal}>Cancel</Button>
-                                        <Button colorScheme={"green"} onPress={() => changeSalonAvailability(false)}>Confirm</Button>
-                                    </Modal.Footer>
-                                </Modal.Content>
-                            </Modal>
+        <Center px={4} w="100%">
+            <Box safeArea p="5" py="5" w="100%">
+                {
+                    loading && <Loading/>
+                }
+                <Heading mb={5} alignSelf="center">Salons</Heading>
+                <FlatList data={salons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
             </Box>
-
-                    </View>
-                </ImageBackground>
-            </SafeAreaView>
         </Center>
 
     )
