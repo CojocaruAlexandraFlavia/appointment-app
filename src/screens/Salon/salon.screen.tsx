@@ -47,6 +47,7 @@ import * as servicesJson from '../../utils/all-services.json'
 // } from 'react-native-reanimated';
 import { StyleSheet, Animated, TouchableWithoutFeedback, Image, Easing } from 'react-native';
 import {yellow200} from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
+import colors from "native-base/lib/typescript/theme/base/colors";
 
 const emptyState: Salon = {
     nrOfReviews: 0,
@@ -338,10 +339,11 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                     <HStack space={[2, 3]} justifyContent="space-between">
                                         <Avatar alignSelf={"center"} size="48px"
                                                 source={{uri: item.client.profilePicture}}/>
-                                        <VStack alignItems={"flex-start"}>
+                                        <VStack alignItems={"flex-start"} >
                                             {/*@ts-ignore*/}
                                             <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                                            <Rating type="custom" startingValue={item.stars} imageSize={15} readonly/>
+                                            <Rating type="custom" startingValue={item.stars} imageSize={15} readonly
+                                                    tintColor={"gray"} />
                                             <Text style={{fontSize: 12}}>{item.message}</Text>
                                         </VStack>
                                         <Spacer/>
