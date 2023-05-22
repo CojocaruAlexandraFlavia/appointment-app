@@ -128,10 +128,12 @@ const Profile = ({navigation}: any) => {
         <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
             <HStack space={"md"}>
                 <Avatar.Image size={60} source={{uri: item.images[0]}} style={{marginRight: 6}}/>
-                <Heading alignSelf="center" fontSize={20}>{item.name}{"\n"}</Heading>
+                <Heading alignSelf="center" fontSize={15}>{item.name}{"\n"}</Heading>
                 {
                     favoritesOccurrencesMapping[item.id] &&
-                    <Heading alignSelf="flex-end" fontSize={15}>Appointments: {favoritesOccurrencesMapping[item.id]}</Heading>
+                    <Heading alignSelf="flex-end" fontSize={10}>
+                        Appointments: {favoritesOccurrencesMapping[item.id]}
+                    </Heading>
                 }
             </HStack>
         </Box>
@@ -197,9 +199,10 @@ const Profile = ({navigation}: any) => {
                             </View>
                         </TouchableRipple>
                         {
-                            Object.keys(favoritesOccurrencesMapping).length > 0 && showFavorites? <View style={styles.menuItem}>
+                            Object.keys(favoritesOccurrencesMapping).length > 0 && showFavorites?
+                                <View style={styles.menuItem}>
                                 <FlatList data={favoriteSalons} renderItem={renderSalonItem} keyExtractor={item => item.id.toString()}/>
-                            </View>: null
+                                </View>: null
                         }
                     </View>
                 </View>

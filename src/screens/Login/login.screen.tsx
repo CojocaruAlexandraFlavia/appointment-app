@@ -209,7 +209,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                             </View>
 
                                 <FormControl isInvalid={errors.email !== ""}>
-                                    <FormControl.Label>Email</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}}>Email</FormControl.Label>
                                     <Input w={{base: "100%", md: "25%"}} size={5}
                                            // color="muted.400"
                                            InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
@@ -220,7 +220,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                                 </FormControl>
 
                                 <FormControl isInvalid={errors.password !== ""}>
-                                    <FormControl.Label>Password</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}}>Password</FormControl.Label>
                                     <Input w={{ base: "100%", md: "25%"}} size={5}
                                            value={credentials.password} isInvalid={errors.password !== ""}
                                            backgroundColor={"white"}
@@ -237,7 +237,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                                 </FormControl>
 
                                 <Checkbox alignItems="flex-start" mt="5" isChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
-                                    <Text pl="3" fontWeight="normal" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
+                                    <Text style={{fontStyle: 'italic'}} pl="3" fontWeight="normal" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
                                         Remember me and keep me logged in
                                     </Text>
                                 </Checkbox>
@@ -254,14 +254,14 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                             <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
                         </HStack>
 
-                        <HStack space="4" alignItems="center" justifyContent="center">
-                            <Pressable onPress={signInUsingFacebook}>
-                                <IconFacebook />
-                            </Pressable>
-                            <Pressable onPress={signInUsingGoogle}>
-                                <IconGoogle />
-                            </Pressable>
-                        </HStack>
+                        {/*<HStack space="4" alignItems="center" justifyContent="center">*/}
+                        {/*    <Pressable onPress={signInUsingFacebook}>*/}
+                        {/*        <IconFacebook />*/}
+                        {/*    </Pressable>*/}
+                        {/*    <Pressable onPress={signInUsingGoogle}>*/}
+                        {/*        <IconGoogle />*/}
+                        {/*    </Pressable>*/}
+                        {/*</HStack>*/}
 
                         <VStack space={1} mt="1">
                                 <HStack mt="6" justifyContent="center">

@@ -200,7 +200,7 @@ const Register = ({navigation}: any): ReactElement => {
                                 </View>
 
                                 <FormControl isRequired isInvalid={errors.email !== ""}>
-                                    <FormControl.Label _text={{bold: true}} >Email</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}} >Email</FormControl.Label>
                                     <Input value={credentials.email} isInvalid={errors.email !== ""} size={5}
                                            backgroundColor={"white"}
                                            InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
@@ -209,7 +209,7 @@ const Register = ({navigation}: any): ReactElement => {
                                 </FormControl>
 
                                 <FormControl isRequired isInvalid={errors.password !== ""}>
-                                    <FormControl.Label _text={{bold: true}}>Password</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}}>Password</FormControl.Label>
                                     <Input value={credentials.password} isInvalid={errors.password !== ""} size={5}
                                            backgroundColor={"white"}
                                            onChangeText={text => onChangeText("password", text)} type={showPassword ? "text" : "password"} InputLeftElement={
@@ -227,23 +227,25 @@ const Register = ({navigation}: any): ReactElement => {
                                  </FormControl> */}
 
                                  <FormControl isRequired isInvalid={errors.firstName !== ""}>
-                                    <FormControl.Label _text={{bold: true}} >First Name</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}} >First Name</FormControl.Label>
                                     <Input value={credentials.firstName} isInvalid={errors.firstName !== ""} size={5}
+                                           InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
                                            backgroundColor={"white"} onChangeText={text => onChangeText("firstName", text)}/>
                                     <FormControl.HelperText _text={{fontSize: 'xs'}}>First Name should contain at least 3 characters. </FormControl.HelperText>
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.firstName}</FormControl.ErrorMessage>
                                 </FormControl>
 
                                 <FormControl isRequired isInvalid={errors.lastName !== ""}>
-                                    <FormControl.Label _text={{bold: true}} >Last Name</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}} >Last Name</FormControl.Label>
                                     <Input value={credentials.lastName} isInvalid={errors.lastName !== ""} size={5}
+                                           InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
                                            backgroundColor={"white"} onChangeText={text => onChangeText("lastName", text)}/>
                                     <FormControl.HelperText _text={{fontSize: 'xs'}}>Last Name should contain at least 3 characters. </FormControl.HelperText>
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.lastName}</FormControl.ErrorMessage>
                                 </FormControl>
 
                                 <FormControl isRequired isInvalid={errors.phoneNumber !== ""}>
-                                    <FormControl.Label _text={{bold: true}} >Phone Number</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}} >Phone Number</FormControl.Label>
                                     <Input value={credentials.phoneNumber} size={5} backgroundColor={"white"}
                                            InputLeftElement={ <Icon as={<Feather name="phone" />} ml={2}/>}
                                            isInvalid={errors.phoneNumber !== ""} onChangeText={text => onChangeText("phoneNumber", text)}/>
@@ -251,18 +253,14 @@ const Register = ({navigation}: any): ReactElement => {
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
                                 </FormControl>
 
-                                <FormControl isRequired isInvalid={errors.city !== ""}>
-                                    <FormControl.Label _text={{bold: true}} >City</FormControl.Label>
-                                    <Input value={credentials.city} size={5} backgroundColor={"white"}
-                                           InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}
-                                           isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>
-                                    <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>
-                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>
-                                </FormControl>
+
 
                                 <FormControl>
-                                    <FormControl.Label _text={{bold: true}} >Select your country</FormControl.Label>
-                                    <Select backgroundColor={"white"} placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
+                                    <FormControl.Label _text={{bold: true, color:"black"}} >Select your country</FormControl.Label>
+                                    <Select backgroundColor={"white"}
+                                            placeholder={"Choose one option"}
+                                            onValueChange={getMajorCitiesForCountry}
+                                            InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}>
                                         {
                                             euCountries.countries.map((country, index) =>
                                                 <Select.Item key={index} label={country.name} value={country.code}/>)
@@ -271,15 +269,29 @@ const Register = ({navigation}: any): ReactElement => {
                                 </FormControl>
 
                                 <FormControl>
-                                    <FormControl.Label _text={{bold: true}}>Select your city</FormControl.Label>
-                                    <Select backgroundColor={"white"} placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
-                                            onValueChange={(value) => onChangeText("city", value)}>
+                                    <FormControl.Label _text={{bold: true, color:"black"}}>Select your city</FormControl.Label>
+                                    <Select backgroundColor={"white"}
+                                            placeholder={"Choose one option"}
+                                            isDisabled={citiesForSelectedState.length === 0}
+                                            onValueChange={(value) => onChangeText("city", value)}
+                                            InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}>
                                         {
                                             citiesForSelectedState.length > 0? citiesForSelectedState.map((city, index) => <Select.Item key={index} label={city} value={city}/>):
                                                 <Select.Item label="First select your country!" value={""} disabled/>
                                         }
                                     </Select>
                                 </FormControl>
+
+
+                                {/*<FormControl isRequired isInvalid={errors.city !== ""}>*/}
+                                {/*    <FormControl.Label _text={{bold: true, color:"black"}} >City</FormControl.Label>*/}
+                                {/*    <Input value={credentials.city} size={5} backgroundColor={"white"}*/}
+                                {/*           InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}*/}
+                                {/*           isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>*/}
+                                {/*    <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>*/}
+                                {/*    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>*/}
+                                {/*</FormControl>*/}
+
 
                                 <Checkbox alignItems="flex-start" defaultIsChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
                                     <HStack alignItems="center" marginBottom={4} marginTop={4}>
@@ -309,14 +321,14 @@ const Register = ({navigation}: any): ReactElement => {
                            <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
                        </HStack>
 
-                        <HStack space="4" alignItems="center" justifyContent="center">
-                            <Pressable>
-                                <IconFacebook />
-                            </Pressable>
-                            <Pressable>
-                                <IconGoogle />
-                            </Pressable>
-                        </HStack>
+                        {/*<HStack space="4" alignItems="center" justifyContent="center">*/}
+                        {/*    <Pressable>*/}
+                        {/*        <IconFacebook />*/}
+                        {/*    </Pressable>*/}
+                        {/*    <Pressable>*/}
+                        {/*        <IconGoogle />*/}
+                        {/*    </Pressable>*/}
+                        {/*</HStack>*/}
 
                         <VStack space={5} mt="5">
                         <HStack mb='4' space="1" alignItems="center" justifyContent="center" mt={{ base: "auto", md: "8" }}>

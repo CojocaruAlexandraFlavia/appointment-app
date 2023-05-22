@@ -23,6 +23,7 @@ import {AlertComponent} from "../../components/alert.component";
 import {Loading} from "../../components/activity-indicator.component";
 import * as euCountries from "../../utils/european-countries.json";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import {black} from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
 
 const emptySalonState: Salon = {
     endTime: "",
@@ -209,46 +210,58 @@ const AddSalon = () => {
                                  </View>
 
                      <Heading py={5} alignSelf="center">Add new salon</Heading>
+
                      <FormControl isInvalid={errors.name !== ""} mb={3}>
-                         <FormControl.Label _text={{bold: true}}>Name</FormControl.Label>
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Name</FormControl.Label>
                          <Input value={salon.name} onChangeText={text => onChangeFormValues(text, "name")}
                                 backgroundColor={"white"} InputLeftElement={ <Icon as={<MaterialIcons name="drive-file-rename-outline" />} ml={2}/>}/>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.name}</FormControl.ErrorMessage>
                      </FormControl>
+
                      <FormControl isInvalid={errors.country !== ""}>
-                         <FormControl.Label _text={{bold: true}}>Select the country</FormControl.Label>
-                         <Select backgroundColor={"white"} selectedValue={salon.country} placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}>
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Select the country</FormControl.Label>
+                         <Select backgroundColor={"white"} selectedValue={salon.country}
+                                 placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}
+                                 InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}>
                              {
                                  euCountries.countries.map((country, index) =>
                                      <Select.Item key={index} label={country.name} value={country.code}/>)
                              }
                          </Select>
                      </FormControl>
+
                      <FormControl isInvalid={errors.city !== ""}>
-                         <FormControl.Label _text={{bold: true}}>Select the city</FormControl.Label>
-                         <Select backgroundColor={"white"} selectedValue={salon.city} placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
-                                 onValueChange={(value) => onChangeFormValues(value, "city")}>
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Select the city</FormControl.Label>
+                         <Select backgroundColor={"white"} selectedValue={salon.city}
+                                 placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
+                                 onValueChange={(value) => onChangeFormValues(value, "city")}
+                                 InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}>
                              {
                                  citiesForSelectedState.length > 0? citiesForSelectedState.map((city, index) => <Select.Item key={index} label={city} value={city}/>):
                                      <Select.Item label="First select your country!" value={""} disabled/>
                              }
                          </Select>
                      </FormControl>
+
                      <FormControl isInvalid={errors.address !== ""} mb={3}>
-                         <FormControl.Label _text={{bold: true}}>Address</FormControl.Label>
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Address</FormControl.Label>
                          <Input backgroundColor={"white"} value={salon.address} onChangeText={text => onChangeFormValues(text, "address")}
                                 InputLeftElement={ <Icon as={<Ionicons name="location" />} ml={2}/>}/>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.address}</FormControl.ErrorMessage>
                      </FormControl>
+
                      <FormControl mb={3} isInvalid={errors.phoneNumber !== ""}>
-                         <FormControl.Label _text={{bold: true}}>Phone number</FormControl.Label>
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Phone number</FormControl.Label>
                          <Input backgroundColor={"white"} value={salon.phoneNumber} onChangeText={text => onChangeFormValues(text, "phoneNumber")}
                                 InputLeftElement={ <Icon as={<Feather name="phone"/>} ml={2}/>}/>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
                      </FormControl>
+
                      <FormControl mb={3} isInvalid={errors.startTime !== ""}>
-                         <FormControl.Label _text={{bold: true}}>Select opening time</FormControl.Label>
-                         <Select backgroundColor={"white"} selectedValue={salon.startTime} onValueChange={value => onChangeFormValues(value, "startTime")} placeholder={"Choose one hour"}
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Select opening time</FormControl.Label>
+                         <Select backgroundColor={"white"} selectedValue={salon.startTime} onValueChange={value => onChangeFormValues(value, "startTime")}
+                                 placeholder={"Choose one hour"}
+                                 InputLeftElement={ <Icon as={<Feather name="clock"/>} ml={2}/>}
                                  _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={5} />}}>
                              {
                                  openingHours.map((hour, index) => <Select.Item key={index} label={hour} value={hour}/>)
@@ -256,9 +269,12 @@ const AddSalon = () => {
                          </Select>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.startTime}</FormControl.ErrorMessage>
                      </FormControl>
+
                      <FormControl mb={3} isInvalid={errors.endTime !== ""}>
-                         <FormControl.Label _text={{bold: true}}>Select closing time</FormControl.Label>
-                         <Select backgroundColor={"white"} selectedValue={salon.endTime} onValueChange={value => onChangeFormValues(value, "endTime")} placeholder={"Choose one hour"}
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Select closing time</FormControl.Label>
+                         <Select backgroundColor={"white"} selectedValue={salon.endTime} onValueChange={value => onChangeFormValues(value, "endTime")}
+                                 placeholder={"Choose one hour"}
+                                 InputLeftElement={ <Icon as={<Feather name="clock"/>} ml={2}/>}
                                  _selectedItem={{ bg: "teal.600", endIcon: <CheckIcon size={5} />}}>
                              {
                                  closingHours.map((hour, index) => <Select.Item key={index} label={hour} value={hour}/>)
@@ -266,8 +282,9 @@ const AddSalon = () => {
                          </Select>
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.endTime}</FormControl.ErrorMessage>
                      </FormControl>
+
                      <FormControl isInvalid={noImageUploadedError}>
-                         <FormControl.Label _text={{bold: true}}>Upload salon pictures</FormControl.Label>
+                         <FormControl.Label _text={{bold: true, color:"black"}}>Upload salon pictures</FormControl.Label>
                          <TouchableOpacity  style={{borderWidth: 1, padding: 10 , borderColor: "lightgrey", borderRadius: 10, backgroundColor: "white"}}
                                            activeOpacity={0.5} onPress={pickImages}>
                              <Icon alignSelf={"center"} as={AntDesign} name="camera" size={35} color="black"
@@ -288,7 +305,8 @@ const AddSalon = () => {
                          }
                          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Upload at least one picture!</FormControl.ErrorMessage>
                      </FormControl>
-                     <Button mb={4} mt={3} colorScheme="green" onPress={submit}>Submit</Button>
+
+                     <Button mb={4} mt={3} colorScheme="green" onPress={submit} marginTop={10}>Submit</Button>
                      {
                          salonAddedAlert && <AlertComponent status={"success"} text={"Salon added successfully!"}
                                                             onClose={() => setSalonAddedAlert(false)}/>
@@ -299,7 +317,6 @@ const AddSalon = () => {
                                                         onClose={() => setSavingError("")}/>
                      }
                  </Box>
-
                      </ImageBackground>
                  </SafeAreaView>
              </Center>

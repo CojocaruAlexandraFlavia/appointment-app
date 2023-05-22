@@ -21,17 +21,17 @@ const MainTab = () => (
                     ),
                 }}
             />
-            <Tab.Screen
-                name="NotificationsStack"
-                component={NotificationStackScreen}
-                options={{
-                    tabBarLabel: 'Updates',
-                    tabBarColor: '#FF6347',
-                    tabBarIcon: ({color}) => (
-                        <Icon name="ios-notifications" color={color} size={26} />
-                    ),
-                }}
-            />
+            {/*<Tab.Screen*/}
+            {/*    name="NotificationsStack"*/}
+            {/*    component={NotificationStackScreen}*/}
+            {/*    options={{*/}
+            {/*        tabBarLabel: 'Updates',*/}
+            {/*        tabBarColor: '#FF6347',*/}
+            {/*        tabBarIcon: ({color}) => (*/}
+            {/*            <Icon name="ios-notifications" color={color} size={26} />*/}
+            {/*        ),*/}
+            {/*    }}*/}
+            {/*/>*/}
             <Tab.Screen
                 name="ProfileStack"
                 component={ProfileStackScreen}

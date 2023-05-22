@@ -1,4 +1,4 @@
-import {Avatar, Box, Center, FlatList, Heading, HStack, Pressable, VStack} from "native-base";
+import {Avatar, Box, Center, FlatList, Heading, HStack, Pressable, ScrollView, VStack} from "native-base";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {Rating} from "react-native-ratings";
 import {Salon} from "../../../utils/types";
@@ -66,6 +66,7 @@ const HomeClient = ({data, navigation}: Props) => {
     };
 
     return (
+        <ScrollView>
         <Center w="100%">
             <SafeAreaView >
                 <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
@@ -111,6 +112,7 @@ const HomeClient = ({data, navigation}: Props) => {
                 </ImageBackground>
             </SafeAreaView>
         </Center>
+        </ScrollView>
     )
 }
 
