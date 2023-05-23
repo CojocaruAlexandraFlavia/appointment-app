@@ -25,7 +25,7 @@ const emptyState: User = {
     username: ""
 }
 
-const EditProfile = () => {
+const EditProfile = ({navigation}: any) => {
 
     const bs = React.createRef();
     const fall = new Animated.Value(1);
@@ -99,6 +99,7 @@ const EditProfile = () => {
                 }).then(async() => {
                     const firestoreUpdatedUser = await getDoc(userRef)
                     setUser({...firestoreUpdatedUser.data(), id: firestoreUpdatedUser.id})
+                    navigation.navigate("Profile")
                 })
             } else {
                 updateDoc(userRef, {
@@ -106,6 +107,7 @@ const EditProfile = () => {
                 }).then(async() => {
                     const firestoreUpdatedUser = await getDoc(userRef)
                     setUser({...firestoreUpdatedUser.data(), id: firestoreUpdatedUser.id})
+                    navigation.navigate("Profile")
                 })
             }
 

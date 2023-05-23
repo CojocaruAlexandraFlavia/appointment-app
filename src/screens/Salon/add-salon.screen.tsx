@@ -198,7 +198,7 @@ const AddSalon = () => {
          <ScrollView>
              <Center w="100%">
                  <SafeAreaView >
-                     <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
+                     <ImageBackground style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
 
                              <Box safeArea p="2" py="8" w="100%" maxW="290">
                      {
@@ -206,7 +206,7 @@ const AddSalon = () => {
                      }
 
                                  <View style={styles.container}>
-                                     <Image style={styles.logo} source={require('../../../assets/logo.png')} />
+                                     <Image alt={"logo"} style={styles.logo} source={require('../../../assets/logo.png')} />
                                  </View>
 
                      <Heading py={5} alignSelf="center">Add new salon</Heading>

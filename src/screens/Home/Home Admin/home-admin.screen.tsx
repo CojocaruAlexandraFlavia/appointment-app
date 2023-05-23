@@ -3,7 +3,7 @@ import {firestore} from "../../../utils/firebase";
 import {salonConverter} from "../../Salon/salon.class";
 import {Salon} from "../../../utils/types";
 import React, {useCallback, useEffect, useState} from "react";
-import {Avatar, Box, Button, Center, FlatList, Heading, Row, Text, Column, ScrollView} from "native-base";
+import {Avatar, Box, Button, Center, FlatList, Heading, Row, Text, Column, ScrollView, Input} from "native-base";
 import {Image, ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {Loading} from "../../../components/activity-indicator.component";
@@ -12,6 +12,7 @@ const HomeAdmin = () => {
 
     const [salons, setSalons] = useState<Salon[]>([])
     const [loading, setLoading] = useState(false)
+    const [filteredSalons, setFilteredSalons] = useState<Salon[]>([])
 
     const retrieveAllSalons = async () => {
         const salonCollectionRef = collection(firestore, "salons").withConverter(salonConverter)
@@ -23,9 +24,19 @@ const HomeAdmin = () => {
                 const salon = documentSnapshot.data()
                 salonList.push({...salon, images: [salon.image], id: documentSnapshot.id, reviews: []})
             })
+            setFilteredSalons(salonList)
             setSalons(salonList)
         } catch (e) {
             console.log("error: " + e)
+        }
+    }
+
+    const onChangeSearchInput = (text: String) => {
+        if (text !== "") {
+            const filteredSalons = salons.filter(salon => salon.name.toLowerCase().includes(text.toLowerCase()))
+            setFilteredSalons(filteredSalons)
+        } else {
+            setFilteredSalons(salons)
         }
     }
 
@@ -97,26 +108,35 @@ const HomeAdmin = () => {
 
     return(
         <ScrollView>
-        <Center px={4} w="100%">
-            <SafeAreaView >
-                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
-                    <View style={styles.container} >
+            <Center px={5} w="100%">
+                <SafeAreaView>
+                    <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
+                        <View style={styles.container} >
 
-                        <Box safeArea p="5" py="5" w="100%">
-                    {
-                        loading && <Loading/>
-                    }
-                    <View style={styles.container}>
-                        <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
-                    </View>
-                    <Heading paddingTop={3} mb={5} alignSelf="center">Salons</Heading>
-                    <FlatList data={salons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
-                </Box>
+                            <Box safeArea p="5" py="5" w="100%">
+                        {
+                            loading && <Loading/>
+                        }
+                        <View style={styles.container}>
+                            <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
+                        </View>
+                        <Heading paddingTop={3} mb={5} alignSelf="center">Salons</Heading>
+                        <Input rounded={"lg"} backgroundColor="white" alignSelf="center" variant="underlined" onChangeText={onChangeSearchInput} placeholder='Find a salon'
+                               _focus={{backgroundColor: "gray.50", borderColor: "none"}} width={"75%"}
+                               InputRightElement={
+                                   <Icon
+                                       name="ios-search"
+                                       size={20}
+                                       color="#000"/>}/>
+                        <ScrollView horizontal={true}>
+                            <FlatList w={"75%"} data={filteredSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                        </ScrollView>
+                    </Box>
 
-                    </View>
-                </ImageBackground>
-            </SafeAreaView>
-        </Center>
+                        </View>
+                    </ImageBackground>
+                </SafeAreaView>
+            </Center>
         </ScrollView>
 
     )

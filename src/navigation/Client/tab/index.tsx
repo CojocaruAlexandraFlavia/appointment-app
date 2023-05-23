@@ -3,7 +3,6 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {HomeStackScreen} from "./home-stack-screen";
-import {NotificationStackScreen} from "./notification-stack-screen";
 import {ProfileStackScreen} from "./profile-stack-screen";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -21,17 +20,6 @@ const MainTab = () => (
                     ),
                 }}
             />
-            {/*<Tab.Screen*/}
-            {/*    name="NotificationsStack"*/}
-            {/*    component={NotificationStackScreen}*/}
-            {/*    options={{*/}
-            {/*        tabBarLabel: 'Updates',*/}
-            {/*        tabBarColor: '#FF6347',*/}
-            {/*        tabBarIcon: ({color}) => (*/}
-            {/*            <Icon name="ios-notifications" color={color} size={26} />*/}
-            {/*        ),*/}
-            {/*    }}*/}
-            {/*/>*/}
             <Tab.Screen
                 name="ProfileStack"
                 component={ProfileStackScreen}

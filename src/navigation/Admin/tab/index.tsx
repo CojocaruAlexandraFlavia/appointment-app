@@ -3,6 +3,7 @@ import {HomeStackScreen} from "./home-stack-screen";
 import Icon from "react-native-vector-icons/Ionicons";
 import React from "react";
 import {AddSalonStackScreen} from "./add-salon-stack-screen";
+import {Alert, Modal, Text} from "native-base";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -30,7 +31,23 @@ const MainTab = () => (
                 ),
             }}
         />
+        {/*<Tab.Screen name={"Logout"}*/}
+        {/*            options={{tabBarLabel: 'Logout'}}*/}
+        {/*            children={() => <LogoutModal show={true}/>}*/}
+        {/*/>*/}
     </Tab.Navigator>
 )
+
+type LogoutProps = {
+    show: boolean
+}
+
+const LogoutModal = ({show}: LogoutProps) => {
+    return(
+        <Alert status={"warning"}>
+            <Text>Are you sure you want to logout?</Text>
+        </Alert>
+    )
+}
 
 export default MainTab;

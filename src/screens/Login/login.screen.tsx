@@ -37,6 +37,7 @@ import {useUserDataContext} from "../../store/user-data.context";
 import {userConverter} from "../Profile/user.class";
 
 import {FirebaseError} from "@firebase/util";
+import {AlertComponent} from "../../components/alert.component";
 
 const emptyData: LoginData = {
     email: "",
@@ -242,7 +243,9 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                                     </Text>
                                 </Checkbox>
                                 <Button mt="4" colorScheme="indigo" onPress={signInUsingEmailAndPassword}>Sign in</Button>
-                                {firebaseLoginError && <Text mt={4} alignSelf='center' fontSize='xl' color='red.500'>Error: {firebaseLoginError}</Text>}
+                                {
+                                    firebaseLoginError && <AlertComponent status={"error"} text={firebaseLoginError} onClose={() => setFirebaseLoginError("")}/>
+                                }
                             </VStack>
                         </Box>
 

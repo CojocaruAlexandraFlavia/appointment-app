@@ -68,12 +68,6 @@ export const DrawerContent = (props:any) => {
                             label="Reviews"
                             onPress={() => {props.navigation.navigate('Reviews')}}
                         />
-                        {/*<DrawerItem*/}
-                        {/*    icon={({color, size}:any) => (*/}
-                        {/*        <Icon name="bell-outline" color={color} size={size}/> )}*/}
-                        {/*    label="Notifications"*/}
-                        {/*    onPress={() => {props.navigation.navigate('Notifications')}}*/}
-                        {/*/>*/}
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>

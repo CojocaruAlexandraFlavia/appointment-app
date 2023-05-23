@@ -81,6 +81,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
                         <Text fontSize="xl">{service}</Text>
                     </HStack>
                     <Button mt={5} colorScheme='green' variant='subtle' onPress={confirmAppointment}>Confirm</Button>
+                    <Button colorScheme="gray" variant="subtle" onPress={() => navigation.navigate("Salon", {id: idSalon})}>Cancel</Button>
                 </Box>
                 {
                     showConfirmationModal && <Loading/>
