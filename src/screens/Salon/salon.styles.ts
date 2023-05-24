@@ -89,7 +89,7 @@ const styles = () => StyleSheet.create({
     backgroundImage: {
         flex: 1,
         width: 355,
-        // height: 700,
+        height: 870,
         resizeMode: 'cover', // or 'stretch'
         justifyContent: 'center',
         alignItems: 'center',

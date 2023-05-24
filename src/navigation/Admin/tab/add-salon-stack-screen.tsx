@@ -2,6 +2,9 @@ import {useTheme} from "react-native-paper";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {StackNavigatorParamList} from "../../navigator.types";
 import AddSalon from "../../../screens/Salon/add-salon.screen";
+import {HStack} from "native-base";
+import Icon from "react-native-vector-icons/Ionicons";
+import React from "react";
 
 const AddSalonStack = createNativeStackNavigator<StackNavigatorParamList>();
 
@@ -17,7 +20,23 @@ export const AddSalonStackScreen = () => {
                 fontWeight: 'bold',
             },
         }}>
-            <AddSalonStack.Screen name={"AddSalon"} component={AddSalon} options={{title: ''}}/>
+            <AddSalonStack.Screen
+                name={"AddSalon"}
+                component={AddSalon}
+                options={{title: '',
+                    headerLeft: () => (
+                        <HStack style={{marginLeft: 10}}>
+                            <Icon.Button
+                                name="exit-outline"
+                                size={25}
+                                color="#000"
+                                backgroundColor={colors.background}
+                                // onPress={() => }
+                            />
+                        </HStack>
+                    )
+            }}
+            />
         </AddSalonStack.Navigator>
     )
 }

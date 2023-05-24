@@ -99,7 +99,7 @@ const HomeAdmin = () => {
         backgroundImage: {
             flex: 1,
             width: 400,
-            // height: null,
+            height: 870,
             resizeMode: 'cover', // or 'stretch'
             justifyContent: 'center',
             alignItems: 'center',
@@ -109,7 +109,7 @@ const HomeAdmin = () => {
     return(
         <ScrollView>
             <Center px={5} w="100%">
-                <SafeAreaView>
+                <SafeAreaView style={styles.container} >
                     <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
                         <View style={styles.container} >
 

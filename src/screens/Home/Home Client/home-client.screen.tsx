@@ -67,8 +67,8 @@ const HomeClient = ({data, navigation}: Props) => {
 
     return (
         <ScrollView>
-        <Center w="100%">
-            <SafeAreaView >
+        <Center px={5} w="100%">
+            <SafeAreaView style={styles.container} >
                 <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
                     <View style={styles.container} >
 
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     backgroundImage: {
         flex: 1,
         width: 355,
-        // height: null,
+        height: 870,
         resizeMode: 'cover', // or 'stretch'
         justifyContent: 'center',
         alignItems: 'center',
