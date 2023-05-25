@@ -237,11 +237,12 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                                     {/*</Link>*/}
                                 </FormControl>
 
-                                <Checkbox alignItems="flex-start" mt="5" isChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
-                                    <Text style={{fontStyle: 'italic'}} pl="3" fontWeight="normal" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
-                                        Remember me and keep me logged in
-                                    </Text>
-                                </Checkbox>
+                                {/*<Checkbox alignItems="flex-start" mt="5" isChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">*/}
+                                {/*    <Text style={{fontStyle: 'italic'}} pl="3" fontWeight="normal" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>*/}
+                                {/*        Remember me and keep me logged in*/}
+                                {/*    </Text>*/}
+                                {/*</Checkbox>*/}
+
                                 <Button mt="4" colorScheme="indigo" onPress={signInUsingEmailAndPassword}>Sign in</Button>
                                 {
                                     firebaseLoginError && <AlertComponent status={"error"} text={firebaseLoginError} onClose={() => setFirebaseLoginError("")}/>
