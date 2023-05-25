@@ -5,12 +5,22 @@ import HomeAdmin from "../../../screens/Home/Home Admin/home-admin.screen";
 import Icon from "react-native-vector-icons/Ionicons";
 import React from "react";
 import {Button, HStack} from "native-base";
+import {useUserDataContext} from "../../../store/user-data.context";
+import {getAuth, signOut} from "firebase/auth";
+import app from "../../../utils/firebase";
 
 const HomeStack = createNativeStackNavigator<StackNavigatorParamList>();
 
-export const HomeStackScreen = () => {
+export const HomeStackScreen = (props: any) => {
 
     const {colors} = useTheme();
+
+    const { setUser } = useUserDataContext()
+
+    const logout = () => {
+        setUser({})
+        signOut(getAuth(app)).then(() => props.navigation.navigate('Login'))
+    }
 
     return (
         <HomeStack.Navigator screenOptions={{
@@ -26,18 +36,12 @@ export const HomeStackScreen = () => {
                 options={{title: '',
                     headerLeft: () => (
                         <HStack style={{marginLeft: 10}}>
-
-                            {/*<Button variant="outlined" */}
-                            {/*        startIcon={ <Icon name="exit-outline" color={"#000"} size={25} /> }>*/}
-                            {/*    Logout*/}
-                            {/*</Button>*/}
-
                             <Icon.Button
                                 name="exit-outline"
                                 size={25}
                                 color="#000"
                                 backgroundColor={colors.background}
-                                // onPress={() => }
+                                onPress={logout}
                             />
                         </HStack>
                     )
