@@ -22,7 +22,7 @@ import { useRoute } from '@react-navigation/native';
 import React, {ReactElement, useCallback, useEffect, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
 import { Review, Salon, ServicesListData, ServiceWithTime } from "../../utils/types";
-import { Rating } from "react-native-ratings";
+import {AirbnbRating, Rating} from "react-native-ratings";
 import CalendarPicker from "../Calendar/calendar-picker.screen";
 import {Alert, Linking, SectionListData, SectionListRenderItemInfo, Share} from "react-native";
 import {Entypo, Feather} from "@expo/vector-icons";
@@ -259,11 +259,11 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                     <SafeAreaView >
                         <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
 
-                            <Box safeArea p="2" py="8" w="100%" maxW="290" marginTop={-19.5}>
-                        <HStack justifyContent={"space-between"} mb={3}>
-                            <Heading size={"lg"} mb={2} alignSelf={"center"}>{salon?.name}</Heading>
-                            <Rating style={{marginBottom: "3%"}} type="custom" startingValue={salon?.rating}
-                                    imageSize={20} readonly/>
+                            <Box safeArea p="2" py="4" w="100%" maxW="290">
+                        <HStack mb={3}>
+                            <Heading size={"md"}>{salon?.name}</Heading>
+                            <AirbnbRating showRating={false}  defaultRating={salon?.rating}
+                                    size={20} isDisabled/>
                         </HStack>
 
                         <SliderBox alignSelf={"center"} ImageComponentStyle={{borderRadius: 15, width: '75%'}} w="90%"
@@ -338,7 +338,8 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                         <VStack alignItems={"flex-start"}>
                                             {/*@ts-ignore*/}
                                             <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                                            <Rating type="custom" startingValue={item.stars} imageSize={15} readonly/>
+                                            <AirbnbRating showRating={false} defaultRating={item.stars}
+                                                          size={10} isDisabled/>
                                             <Text style={{fontSize: 12}}>{item.message}</Text>
                                         </VStack>
                                         <Spacer/>

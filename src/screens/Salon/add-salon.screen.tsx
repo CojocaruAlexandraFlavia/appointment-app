@@ -147,7 +147,7 @@ const AddSalon = () => {
                 const collectionRef = collection(firestore, "salons").withConverter(salonConverter);
                 const addedSalon = await addDoc(collectionRef,
                     new SalonClass("", salon.name, salon.phoneNumber, 0.0, salon.startTime, salon.endTime,
-                        "", [], 0, salon.enabled, salon.city, salon.country, salon.address))
+                        "", [], 0, salon.enabled, salon.city.charAt(0).toUpperCase() + salon.city.slice(1), salon.country, salon.address))
                 for (let i = 1; i < images.length; i++) {
                     uploadSalonImageAsync(images[i], addedSalon.id, `${i+1}`)
                 }

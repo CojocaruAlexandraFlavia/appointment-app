@@ -131,7 +131,7 @@ const Register = ({navigation}: any): ReactElement => {
                     firstName: credentials.firstName,
                     lastName: credentials.lastName,
                     phoneNumber: credentials.phoneNumber,
-                    city: credentials.city,
+                    city: credentials.city.charAt(0).toUpperCase() + credentials.city.slice(1),
                     username: username
                 });
                 setAdded(true)

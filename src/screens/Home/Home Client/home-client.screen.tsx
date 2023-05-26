@@ -1,6 +1,19 @@
-import {Avatar, Box, Center, FlatList, Heading, HStack, Pressable, ScrollView, VStack} from "native-base";
+import {
+    Avatar,
+    Box,
+    Center,
+    Checkbox,
+    FlatList,
+    Heading,
+    HStack,
+    Pressable,
+    ScrollView,
+    Text,
+    VStack
+} from "native-base";
 import {useCallback, useEffect, useRef, useState} from "react";
-import {Rating} from "react-native-ratings";
+import {Rating, AirbnbRating} from "react-native-ratings";
+// import Rating from "@mui/material/Rating";
 import {Salon} from "../../../utils/types";
 import 'react-native-gesture-handler';
 import React from 'react'
@@ -13,6 +26,7 @@ import {
     View,
     TouchableWithoutFeedback, SafeAreaView, ImageBackground
 } from "react-native";
+import {useUserDataContext} from "../../../store/user-data.context";
 
 type Props = {
     data: Salon[],
@@ -22,9 +36,15 @@ type Props = {
 const HomeClient = ({data, navigation}: Props) => {
 
     const [allSalons, setAllSalons] = useState<Salon[]>(data)
+    const [filteredByCity, setFilteredByCity] = useState<Salon[]>(data)
+    const [checked, setChecked] = useState(false)
+
+    const { user } = useUserDataContext()
 
     useEffect(() => {
         setAllSalons(data)
+        const salonsFiltered = data.filter(salon => salon.city === user.city)
+        setFilteredByCity(salonsFiltered)
     }, [data])
 
 
@@ -33,12 +53,12 @@ const HomeClient = ({data, navigation}: Props) => {
             onPress={() =>
                 navigation.navigate('Salon', {id: item.id})
             }>
-            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py="2">
+            <Box w={"100%"} borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py="2">
                 <HStack space={"md"}>
-                    <Avatar size="48px" source={{uri: item.images[0]}} mr={7}/>
+                    <Avatar size="48px" source={{uri: item.images[0]}} mr={2}/>
                     <VStack>
                         <Heading style={{alignSelf: "center", fontSize: 15}}>{item.name}</Heading>
-                        <Rating type="custom" startingValue={item.rating} imageSize={25} readonly/>
+                        <AirbnbRating showRating={false} ratingContainerStyle={{marginTop: 0}} size={25} defaultRating={item.rating} isDisabled/>
                     </VStack>
                 </HStack>
             </Box>
@@ -67,51 +87,54 @@ const HomeClient = ({data, navigation}: Props) => {
 
     return (
         <ScrollView>
-        <Center px={5} w="100%">
-            <SafeAreaView style={styles.container} >
-                <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
-                    <View style={styles.container} >
+            <Center px={1} w="100%">
+                <SafeAreaView style={styles.container} >
+                    <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
+                        <View style={styles.container} >
 
-                        <TouchableWithoutFeedback onPress={animateImage}>
-                            <Animated.View
-                                style={[
-                                    {
-                                        opacity: fadeAnim.interpolate({
-                                            inputRange: [0, 100],
-                                            outputRange: [1, 0],
-                                        }),
-                                        transform: [
-                                            {
-                                                translateY: yPosition,
-                                            },
-                                            {
-                                                translateX: xPosition,
-                                            },
-                                        ],
-                                    },
-                                ]}
-                            >
-                                    <Image
-                                        style={styles.logo}
-                                        source={require('../../../../assets/logo.png')}
-                                    />
-                            </Animated.View>
-                        </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={animateImage}>
+                                <Animated.View
+                                    style={[
+                                        {
+                                            opacity: fadeAnim.interpolate({
+                                                inputRange: [0, 100],
+                                                outputRange: [1, 0],
+                                            }),
+                                            transform: [
+                                                {
+                                                    translateY: yPosition,
+                                                },
+                                                {
+                                                    translateX: xPosition,
+                                                },
+                                            ],
+                                        },
+                                    ]}
+                                >
+                                        <Image
+                                            style={styles.logo}
+                                            source={require('../../../../assets/logo.png')}
+                                        />
+                                </Animated.View>
+                            </TouchableWithoutFeedback>
 
-                        <Box safeArea p="3" py="12" w="100%" maxW="290">
-                            <View style={styles.container}>
-                                <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
-                                {
-                                    allSalons.length > 0 ?
-                                        <FlatList data={allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>: null
-                                }
-                            </View>
-                        </Box>
+                            <Box safeArea p="3" py="12" w="100%" maxW="290">
+                                <View style={styles.container}>
+                                    <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
+                                    <Checkbox value={""} onChange={(isSelected) => setChecked(isSelected)}>
+                                        <Text>Show salons from your city</Text>
+                                    </Checkbox>
+                                    <ScrollView horizontal={true}>
+                                        <FlatList data={checked? filteredByCity: allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                                    </ScrollView>
 
-                    </View>
-                </ImageBackground>
-            </SafeAreaView>
-        </Center>
+                                </View>
+                            </Box>
+
+                        </View>
+                    </ImageBackground>
+                </SafeAreaView>
+            </Center>
         </ScrollView>
     )
 }
