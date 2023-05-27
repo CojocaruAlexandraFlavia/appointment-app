@@ -114,24 +114,24 @@ const HomeAdmin = () => {
                         <View style={styles.container} >
 
                             <Box safeArea p="5" py="5" w="100%">
-                        {
-                            loading && <Loading/>
-                        }
-                        <View style={styles.container}>
-                            <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
-                        </View>
-                        <Heading paddingTop={3} mb={5} alignSelf="center">Salons</Heading>
-                        <Input rounded={"lg"} backgroundColor="white" alignSelf="center" variant="underlined" onChangeText={onChangeSearchInput} placeholder='Find a salon'
-                               _focus={{backgroundColor: "gray.50", borderColor: "none"}} width={"75%"}
-                               InputRightElement={
-                                   <Icon
-                                       name="ios-search"
-                                       size={20}
-                                       color="#000"/>}/>
-                        <ScrollView horizontal={true}>
-                            <FlatList w={"75%"} data={filteredSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
-                        </ScrollView>
-                    </Box>
+                                {
+                                    loading && <Loading/>
+                                }
+                                <View style={styles.container}>
+                                    <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
+                                </View>
+                                <Heading paddingTop={3} mb={5} alignSelf="center">Salons</Heading>
+                                <Input rounded={"lg"} backgroundColor="white" alignSelf="center" variant="underlined" onChangeText={onChangeSearchInput} placeholder='Find a salon'
+                                       _focus={{backgroundColor: "gray.50", borderColor: "none"}} width={"75%"}
+                                       InputRightElement={
+                                           <Icon
+                                               name="ios-search"
+                                               size={20}
+                                               color="#000"/>}/>
+                                <ScrollView horizontal={true}>
+                                    <FlatList w={"75%"} data={filteredSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                                </ScrollView>
+                            </Box>
 
                         </View>
                     </ImageBackground>

@@ -255,111 +255,111 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             {
                 salon.images.length === 0? <View h="100%"><Loading/></View>:
                 <>
-                <Center w="100%">
-                    <SafeAreaView >
+                <Center px={5} w="100%">
+                    <SafeAreaView style={styles.container}>
                         <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
 
                             <Box safeArea p="2" py="4" w="100%" maxW="290">
-                        <HStack mb={3}>
-                            <Heading size={"md"}>{salon?.name}</Heading>
-                            <AirbnbRating showRating={false}  defaultRating={salon?.rating}
-                                    size={20} isDisabled/>
-                        </HStack>
-
-                        <SliderBox alignSelf={"center"} ImageComponentStyle={{borderRadius: 15, width: '75%'}} w="90%"
-                                   images={salon?.images} autoplay circleLoop sliderBoxHeight={120}/>
-                        <Modal isOpen={showSelectServiceModal} onClose={onCloseServiceModal} size={"lg"}>
-                            <Modal.Content flexGrow={1}>
-                                <Modal.CloseButton/>
-                                <Modal.Header>Choose service</Modal.Header>
-                                <Modal.Body>
-                                    <FormControl maxW="300" isInvalid={!formValidation}>
-                                        <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)}
-                                                     value={selectedService}>
-                                            <ScrollView horizontal={true}>
-                                                <SectionList sections={allSalonServices}
-                                                             keyExtractor={(item) => item.name}
-                                                             renderItem={renderItemServiceList}
-                                                             renderSectionHeader={renderHeaderServiceList}/>
-                                            </ScrollView>
-                                        </Radio.Group>
-                                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs"/>}>Please make
-                                            a selection!</FormControl.ErrorMessage>
-                                    </FormControl>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button colorScheme={"success"} onPress={handleValidateOption}>Next</Button>
-                                </Modal.Footer>
-                            </Modal.Content>
-                        </Modal>
-
-                        <Button mt={5} mb={5} borderWidth={1} borderBottomWidth={2} borderColor={"#f1c40f"}
-                                onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
-
-                        <HStack marginBottom={1}>
-                            <VStack>
-                                <HStack mb={2}>
-                                    <Icon as={<Feather name="phone"/>} size={25} name="phone" color="black"/>
-                                    <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}}
-                                          _light={{_text: {color: "primary.900",},}}
-                                          _dark={{_text: {color: "primary.500",},}}
-                                          onPress={doCall}> {salon?.phoneNumber}
-                                    </Link>
+                                <HStack mb={3}>
+                                    <Heading size={"md"}>{salon?.name}</Heading>
+                                    <AirbnbRating showRating={false}  defaultRating={salon?.rating}
+                                            size={20} isDisabled/>
                                 </HStack>
-                                <HStack>
-                                    <Icon as={<Entypo name="location"/>} size={25} name="location" color="black"/>
-                                    <Text style={styles.salonProfileItemText}>{salon.address}, {salon.city}, {salon.country}</Text>
+
+                                <SliderBox alignSelf={"center"} ImageComponentStyle={{borderRadius: 15, width: '75%'}} w="90%"
+                                           images={salon?.images} autoplay circleLoop sliderBoxHeight={120}/>
+                                <Modal isOpen={showSelectServiceModal} onClose={onCloseServiceModal} size={"lg"}>
+                                    <Modal.Content flexGrow={1}>
+                                        <Modal.CloseButton/>
+                                        <Modal.Header>Choose service</Modal.Header>
+                                        <Modal.Body>
+                                            <FormControl maxW="300" isInvalid={!formValidation}>
+                                                <Radio.Group name={"Group"} onChange={(value) => setSelectedService(value)}
+                                                             value={selectedService}>
+                                                    <ScrollView horizontal={true}>
+                                                        <SectionList sections={allSalonServices}
+                                                                     keyExtractor={(item) => item.name}
+                                                                     renderItem={renderItemServiceList}
+                                                                     renderSectionHeader={renderHeaderServiceList}/>
+                                                    </ScrollView>
+                                                </Radio.Group>
+                                                <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs"/>}>Please make
+                                                    a selection!</FormControl.ErrorMessage>
+                                            </FormControl>
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button colorScheme={"success"} onPress={handleValidateOption}>Next</Button>
+                                        </Modal.Footer>
+                                    </Modal.Content>
+                                </Modal>
+
+                                <Button mt={5} mb={5} borderWidth={1} borderBottomWidth={2} borderColor={"#f1c40f"}
+                                        onPress={() => setShowSelectServiceModal(true)}>Ask for appointment</Button>
+
+                                <HStack marginBottom={1}>
+                                    <VStack>
+                                        <HStack mb={2}>
+                                            <Icon as={<Feather name="phone"/>} size={25} name="phone" color="black"/>
+                                            <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}}
+                                                  _light={{_text: {color: "primary.900",},}}
+                                                  _dark={{_text: {color: "primary.500",},}}
+                                                  onPress={doCall}> {salon?.phoneNumber}
+                                            </Link>
+                                        </HStack>
+                                        <HStack>
+                                            <Icon as={<Entypo name="location"/>} size={25} name="location" color="black"/>
+                                            <Text style={styles.salonProfileItemText}>{salon.address}, {salon.city}, {salon.country}</Text>
+                                        </HStack>
+                                        <HStack>
+                                            <TouchableRipple onPress={onShare}>
+                                                <View flexDirection={"row"} marginTop={3}>
+                                                    <Icon as={<MaterialCommunityIcons name="share-outline"/>} color={"black"} size={28}/>
+                                                    <Text style={styles.salonProfileItemText}>Share details</Text>
+                                                </View>
+                                            </TouchableRipple>
+                                        </HStack>
+                                    </VStack>
                                 </HStack>
-                                <HStack>
-                                    <TouchableRipple onPress={onShare}>
-                                        <View flexDirection={"row"} marginTop={3}>
-                                            <Icon as={<MaterialCommunityIcons name="share-outline"/>} color={"black"} size={28}/>
-                                            <Text style={styles.salonProfileItemText}>Share details</Text>
-                                        </View>
-                                    </TouchableRipple>
-                                </HStack>
-                            </VStack>
-                        </HStack>
 
-                        <CalendarPicker salonId={id} selectedService={selectedService}
-                                        setSelectedService={setSelectedService}
-                                        setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
+                                <CalendarPicker salonId={id} selectedService={selectedService}
+                                                setSelectedService={setSelectedService}
+                                                setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
 
-                        <Heading mt={3} italic bold marginBottom={2} mb={2}>Reviews</Heading>
-                        {salon.reviews.length > 0 ?
-                            <View>
-                                {salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" marginBottom={2}
-                                                                  _dark={{borderColor: "muted.50"}}
-                                                                  borderColor="muted.800" pl={["0", "4"]}
-                                                                  pr={["0", "5"]} py="2">
-                                    <HStack space={[2, 3]} justifyContent="space-between">
-                                        <Avatar alignSelf={"center"} size="48px"
-                                                source={{uri: item.client.profilePicture}}/>
-                                        <VStack alignItems={"flex-start"}>
-                                            {/*@ts-ignore*/}
-                                            <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                                            <AirbnbRating showRating={false} defaultRating={item.stars}
-                                                          size={10} isDisabled/>
-                                            <Text style={{fontSize: 12}}>{item.message}</Text>
-                                        </VStack>
-                                        <Spacer/>
-                                    </HStack>
-                                </Box>)}
-                            </View> : <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>}
-                        <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
+                                <Heading mt={3} italic bold marginBottom={2} mb={2}>Reviews</Heading>
+                                {salon.reviews.length > 0 ?
+                                    <View>
+                                        {salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" marginBottom={2}
+                                                                          _dark={{borderColor: "muted.50"}}
+                                                                          borderColor="muted.800" pl={["0", "4"]}
+                                                                          pr={["0", "5"]} py="2">
+                                            <HStack space={[2, 3]} justifyContent="space-between">
+                                                <Avatar alignSelf={"center"} size="48px"
+                                                        source={{uri: item.client.profilePicture}}/>
+                                                <VStack alignItems={"flex-start"}>
+                                                    {/*@ts-ignore*/}
+                                                    <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
+                                                    <AirbnbRating showRating={false} defaultRating={item.stars}
+                                                                  size={10} isDisabled/>
+                                                    <Text style={{fontSize: 12}}>{item.message}</Text>
+                                                </VStack>
+                                                <Spacer/>
+                                            </HStack>
+                                        </Box>)}
+                                    </View> : <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>}
+                                <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
 
-                        <View style={styles.container}>
-                            {RenderBubble()}
-                            <TouchableOpacity
-                                style={styles.clapButton}
-                                activeOpacity={0.8}
-                                onPress={clapHand}
-                            >
-                                {clapIcon}
-                            </TouchableOpacity>
-                        </View>
+                                <View style={styles.container}>
+                                    {RenderBubble()}
+                                    <TouchableOpacity
+                                        style={styles.clapButton}
+                                        activeOpacity={0.8}
+                                        onPress={clapHand}
+                                    >
+                                        {clapIcon}
+                                    </TouchableOpacity>
+                                </View>
 
-                    </Box>
+                            </Box>
 
                         </ImageBackground>
                     </SafeAreaView>

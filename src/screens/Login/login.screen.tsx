@@ -195,7 +195,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
         <Center w="100%">
             <SafeAreaView >
                 <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
-                    <View style={styles.container} >
+                    {/*<View style={styles.container} >*/}
 
                         <Box safeArea p="2" py="8" w="90%" maxW="290">
 
@@ -280,7 +280,7 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
                                 </HStack>
                         </VStack>
 
-                    </View>
+                    {/*</View>*/}
                 </ImageBackground>
             </SafeAreaView>
         </Center>

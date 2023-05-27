@@ -183,7 +183,7 @@ const Register = ({navigation}: any): ReactElement => {
         <Center w="100%">
             <SafeAreaView >
                 <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
-                    <View style={styles.container} >
+                    {/*<View style={styles.container} >*/}
 
                         <Box safeArea p="2" py="8" w="90%" maxW="290">
                             <Heading size="lg" fontWeight="500" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
@@ -343,7 +343,7 @@ const Register = ({navigation}: any): ReactElement => {
                         </HStack>
                         </VStack>
 
-                    </View>
+                    {/*</View>*/}
                 </ImageBackground>
             </SafeAreaView>
         </Center>

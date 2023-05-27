@@ -122,10 +122,10 @@ const HomeClient = ({data, navigation}: Props) => {
                                 <View style={styles.container}>
                                     <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
                                     <Checkbox value={""} onChange={(isSelected) => setChecked(isSelected)}>
-                                        <Text>Show salons from your city</Text>
+                                        <Text italic>Show salons from your city</Text>
                                     </Checkbox>
                                     <ScrollView horizontal={true}>
-                                        <FlatList data={checked? filteredByCity: allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                                        <FlatList paddingTop={5} data={checked? filteredByCity: allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
                                     </ScrollView>
 
                                 </View>
