@@ -12,7 +12,8 @@ export type Salon = {
     enabled: boolean,
     city: string,
     country: string,
-    address: string
+    address: string,
+    nrOfStars: number
 }
 
 export type CalendarProps = {

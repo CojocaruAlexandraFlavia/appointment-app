@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Spinner} from "native-base";
 
 export const Loading = ({theme = 'white', size = 'lg'}) => {
-    const color = theme === 'white' ? '#00bdcd' : '#fff';
+    const color = theme === 'white' ? '#000' : '#fff';
     return (
         <View
             style={{

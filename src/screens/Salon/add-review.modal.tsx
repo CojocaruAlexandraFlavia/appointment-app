@@ -48,7 +48,9 @@ const AddReviewModal = ({salonId, retrieveSalon}: AddReviewProp) => {
                 reviews: arrayUnion({...review, client: userRef, id: salonDocument.data().reviews.length + 1}),
                 nrOfReviews: salonDocument.data()?.nrOfReviews + 1,
                 // @ts-ignore
-                rating: (salonDocument.data()?.rating + review.stars) / 2
+                nrOfStars: salonDocument.data()?.nrOfStars + review.stars,
+                // @ts-ignore
+                rating: ((salonDocument.data()?.nrOfStars + review.stars) / ( salonDocument.data()?.nrOfReviews + 1 )).toFixed(2)
             }).then( async () => {
                 retrieveSalon().then(() => {
                     setLoading(false)

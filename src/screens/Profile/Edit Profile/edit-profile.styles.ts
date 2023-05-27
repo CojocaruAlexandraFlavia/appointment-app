@@ -7,7 +7,7 @@ const styles = () => StyleSheet.create({
     commandButton: {
         padding: 15,
         borderRadius: 10,
-        backgroundColor: '#FF6347',
+        backgroundColor: 'green',
         alignItems: 'center',
         marginTop: 10,
     },
@@ -86,6 +86,7 @@ const styles = () => StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: 7
     },
     backgroundImage: {
         flex: 1,

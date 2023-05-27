@@ -45,7 +45,6 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
                 setSalon({...salonDoc.data(), images: [], id: salonDoc.id, reviews: []})
             }
         } catch (e: any) {
-            console.log("error " + e)
             setError(e)
         }
     }, [])
@@ -99,7 +98,6 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
             })
             return appointments
         } catch (e: any) {
-            console.log("Error at retrieving appointments: " + e)
             setError(e)
         }
     }

@@ -90,7 +90,6 @@ const Notifications = () => {
                 style={[styles.rowFront, {height: rowHeightAnimatedValue}]}>
                 <TouchableHighlight
                     style={styles.rowFrontVisible}
-                    onPress={() => console.log('Element touched')}
                     underlayColor={'#aaa'}>
                     <View>
                         <Text style={styles.title} numberOfLines={1}>

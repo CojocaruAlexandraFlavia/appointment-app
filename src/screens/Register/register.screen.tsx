@@ -2,7 +2,6 @@ import {
     Box,
     Button,
     Center,
-    Checkbox,
     Divider,
     FormControl,
     Heading,
@@ -17,9 +16,7 @@ import {
 } from "native-base"
 import React, {ReactElement, useState} from "react"
 import {Feather, MaterialIcons} from "@expo/vector-icons";
-import {Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import IconGoogle from "../../components/IconGoogle";
-import IconFacebook from "../../components/IconFacebook";
+import {Image, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth, firestore} from "../../utils/firebase";
 import {City, RegisterData} from "../../utils/types";
@@ -161,6 +158,7 @@ const Register = ({navigation}: any): ReactElement => {
     const styles = StyleSheet.create({
         container: {
             paddingTop: 10,
+            marginTop:20
         },
         logo: {
             width: 125,
@@ -179,25 +177,22 @@ const Register = ({navigation}: any): ReactElement => {
     });
 
     return (
-        <ScrollView >
-        <Center w="100%">
-            <SafeAreaView >
-                <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
-                    {/*<View style={styles.container} >*/}
-
-                        <Box safeArea p="2" py="8" w="90%" maxW="290">
-                            <Heading size="lg" fontWeight="500" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
+        <ScrollView>
+            <Center w="100%">
+                <SafeAreaView >
+                    <View style={styles.container} >
+                        <View style={styles.container}>
+                            <Image
+                                style={styles.logo}
+                                source={require('../../../assets/logo.png')}
+                            />
+                            <Heading mt={5} size="lg" fontWeight="500" color="coolGray.800" _dark={{color: "warmGray.50"}}>Welcome</Heading>
                             <Heading mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
                                 Sign up to continue!
                             </Heading>
-
+                        </View>
+                        <Box mt={10} p="5" px={5} py="3" backgroundColor={'white'} rounded={15}>
                             <VStack space={1} mt="1">
-                                <View style={styles.container}>
-                                    <Image
-                                        style={styles.logo}
-                                        source={require('../../../assets/logo.png')}
-                                    />
-                                </View>
 
                                 <FormControl isRequired isInvalid={errors.email !== ""}>
                                     <FormControl.Label _text={{bold: true, color:"black"}} >Email</FormControl.Label>
@@ -219,12 +214,6 @@ const Register = ({navigation}: any): ReactElement => {
                                         </Pressable>}></Input>
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
                                 </FormControl>
-
-                                {/* <FormControl isRequired isInvalid={errors.password !== ""}>
-                                    <FormControl.Label _text={{bold: true}} >Confirm Password</FormControl.Label>
-                                    <Input type="password" value={credentials.password} isInvalid={errors.password !== ""} onChangeText={text => onChangeText("password", text)} />
-                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.password}</FormControl.ErrorMessage>
-                                 </FormControl> */}
 
                                  <FormControl isRequired isInvalid={errors.firstName !== ""}>
                                     <FormControl.Label _text={{bold: true, color:"black"}} >First Name</FormControl.Label>
@@ -253,8 +242,6 @@ const Register = ({navigation}: any): ReactElement => {
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.phoneNumber}</FormControl.ErrorMessage>
                                 </FormControl>
 
-
-
                                 <FormControl>
                                     <FormControl.Label _text={{bold: true, color:"black"}} >Select your country</FormControl.Label>
                                     <Select backgroundColor={"white"}
@@ -281,72 +268,36 @@ const Register = ({navigation}: any): ReactElement => {
                                         }
                                     </Select>
                                 </FormControl>
-
-
-                                {/*<FormControl isRequired isInvalid={errors.city !== ""}>*/}
-                                {/*    <FormControl.Label _text={{bold: true, color:"black"}} >City</FormControl.Label>*/}
-                                {/*    <Input value={credentials.city} size={5} backgroundColor={"white"}*/}
-                                {/*           InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}*/}
-                                {/*           isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>*/}
-                                {/*    <FormControl.HelperText _text={{fontSize: 'xs'}}>Enter a valid city! </FormControl.HelperText>*/}
-                                {/*    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>*/}
-                                {/*</FormControl>*/}
-
-
-                                <Checkbox alignItems="flex-start" defaultIsChecked value="demo" colorScheme="primary" accessibilityLabel="Remember me">
-                                    <HStack alignItems="center" marginBottom={4} marginTop={4}>
-                                        <Text fontSize="sm" color="black" pl="2" >
-                                            I accept the{" "}
-                                        </Text>
-                                        <Link _text={{fontSize: "sm", fontWeight: "semibold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}>
-                                            Terms of Use
-                                        </Link>
-                                        <Text fontSize="sm"> & </Text>
-                                        <Link _text={{fontSize: "sm", fontWeight: "semibold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}} _dark={{_text: {color: "primary.500",},}}>
-                                            Privacy Policy
-                                        </Link>
-                                    </HStack>
-                                </Checkbox>
                                 <Button mt="2" colorScheme="indigo" onPress={signUp}>Sign up</Button>
                                 {registerError && <AlertComponent status={"error"} text={registerError} onClose={() => setRegisterError("")}/>}
                                 {added && <AlertComponent status={"success"} text={"User created successfully!"} onClose={() => setAdded(false)}/>}
                             </VStack>
+                            <HStack mt={5} space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
+                                <Divider w="35%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
+                                <Text fontSize="sm" fontWeight="medium" _light={{ color: "black" }} _dark={{ color: "black" }}>
+                                    or
+                                </Text>
+                                <Divider w="35%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
+                            </HStack>
+                            <VStack space={5} mt="5">
+                                <HStack mb='4' space="1" alignItems="center" justifyContent="center" mt={{ base: "auto", md: "8" }}>
+                                    <Text fontSize="sm" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
+                                        Already have an account?
+                                    </Text>
+                                    <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
+                                          _dark={{_text: {color: "primary.500",},}}
+                                          onPress={() => navigation.navigate('Login')}>
+                                        Login
+                                    </Link>
+                                </HStack>
+                            </VStack>
+
                         </Box>
 
-                       <HStack space="2" mb={{ base: "1", md: "3" }} alignItems="center" justifyContent="center">
-                           <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
-                           <Text fontSize="sm" fontWeight="medium" _light={{ color: "black" }} _dark={{ color: "black" }}>
-                               or
-                           </Text>
-                           <Divider w="30%" _light={{ bg: "black" }} _dark={{ bg: "black" }}></Divider>
-                       </HStack>
 
-                        {/*<HStack space="4" alignItems="center" justifyContent="center">*/}
-                        {/*    <Pressable>*/}
-                        {/*        <IconFacebook />*/}
-                        {/*    </Pressable>*/}
-                        {/*    <Pressable>*/}
-                        {/*        <IconGoogle />*/}
-                        {/*    </Pressable>*/}
-                        {/*</HStack>*/}
-
-                        <VStack space={5} mt="5">
-                        <HStack mb='4' space="1" alignItems="center" justifyContent="center" mt={{ base: "auto", md: "8" }}>
-                            <Text fontSize="sm" _light={{ color: "coolGray.800" }} _dark={{ color: "coolGray.400" }}>
-                                Already have an account?
-                            </Text>
-                            <Link _text={{fontSize: "sm", fontWeight: "bold", textDecoration: "none",}} _light={{_text: {color: "primary.900",},}}
-                                _dark={{_text: {color: "primary.500",},}}
-                                  onPress={() => navigation.navigate('Login')}>
-                                Login
-                            </Link>
-                        </HStack>
-                        </VStack>
-
-                    {/*</View>*/}
-                </ImageBackground>
-            </SafeAreaView>
-        </Center>
+                    </View>
+                </SafeAreaView>
+            </Center>
        </ScrollView>
     )
 }

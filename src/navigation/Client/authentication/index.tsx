@@ -22,7 +22,10 @@ export const Authentication = () => {
     const { user, setUser } = useUserDataContext()
 
     return(
-        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{
+            headerShown: false,
+            contentStyle: {backgroundColor: '#cda9e6'}
+        }}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register"  component={Register}/>
             {

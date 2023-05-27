@@ -42,10 +42,10 @@ const HomeAdmin = () => {
 
     const renderItem = useCallback(({item}: ListRenderItemInfo<Salon>) => {
         return (
-            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py="2" w="100%">
+            <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py={1}>
                 <Row alignItems={"center"}>
                     <Column w="1/4">
-                        <Avatar size="48px" source={{uri: item.images[0]}}/>
+                        <Avatar size="md" source={{uri: item.images[0]}}/>
                     </Column>
                     <Column w="1/2">
                         <Heading style={{ fontSize: 15}}>{item.name}</Heading>
@@ -108,33 +108,28 @@ const HomeAdmin = () => {
 
     return(
         <ScrollView>
-            <Center px={5} w="100%">
-                <SafeAreaView style={styles.container} >
-                    <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
-                        <View style={styles.container} >
-
-                            <Box safeArea p="5" py="5" w="100%">
-                                {
-                                    loading && <Loading/>
-                                }
-                                <View style={styles.container}>
-                                    <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
-                                </View>
-                                <Heading paddingTop={3} mb={5} alignSelf="center">Salons</Heading>
-                                <Input rounded={"lg"} backgroundColor="white" alignSelf="center" variant="underlined" onChangeText={onChangeSearchInput} placeholder='Find a salon'
-                                       _focus={{backgroundColor: "gray.50", borderColor: "none"}} width={"75%"}
-                                       InputRightElement={
-                                           <Icon
-                                               name="ios-search"
-                                               size={20}
-                                               color="#000"/>}/>
-                                <ScrollView horizontal={true}>
-                                    <FlatList w={"75%"} data={filteredSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
-                                </ScrollView>
-                            </Box>
-
+            <Center w="100%">
+                <SafeAreaView >
+                    <Box safeArea p="5" py="5">
+                        {
+                            loading && <Loading/>
+                        }
+                        <View style={styles.container}>
+                            <Image style={styles.logo} source={require('../../../../assets/logo.png')} />
                         </View>
-                    </ImageBackground>
+                        <Heading paddingTop={3} mb={5} alignSelf="center">Salons</Heading>
+                        <Input w={'100%'} mb={4} rounded={"lg"} backgroundColor="white" alignSelf="center" variant="underlined"
+                               onChangeText={onChangeSearchInput} px={4} placeholder='Find a salon'
+                               _focus={{backgroundColor: "gray.50", borderColor: "none"}}
+                               InputRightElement={
+                                   <Icon
+                                       name="ios-search"
+                                       size={25}
+                                       color="#000"/>}/>
+                        <ScrollView px={4} rounded={"lg"} horizontal={true} backgroundColor={'white'}>
+                            <FlatList data={filteredSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                        </ScrollView>
+                    </Box>
                 </SafeAreaView>
             </Center>
         </ScrollView>

@@ -15,14 +15,12 @@ import app from "../../../utils/firebase";
 
 export const DrawerContent = (props:any) => {
 
-    const { setUser } = useUserDataContext()
+    const { user, setUser } = useUserDataContext()
 
     const logout = () => {
         setUser({})
         signOut(getAuth(app)).then(() => props.navigation.navigate('Login'))
     }
-
-    const { user } = useUserDataContext()
 
     return(
         <View style={{flex:1}}>
@@ -36,14 +34,13 @@ export const DrawerContent = (props:any) => {
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
-                                <Title style={styles.title}>John Doe</Title>
-                                <Caption style={styles.caption}>@j_doe</Caption>
+                                <Title style={styles.title}>{`${user.firstName} ${user.lastName}`}</Title>
+                                <Caption style={styles.caption}>{user.username}</Caption>
                             </View>
                         </View>
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>
-
                         <DrawerItem
                             icon={({color, size}:any) => (
                                 <Icon name="home-outline" color={color} size={size}/> )}
