@@ -11,6 +11,7 @@ import {collection, getDocs, query, where} from "firebase/firestore";
 import {firestore} from "../../../utils/firebase";
 import {Salon} from "../../../utils/types";
 import {salonConverter} from "../../../screens/Salon/salon.class";
+import {useUserDataContext} from "../../../store/user-data.context";
 
 const HomeStack = createNativeStackNavigator<StackNavigatorParamList>();
 
@@ -18,6 +19,8 @@ export const HomeStackScreen = ({navigation}: any) => {
 
     const [allHomePageSalons, setAllHomePageSalons] = useState<Salon[]>([])
     const [filteredSalons, setFilteredSalons] = useState(allHomePageSalons)
+
+    const {user} = useUserDataContext()
 
     const retrieveAllSalons = async () => {
         const salonCollectionRef = collection(firestore, "salons").withConverter(salonConverter)
