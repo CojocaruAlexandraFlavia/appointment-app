@@ -12,8 +12,7 @@ import {
     VStack
 } from "native-base";
 import {useCallback, useEffect, useRef, useState} from "react";
-import {Rating, AirbnbRating} from "react-native-ratings";
-// import Rating from "@mui/material/Rating";
+import {AirbnbRating} from "react-native-ratings";
 import {Salon} from "../../../utils/types";
 import 'react-native-gesture-handler';
 import React from 'react'
@@ -24,9 +23,10 @@ import {
     ListRenderItemInfo,
     StyleSheet,
     View,
-    TouchableWithoutFeedback, SafeAreaView, ImageBackground
+    TouchableWithoutFeedback, SafeAreaView
 } from "react-native";
 import {useUserDataContext} from "../../../store/user-data.context";
+import {Loading} from "../../../components/activity-indicator.component";
 
 type Props = {
     data: Salon[],
@@ -47,7 +47,6 @@ const HomeClient = ({data, navigation}: Props) => {
         setFilteredByCity(salonsFiltered)
     }, [data])
 
-
     const renderItem = useCallback(({item}: ListRenderItemInfo<Salon>) => {
         return (<Pressable
             onPress={() =>
@@ -55,10 +54,10 @@ const HomeClient = ({data, navigation}: Props) => {
             }>
             <Box w={"100%"} borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" py="2">
                 <HStack space={"md"}>
-                    <Avatar size="48px" source={{uri: item.images[0]}} mr={2}/>
-                    <VStack>
-                        <Heading style={{alignSelf: "center", fontSize: 15}}>{item.name}</Heading>
-                        <AirbnbRating showRating={false} ratingContainerStyle={{marginTop: 0}} size={25} defaultRating={item.rating} isDisabled/>
+                    <Avatar size={"lg"} source={{uri: item.images[0]}} mr={1}/>
+                    <VStack alignItems={"center"}>
+                        <Heading style={{fontSize: 17}}>{item.name}</Heading>
+                        <AirbnbRating showRating={false} ratingContainerStyle={{marginTop: 0}} size={20} defaultRating={item.rating} isDisabled/>
                     </VStack>
                 </HStack>
             </Box>
@@ -85,54 +84,53 @@ const HomeClient = ({data, navigation}: Props) => {
         });
     };
 
+    const style = [
+        {
+            opacity: fadeAnim.interpolate({
+                inputRange: [0, 100],
+                outputRange: [1, 0],
+            }),
+            transform: [
+                {
+                    translateY: yPosition,
+                },
+                {
+                    translateX: xPosition,
+                },
+            ],
+        },
+    ]
+
     return (
         <ScrollView>
-            <Center px={1} w="100%">
-                <SafeAreaView style={styles.container} >
-                    <ImageBackground  style={styles.backgroundImage} source={require('../../../../assets/background-semi.png')} >
-                        <View style={styles.container} >
+            <Center w="100%">
+                <SafeAreaView>
+                    <View>
+                        <TouchableWithoutFeedback onPress={animateImage}>
+                            <Animated.View style={style}>
+                                <Image
+                                    style={styles.logo}
+                                    source={require('../../../../assets/logo.png')}
+                                />
+                            </Animated.View>
+                        </TouchableWithoutFeedback>
 
-                            <TouchableWithoutFeedback onPress={animateImage}>
-                                <Animated.View
-                                    style={[
-                                        {
-                                            opacity: fadeAnim.interpolate({
-                                                inputRange: [0, 100],
-                                                outputRange: [1, 0],
-                                            }),
-                                            transform: [
-                                                {
-                                                    translateY: yPosition,
-                                                },
-                                                {
-                                                    translateX: xPosition,
-                                                },
-                                            ],
-                                        },
-                                    ]}
-                                >
-                                        <Image
-                                            style={styles.logo}
-                                            source={require('../../../../assets/logo.png')}
-                                        />
-                                </Animated.View>
-                            </TouchableWithoutFeedback>
-
-                            <Box safeArea p="3" py="12" w="100%" maxW="290">
-                                <View style={styles.container}>
-                                    <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
-                                    <Checkbox value={""} onChange={(isSelected) => setChecked(isSelected)}>
-                                        <Text>Show salons from your city</Text>
-                                    </Checkbox>
-                                    <ScrollView horizontal={true}>
-                                        <FlatList data={checked? filteredByCity: allSalons} renderItem={renderItem} keyExtractor={item => item.id.toString()}/>
+                        <Box safeArea p="5" py="5" w="100%">
+                            <View style={styles.container}>
+                                <Heading size={"lg"} mb={4} marginBottom={4} alignSelf={"center"}>Salons</Heading>
+                                <Checkbox mb={3} value={""} onChange={(isSelected) => setChecked(isSelected)}>
+                                    <Text>Show salons from your city</Text>
+                                </Checkbox>
+                                {
+                                    allSalons.length === 0? <Loading/>: checked && filteredByCity.length == 0? <Heading>No salons in your city...</Heading>:
+                                    <ScrollView px={4} rounded={"lg"} horizontal={true} backgroundColor={'white'}>
+                                        <FlatList data={checked? filteredByCity: allSalons} renderItem={renderItem}
+                                                  keyExtractor={item => item.id.toString()}/>
                                     </ScrollView>
-
-                                </View>
-                            </Box>
-
-                        </View>
-                    </ImageBackground>
+                                }
+                            </View>
+                        </Box>
+                    </View>
                 </SafeAreaView>
             </Center>
         </ScrollView>

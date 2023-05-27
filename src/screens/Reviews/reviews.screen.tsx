@@ -1,4 +1,4 @@
-import {Box, Center, FlatList, HStack, ScrollView, Spacer, Text, View, VStack} from "native-base";
+import {Box, Center, FlatList, Heading, HStack, ScrollView, Spacer, Text, View, VStack} from "native-base";
 import * as React from "react";
 import {ReactElement, useCallback, useEffect, useState} from "react";
 import {Rating} from "react-native-ratings";
@@ -11,18 +11,23 @@ import {firestore} from "../../utils/firebase";
 import {useUserDataContext} from "../../store/user-data.context";
 import {SalonClass, salonConverter} from "../Salon/salon.class";
 import {userConverter} from "../Profile/user.class";
+import {Loading} from "../../components/activity-indicator.component";
+import { useIsFocused } from "@react-navigation/native";
 
 export const Reviews: React.FC = (): ReactElement => {
 
     const [error, setError] = useState(null)
     const [filteredSalons, setFilteredSalons] = useState<Salon[]>([])
+    const [loading, setLoading] = useState<boolean|undefined>(undefined)
 
     const {user} = useUserDataContext()
+    const isFocused = useIsFocused();
 
     const retrieveSalonsWithReviews = async () => {
         let firestoreSalons: SalonClass[] = []
 
         try {
+            setLoading(true)
             const collectionRef = collection(firestore, "salons")
             const salonsQuery = query(collectionRef, where("nrOfReviews", ">", 0))
                 .withConverter(salonConverter)
@@ -56,6 +61,7 @@ export const Reviews: React.FC = (): ReactElement => {
                 })
             }
             setFilteredSalons(salonList)
+            setLoading(false)
     } catch (e: any) {
             console.log("Error at retrieving reviews: " + e)
             setError(e)
@@ -63,8 +69,10 @@ export const Reviews: React.FC = (): ReactElement => {
     }
 
     useEffect(() => {
+        if(isFocused) {
             retrieveSalonsWithReviews()
-    }, [])
+        }
+    }, [isFocused])
 
     const renderItemReview = useCallback(({item}: ListRenderItemInfo<Review>) =>
         (
@@ -81,37 +89,25 @@ export const Reviews: React.FC = (): ReactElement => {
                 </Box>
         ), [])
 
-    const styles = StyleSheet.create({
-        backgroundImage: {
-            flex: 1,
-            width: 400,
-            // height: null,
-            resizeMode: 'cover', // or 'stretch'
-            justifyContent: 'center',
-            alignItems: 'center',
-        }
-    });
-
     return(
-        <Center w="100%" >
-            <SafeAreaView >
-                <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
-
-                <ScrollView>
-                {
-                    filteredSalons.map((salon, index) =>
-                        <View key={index} borderBottomWidth="1"  marginBottom={2}>
-                            <Text italic style={{fontSize:15, fontWeight: 'bold'}} mb={1}> {"Salon name:   " + salon.name} </Text>
-                            <ScrollView horizontal={true}>
-                                <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
-                            </ScrollView>
-                        </View>
-                    )
-                }
-            </ScrollView>
-
-                </ImageBackground>
-            </SafeAreaView>
-        </Center>
+        <ScrollView style={{backgroundColor: '#cda9e6'}}>
+            <Center w="100%" >
+                <Box mt={30} p="5" w="90%" backgroundColor={'white'} rounded={15}>
+                    {
+                        loading && <Loading/>
+                    }
+                    {
+                        loading == false? filteredSalons.length > 0? filteredSalons.map((salon, index) =>
+                            <View key={index} borderBottomWidth="1"  marginBottom={2}>
+                                <Text italic style={{fontSize:15, fontWeight: 'bold'}} mb={1}> {"Salon name:   " + salon.name} </Text>
+                                <ScrollView horizontal={true}>
+                                    <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
+                                </ScrollView>
+                            </View>
+                        ): <Heading>You haven't post any review yet..</Heading>: null
+                    }
+                </Box>
+            </Center>
+        </ScrollView>
     )
 }

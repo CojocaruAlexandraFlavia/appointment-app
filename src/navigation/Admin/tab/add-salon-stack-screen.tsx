@@ -19,6 +19,7 @@ export const AddSalonStackScreen = () => {
             headerTitleStyle: {
                 fontWeight: 'bold',
             },
+            contentStyle: {backgroundColor: '#cda9e6'}
         }}>
             <AddSalonStack.Screen
                 name={"AddSalon"}

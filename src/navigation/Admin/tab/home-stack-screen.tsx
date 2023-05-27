@@ -29,6 +29,7 @@ export const HomeStackScreen = (props: any) => {
             headerTitleStyle: {
                 fontWeight: 'bold',
             },
+            contentStyle: {backgroundColor: '#cda9e6'},
         }}>
             <HomeStack.Screen
                 name={"HomeAdmin"}

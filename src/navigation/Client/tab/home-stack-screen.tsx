@@ -41,11 +41,10 @@ export const HomeStackScreen = ({navigation}: any) => {
     }
 
     useEffect(() => {
-        retrieveAllSalons().catch(e => console.log("error: " + e))//.then(() => console.log('retrieved salon home page client ' + allHomePageSalons.length))
-            //.catch(e => console.log(e))
+        retrieveAllSalons().catch(e => console.log("error: " + e))
     }, [])
 
-    const onChangeSearchInput = (text: String) => {
+    const onChangeSearchInput = (text: string) => {
         if (text !== "") {
             const filteredSalons = allHomePageSalons.filter(salon => salon.name.toLowerCase().includes(text.toLowerCase()))
             setFilteredSalons(filteredSalons)
@@ -64,11 +63,13 @@ export const HomeStackScreen = ({navigation}: any) => {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
+                contentStyle: {backgroundColor: '#cda9e6'}
             }}>
             <HomeStack.Screen
                 name="HomeClient"
                 children={() => <HomeClient data={filteredSalons} navigation={navigation}/>}
                 options={{
+                    contentStyle: {backgroundColor: '#cda9e6'},
                     title: '',
                     headerLeft: () => (
                         <HStack style={{marginLeft: 10}}>
@@ -96,10 +97,7 @@ export const HomeStackScreen = ({navigation}: any) => {
                                     navigation.navigate('Profile');
                                 }}>
                                 <Avatar.Image
-                                    source={{
-                                        uri:
-                                            'https://as1.ftcdn.net/v2/jpg/01/16/24/44/1000_F_116244459_pywR1e0T3H7FPk3LTMjG6jsL3UchDpht.jpg',
-                                    }}
+                                    source={{ uri: user.profilePicture }}
                                     size={30}
                                 />
                             </TouchableOpacity>

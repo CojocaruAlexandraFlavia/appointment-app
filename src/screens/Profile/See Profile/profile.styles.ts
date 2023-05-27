@@ -3,9 +3,10 @@ import {StyleSheet} from "react-native";
 const styles = () => StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#cda9e6'
     },
     userInfoSection: {
-        paddingHorizontal: 30,
+        paddingHorizontal: 10,
         marginBottom: 25,
     },
     title: {
@@ -31,6 +32,7 @@ const styles = () => StyleSheet.create({
         borderTopWidth: 1,
         flexDirection: 'row',
         height: 100,
+        backgroundColor: 'white'
     },
     infoBox: {
         width: '50%',
@@ -45,7 +47,6 @@ const styles = () => StyleSheet.create({
     menuItem: {
         flexDirection: 'row',
         paddingVertical: 15,
-        paddingHorizontal: 30,
         color: "black",
     },
     menuItemText: {

@@ -35,7 +35,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
     }, [])
 
     useEffect(() => {
-        retrieveSalon().then(() => console.log("retrieve salon id: " + salon?.id)).catch(e => console.log(e))
+        retrieveSalon().catch(e => console.log(e))
     }, [])
 
     const confirmAppointment = async () => {
@@ -66,7 +66,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
     return(
         <View style={styles.centered}>
             <Center w="100%">
-                <Box safeArea p="2" py="8" w="100%" maxW="290" justifyContent='center'>
+                <Box shadow={"6"} p={6} w="90%" justifyContent='center' backgroundColor={'white'} rounded={5}>
                     <Heading mb={8}>Do you confirm the following appointment?</Heading>
                     <HStack>
                         <Text fontSize="xl" bold>Salon: </Text>
@@ -80,7 +80,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
                         <Text fontSize="xl" bold>Service: </Text>
                         <Text fontSize="xl">{service}</Text>
                     </HStack>
-                    <Button mt={5} colorScheme='green' variant='subtle' onPress={confirmAppointment}>Confirm</Button>
+                    <Button mt={5} mb={3} colorScheme='green' onPress={confirmAppointment}>Confirm</Button>
                     <Button colorScheme="gray" variant="subtle" onPress={() => navigation.navigate("Salon", {id: idSalon})}>Cancel</Button>
                 </Box>
                 {

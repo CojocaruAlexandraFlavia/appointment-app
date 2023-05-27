@@ -20,6 +20,7 @@ export const ProfileStackScreen = ({navigation}: any) => {
                     backgroundColor: colors.background,
                 },
                 headerTintColor: "#000",
+                contentStyle: {backgroundColor: '#cda9e6'}
             }}>
             <ProfileStack.Screen
                 name="Profile"
@@ -34,7 +35,6 @@ export const ProfileStackScreen = ({navigation}: any) => {
                                 backgroundColor={colors.background}
                                 color="#000"
                                 onPress={() => {
-                                    console.log(navigation)
                                     navigation?.openDrawer()
                                 }}
                             />

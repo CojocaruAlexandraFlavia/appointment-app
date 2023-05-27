@@ -12,7 +12,7 @@ import {useUserDataContext} from "../../../store/user-data.context";
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => (
-    <Tab.Navigator initialRouteName="HomeStackAdmin" activeColor="#fff">
+    <Tab.Navigator screenOptions={{tabBarColor: "pink"}} initialRouteName="HomeStackAdmin" activeColor="#fff">
         <Tab.Screen
             name="HomeStackAdmin"
             component={HomeStackScreen}
