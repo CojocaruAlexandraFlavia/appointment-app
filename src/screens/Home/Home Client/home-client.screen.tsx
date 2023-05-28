@@ -136,7 +136,7 @@ const HomeClient = ({data, navigation, emptySearchResult}: Props) => {
                                             checked && filteredByCity.length == 0? <Heading>No salons in your city...</Heading>:
                                         allSalons.length > 0? <ScrollView px={4} rounded={"lg"} horizontal={true} backgroundColor={'white'}>
                                             <FlatList data={checked? filteredByCity: allSalons} renderItem={renderItem}
-                                                      keyExtractor={item => item.id.toString()}/>
+                                                      keyExtractor={item => item.id}/>
                                         </ScrollView>: null
                                 }
                             </View>
