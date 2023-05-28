@@ -256,7 +256,7 @@ const Register = ({navigation}: any): ReactElement => {
                                 </FormControl>
 
                                 <FormControl>
-                                    <FormControl.Label _text={{bold: true, color:"black"}}>Select your city</FormControl.Label>
+                                    <FormControl.Label _text={{bold: true, color:"black"}}>Select your nearest city</FormControl.Label>
                                     <Select backgroundColor={"white"}
                                             placeholder={"Choose one option"}
                                             isDisabled={citiesForSelectedState.length === 0}

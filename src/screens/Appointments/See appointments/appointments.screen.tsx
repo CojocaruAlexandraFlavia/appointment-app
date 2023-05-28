@@ -99,30 +99,26 @@ export const Appointments: React.FC = (): ReactElement => {
 
     return(
         <ScrollView style={{backgroundColor: '#cda9e6'}}>
-            {
-                loading == true && <Loading/>
-            }
             <Center w="100%" >
-                    <Box mb={10} mt={30} p="5" w="90%" backgroundColor={'white'} rounded={15}>
-                        {
-                            appointments.map((item, index) =>
-                                <Box key={item.id} borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "2"]} pr={["0", "2"]} py="2">
-                                    <HStack space={[4, 5]} justifyContent="space-between">
-                                        <Feather alignSelf={"center"} name="check-circle" size={20} color="black" />
-                                        <VStack alignItems={"flex-start"}>
-                                            <Text>Salon: {salons[index].name}</Text>
-                                            <Text italic mb={1} style={{fontSize:15, fontWeight: 'bold'}}>Service:  {item.serviceName}</Text>
-                                            <Text mb={1} style={{fontSize:15}}>Date: {item.date}</Text>
-                                            <Text>Time: {item.time}</Text>
-                                        </VStack>
-                                        <Spacer />
-                                    </HStack>
-                            </Box>)
-                        }
-                        {
-                            loading == false && appointments.length == 0? <Heading>You don't have any appointment yet...</Heading>: null
-                        }
-                    </Box>
+                <Box mb={10} mt={30} p="5" w="90%" backgroundColor={'white'} rounded={15}>
+                    {
+                        loading == true? <Loading/>: loading == false && appointments.length == 0?
+                            <Heading>You don't have any appointment yet...</Heading>: salons.length > 0?
+                                appointments.map((item, index) =>
+                                    <Box key={item.id} borderBottomWidth="1" _dark={{borderColor: "muted.50"}} borderColor="muted.800" pl={["0", "2"]} pr={["0", "2"]} py="2">
+                                        <HStack space={[4, 5]} justifyContent="space-between">
+                                            <Feather alignSelf={"center"} name="check-circle" size={20} color="black" />
+                                            <VStack alignItems={"flex-start"}>
+                                                <Text>Salon: {salons[index].name}</Text>
+                                                <Text italic mb={1} style={{fontSize:15, fontWeight: 'bold'}}>Service:  {item.serviceName}</Text>
+                                                <Text mb={1} style={{fontSize:15}}>Date: {item.date}</Text>
+                                                <Text>Time: {item.time}</Text>
+                                            </VStack>
+                                            <Spacer />
+                                        </HStack>
+                                    </Box>): null
+                    }
+                </Box>
             </Center>
         </ScrollView>
     )
