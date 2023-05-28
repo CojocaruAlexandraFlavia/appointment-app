@@ -33,8 +33,7 @@ const emptyState: RegisterData = {
     lastName: "",
     phoneNumber: "",
     city: "",
-    role: "CLIENT"
-
+    // role: "CLIENT"
 }
 
 const Register = ({navigation}: any): ReactElement => {
@@ -134,7 +133,7 @@ const Register = ({navigation}: any): ReactElement => {
                     phoneNumber: credentials.phoneNumber,
                     city: capitalizeWord(credentials.city),
                     username: username,
-                    role: "CLIENT"
+                    // role: "CLIENT"
                 });
                 setRegisterError("")
                 setAdded(true)
