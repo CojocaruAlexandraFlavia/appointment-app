@@ -3,7 +3,7 @@ import * as React from "react";
 import {ReactElement, useCallback, useEffect, useState} from "react";
 import {Rating} from "react-native-ratings";
 import {Review, Salon, User} from "../../utils/types";
-import {ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet} from 'react-native';
+import {ListRenderItemInfo} from 'react-native';
 import 'react-native-gesture-handler';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {collection, doc, getDocs, query, where} from "firebase/firestore";
@@ -12,7 +12,7 @@ import {useUserDataContext} from "../../store/user-data.context";
 import {SalonClass, salonConverter} from "../Salon/salon.class";
 import {userConverter} from "../Profile/user.class";
 import {Loading} from "../../components/activity-indicator.component";
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from "@react-navigation/native";
 
 export const Reviews: React.FC = (): ReactElement => {
 
@@ -24,8 +24,6 @@ export const Reviews: React.FC = (): ReactElement => {
     const isFocused = useIsFocused();
 
     const retrieveSalonsWithReviews = async () => {
-        let firestoreSalons: SalonClass[] = []
-
         try {
             setLoading(true)
             const collectionRef = collection(firestore, "salons")
@@ -34,32 +32,16 @@ export const Reviews: React.FC = (): ReactElement => {
             const result = await getDocs(salonsQuery)
             const userDocRef = doc(firestore, "users", user.id).withConverter(userConverter)
 
+            let salonList: Salon[] = []
             result.forEach(documentSnapshot => {
                 const filteredReviews = documentSnapshot.data().reviews.filter(review => review.client.path == userDocRef.path)
                 if (filteredReviews.length > 0) {
-                    firestoreSalons.push({...documentSnapshot.data(), id: documentSnapshot.id})
+                    let newReviewList: Review[] = []
+                    filteredReviews.map(filteredReview => newReviewList.push({id: filteredReview.id, message: filteredReview.message, stars: filteredReview.stars, client: {} as User}))
+                    salonList.push({...documentSnapshot.data(), id: documentSnapshot.id, reviews: newReviewList, images: []})
                 }
             })
 
-            let salonList: Salon[] = []
-            // @ts-ignore
-            for (const salon of firestoreSalons) {
-                let reviewList: Review[] = []
-                salon.reviews.forEach(review => reviewList.push({
-                    client: {} as User,
-                    id: review.id,
-                    message: review.message,
-                    stars: review.stars
-                }))
-                // @ts-ignore
-                salonList.push({
-                    id: salon.id,
-                    name: salon.name,
-                    rating: salon.rating,
-                    // @ts-ignore
-                    reviews: reviewList
-                })
-            }
             setFilteredSalons(salonList)
             setLoading(false)
     } catch (e: any) {
@@ -98,7 +80,7 @@ export const Reviews: React.FC = (): ReactElement => {
                     }
                     {
                         loading == false? filteredSalons.length > 0? filteredSalons.map((salon, index) =>
-                            <View key={index} borderBottomWidth="1"  marginBottom={2}>
+                            <View key={salon.id} borderBottomWidth="1"  marginBottom={2}>
                                 <Text italic style={{fontSize:15, fontWeight: 'bold'}} mb={1}> {"Salon name:   " + salon.name} </Text>
                                 <ScrollView horizontal={true}>
                                     <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
@@ -106,6 +88,7 @@ export const Reviews: React.FC = (): ReactElement => {
                             </View>
                         ): <Heading>You haven't post any review yet..</Heading>: null
                     }
+
                 </Box>
             </Center>
         </ScrollView>

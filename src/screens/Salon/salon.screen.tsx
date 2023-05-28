@@ -353,16 +353,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                     </Box>)}
                                 </View> : <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>}
                             <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
-                            {/*<View style={styles.container}>*/}
-                            {/*    {RenderBubble()}*/}
-                            {/*    <TouchableOpacity*/}
-                            {/*        style={styles.clapButton}*/}
-                            {/*        activeOpacity={0.8}*/}
-                            {/*        onPress={clapHand}*/}
-                            {/*    >*/}
-                            {/*        {clapIcon}*/}
-                            {/*    </TouchableOpacity>*/}
-                            {/*</View>*/}
                         </View>
                     }
                 </Box>

@@ -27,25 +27,34 @@ import {
 } from "react-native";
 import {useUserDataContext} from "../../../store/user-data.context";
 import {Loading} from "../../../components/activity-indicator.component";
+import {useIsFocused} from "@react-navigation/native";
 
 type Props = {
     data: Salon[],
-    navigation: any
+    navigation: any,
+    emptySearchResult: boolean
 }
 
-const HomeClient = ({data, navigation}: Props) => {
+const HomeClient = ({data, navigation, emptySearchResult}: Props) => {
 
     const [allSalons, setAllSalons] = useState<Salon[]>(data)
     const [filteredByCity, setFilteredByCity] = useState<Salon[]>(data)
     const [checked, setChecked] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const isFocused = useIsFocused()
 
     const { user } = useUserDataContext()
 
     useEffect(() => {
-        setAllSalons(data)
-        const salonsFiltered = data.filter(salon => salon.city === user.city)
-        setFilteredByCity(salonsFiltered)
-    }, [data])
+        if (isFocused) {
+            setLoading(true)
+            setAllSalons(data)
+            const salonsFiltered = data.filter(salon => salon.city === user.city)
+            setFilteredByCity(salonsFiltered)
+            setLoading(false)
+        }
+    }, [data, isFocused])
 
     const renderItem = useCallback(({item}: ListRenderItemInfo<Salon>) => {
         return (<Pressable
@@ -122,11 +131,13 @@ const HomeClient = ({data, navigation}: Props) => {
                                     <Text>Show salons from your city</Text>
                                 </Checkbox>
                                 {
-                                    allSalons.length === 0? <Loading/>: checked && filteredByCity.length == 0? <Heading>No salons in your city...</Heading>:
-                                    <ScrollView px={4} rounded={"lg"} horizontal={true} backgroundColor={'white'}>
-                                        <FlatList data={checked? filteredByCity: allSalons} renderItem={renderItem}
-                                                  keyExtractor={item => item.id.toString()}/>
-                                    </ScrollView>
+                                    emptySearchResult? <Heading>No result for search input</Heading>:
+                                        allSalons.length == 0? <Loading/>:
+                                            checked && filteredByCity.length == 0? <Heading>No salons in your city...</Heading>:
+                                        allSalons.length > 0? <ScrollView px={4} rounded={"lg"} horizontal={true} backgroundColor={'white'}>
+                                            <FlatList data={checked? filteredByCity: allSalons} renderItem={renderItem}
+                                                      keyExtractor={item => item.id}/>
+                                        </ScrollView>: null
                                 }
                             </View>
                         </Box>
