@@ -19,6 +19,7 @@ export const HomeStackScreen = ({navigation}: any) => {
 
     const [allHomePageSalons, setAllHomePageSalons] = useState<Salon[]>([])
     const [filteredSalons, setFilteredSalons] = useState(allHomePageSalons)
+    const [emptySearchResult, setEmptySearchResult] = useState(false)
 
     const {user} = useUserDataContext()
 
@@ -47,8 +48,10 @@ export const HomeStackScreen = ({navigation}: any) => {
     const onChangeSearchInput = (text: string) => {
         if (text !== "") {
             const filteredSalons = allHomePageSalons.filter(salon => salon.name.toLowerCase().includes(text.toLowerCase()))
+            setEmptySearchResult(filteredSalons.length === 0)
             setFilteredSalons(filteredSalons)
         } else {
+            setEmptySearchResult(false)
             setFilteredSalons(allHomePageSalons)
         }
     }
@@ -67,7 +70,7 @@ export const HomeStackScreen = ({navigation}: any) => {
             }}>
             <HomeStack.Screen
                 name="HomeClient"
-                children={() => <HomeClient data={filteredSalons} navigation={navigation}/>}
+                children={() => <HomeClient data={filteredSalons} navigation={navigation} emptySearchResult={emptySearchResult}/>}
                 options={{
                     contentStyle: {backgroundColor: '#cda9e6'},
                     title: '',
