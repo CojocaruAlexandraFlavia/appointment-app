@@ -23,6 +23,7 @@ import {AlertComponent} from "../../components/alert.component";
 import {Loading} from "../../components/activity-indicator.component";
 import * as euCountries from "../../utils/european-countries.json";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import {capitalizeWord} from "../../utils/functions";
 
 const emptySalonState: Salon = {
     endTime: "",
@@ -146,8 +147,8 @@ const AddSalon = () => {
             try {
                 const collectionRef = collection(firestore, "salons").withConverter(salonConverter);
                 const addedSalon = await addDoc(collectionRef,
-                    new SalonClass("", salon.name, salon.phoneNumber, 0.0, salon.startTime, salon.endTime,
-                        "", [], 0, salon.enabled, salon.city.charAt(0).toUpperCase() + salon.city.slice(1), salon.country, salon.address, salon.nrOfStars))
+                    new SalonClass("", capitalizeWord(salon.name), salon.phoneNumber, 0.0, salon.startTime, salon.endTime,
+                        "", [], 0, salon.enabled, capitalizeWord(salon.city), capitalizeWord(salon.country), salon.address, salon.nrOfStars))
                 for (let i = 1; i < images.length; i++) {
                     uploadSalonImageAsync(images[i], addedSalon.id, `${i+1}`)
                 }
@@ -221,7 +222,7 @@ const AddSalon = () => {
                          <FormControl mb={3} isInvalid={errors.country !== ""}>
                              <FormControl.Label _text={{bold: true, color:"black"}}>Select the country</FormControl.Label>
                              <Select backgroundColor={"white"} selectedValue={salon.country}
-                                     placeholder={"Choose one option"} onValueChange={getMajorCitiesForCountry}
+                                     placeholder={"Choose one option"}  onValueChange={getMajorCitiesForCountry}
                                      InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}>
                                  {
                                      euCountries.countries.map((country, index) =>
@@ -230,7 +231,7 @@ const AddSalon = () => {
                              </Select>
                          </FormControl>
 
-                         <FormControl mb={3} isInvalid={errors.city !== ""}>
+                         <FormControl mb={3}>
                              <FormControl.Label _text={{bold: true, color:"black"}}>Select the city</FormControl.Label>
                              <Select backgroundColor={"white"} selectedValue={salon.city}
                                      placeholder={"Choose one option"} isDisabled={citiesForSelectedState.length === 0}
@@ -241,6 +242,14 @@ const AddSalon = () => {
                                          <Select.Item label="First select your country!" value={""} disabled/>
                                  }
                              </Select>
+                         </FormControl>
+
+                         <FormControl mb={2} isRequired isInvalid={errors.city !== ""}>
+                             <FormControl.Label _text={{bold: true, color:"black"}}>City not present in the list?</FormControl.Label>
+                             <Input value={salon.city} size={5} backgroundColor={"white"}
+                                    InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}
+                                    isInvalid={errors.city !== ""} onChangeText={text => onChangeFormValues(text, "city")}/>
+                             <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>A city should be selected from dropdown or present here</FormControl.ErrorMessage>
                          </FormControl>
 
                          <FormControl isInvalid={errors.address !== ""} mb={3}>

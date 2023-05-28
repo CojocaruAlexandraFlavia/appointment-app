@@ -17,7 +17,7 @@ export const Drawer = () => {
             <DrawerNav.Screen name="Salon" component={Salons} />
             <DrawerNav.Screen name="Profile" component={Profile} />
             <DrawerNav.Screen name="Appointments" component={Appointments} />
-            <DrawerNav.Screen options={{}} name="Reviews" component={Reviews} />
+            <DrawerNav.Screen name="Reviews" component={Reviews} />
             <DrawerNav.Screen name="Notifications" component={Notifications} />
         </DrawerNav.Navigator>
     )

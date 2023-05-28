@@ -24,6 +24,7 @@ import {addDoc, collection, getDocs, orderBy, query, where} from "firebase/fires
 import {userConverter} from "../Profile/user.class";
 import {AlertComponent} from "../../components/alert.component";
 import * as euCountries from '../../utils/european-countries.json'
+import {capitalizeWord} from "../../utils/functions";
 
 const emptyState: RegisterData = {
     email: "",
@@ -79,6 +80,8 @@ const Register = ({navigation}: any): ReactElement => {
         if(credentials.city === "") errors.city = "Required field"
         else if(credentials.city.length < 2) errors.city = "Enter a valid city"
 
+        if(credentials.phoneNumber === "") errors.phoneNumber = "Required field"
+
         return errors
     }
 
@@ -89,7 +92,7 @@ const Register = ({navigation}: any): ReactElement => {
         setShowPassword(false)
         setAdded(false)
     }
-    
+
     const signUp = async () => {
         const formErrors : RegisterData = findFormErrors()
         if (Object.values(formErrors).some(item => item !== "")) {
@@ -125,12 +128,13 @@ const Register = ({navigation}: any): ReactElement => {
 
                 await addDoc(collectionRef, {
                     email: credentials.email,
-                    firstName: credentials.firstName,
-                    lastName: credentials.lastName,
+                    firstName: capitalizeWord(credentials.firstName),
+                    lastName: capitalizeWord(credentials.lastName),
                     phoneNumber: credentials.phoneNumber,
-                    city: credentials.city.charAt(0).toUpperCase() + credentials.city.slice(1),
+                    city: capitalizeWord(credentials.city),
                     username: username
                 });
+                setRegisterError("")
                 setAdded(true)
                 setTimeout(() => resetState(), 5000)
             } catch (e) {
@@ -191,7 +195,7 @@ const Register = ({navigation}: any): ReactElement => {
                                 Sign up to continue!
                             </Heading>
                         </View>
-                        <Box mt={10} p="5" px={5} py="3" backgroundColor={'white'} rounded={15}>
+                        <Box mt={10} p="5" px={5} py="3" backgroundColor={'white'} rounded={15} mb={3}>
                             <VStack space={1} mt="1">
 
                                 <FormControl isRequired isInvalid={errors.email !== ""}>
@@ -268,6 +272,15 @@ const Register = ({navigation}: any): ReactElement => {
                                         }
                                     </Select>
                                 </FormControl>
+
+                                <FormControl isRequired isInvalid={errors.city !== ""}>
+                                    <FormControl.Label _text={{bold: true, color:"black"}}>City not present in the list?</FormControl.Label>
+                                    <Input value={credentials.city} size={5} backgroundColor={"white"}
+                                           InputLeftElement={ <Icon as={<Feather name="globe" />} ml={2}/>}
+                                           isInvalid={errors.city !== ""} onChangeText={text => onChangeText("city", text)}/>
+                                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.city}</FormControl.ErrorMessage>
+                                </FormControl>
+
                                 <Button mt="2" colorScheme="indigo" onPress={signUp}>Sign up</Button>
                                 {registerError && <AlertComponent status={"error"} text={registerError} onClose={() => setRegisterError("")}/>}
                                 {added && <AlertComponent status={"success"} text={"User created successfully!"} onClose={() => setAdded(false)}/>}
