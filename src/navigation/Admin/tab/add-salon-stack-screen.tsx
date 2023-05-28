@@ -5,12 +5,22 @@ import AddSalon from "../../../screens/Salon/add-salon.screen";
 import {HStack} from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 import React from "react";
+import {useUserDataContext} from "../../../store/user-data.context";
+import {getAuth, signOut} from "firebase/auth";
+import app from "../../../utils/firebase";
 
 const AddSalonStack = createNativeStackNavigator<StackNavigatorParamList>();
 
-export const AddSalonStackScreen = () => {
+export const AddSalonStackScreen = (props: any) => {
 
     const {colors} = useTheme();
+
+    const { setUser } = useUserDataContext()
+
+    const logout = () => {
+        setUser({})
+        signOut(getAuth(app)).then(() => props.navigation.navigate('Login'))
+    }
 
     return (
         <AddSalonStack.Navigator screenOptions={{
@@ -32,7 +42,7 @@ export const AddSalonStackScreen = () => {
                                 size={25}
                                 color="#000"
                                 backgroundColor={colors.background}
-                                // onPress={() => }
+                                onPress={logout}
                             />
                         </HStack>
                     )

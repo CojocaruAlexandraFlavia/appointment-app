@@ -216,13 +216,13 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
         useEffect(() => {
             Animated.parallel([
                 Animated.timing(bubbleAnimation,{
-                    toValue:-550,
-                    duration:2000,
+                    toValue:-450,
+                    duration:1500,
                     useNativeDriver:true,
                 }),
                 Animated.timing(bubbleAnimationOpacity, {
                     toValue:1,
-                    duration:2000,
+                    duration:1500,
                     useNativeDriver:true,
                 })
             ]).start(()=>{
@@ -316,8 +316,20 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                             <CalendarPicker salonId={id} selectedService={selectedService}
                                             setSelectedService={setSelectedService}
                                             setShow={setShowCalendar} show={showCalendarPicker} navigation={navigation}/>
-                            <Divider my={3}/>
+                            <Divider my={5}/>
+                            <View style={styles.container}>
+                                {RenderBubble()}
+                                <TouchableOpacity
+                                    style={styles.clapButton}
+                                    activeOpacity={0.8}
+                                    onPress={clapHand}
+                                >
+                                    {clapIcon}
+                                </TouchableOpacity>
+                            </View>
+
                             <HStack alignItems={'center'} justifyContent={'space-around'}>
+                                {/**/}
                                 <Heading mt={3} italic bold marginBottom={4}>Reviews</Heading>
                             </HStack>
                             {salon.reviews.length > 0 ?
@@ -341,16 +353,16 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                     </Box>)}
                                 </View> : <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>}
                             <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
-                            <View style={styles.container}>
-                                {RenderBubble()}
-                                <TouchableOpacity
-                                    style={styles.clapButton}
-                                    activeOpacity={0.8}
-                                    onPress={clapHand}
-                                >
-                                    {clapIcon}
-                                </TouchableOpacity>
-                            </View>
+                            {/*<View style={styles.container}>*/}
+                            {/*    {RenderBubble()}*/}
+                            {/*    <TouchableOpacity*/}
+                            {/*        style={styles.clapButton}*/}
+                            {/*        activeOpacity={0.8}*/}
+                            {/*        onPress={clapHand}*/}
+                            {/*    >*/}
+                            {/*        {clapIcon}*/}
+                            {/*    </TouchableOpacity>*/}
+                            {/*</View>*/}
                         </View>
                     }
                 </Box>
