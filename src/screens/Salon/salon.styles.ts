@@ -35,18 +35,19 @@ const styles = () => StyleSheet.create({
     // }
     bubble:{
         width:100,
-        height:100,
+        height:75,
         borderRadius:50,
         backgroundColor:"#fc5c64",
-        position:"relative",
-        // display: 'flex',
+        position:"absolute",
+        display: 'flex',
         left:200,
-        bottom:5,
+        bottom:0,
+        top:2,
         justifyContent:"center",
         alignItems:"center",
     },
     container:{
-        // flex:1,
+        flex:1,
         paddingTop: 0,
     },
     clapButton:{

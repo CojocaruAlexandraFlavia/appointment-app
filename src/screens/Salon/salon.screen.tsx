@@ -222,13 +222,13 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                 }),
                 Animated.timing(bubbleAnimationOpacity, {
                     toValue:1,
-                    duration:1500,
+                    duration:700,
                     useNativeDriver:true,
                 })
             ]).start(()=>{
                 setTimeout(()=>{
                     props.animationCompleted(props.newCount)
-                }, 500)
+                }, 200)
 
             });
         })
@@ -321,7 +321,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 {RenderBubble()}
                                 <TouchableOpacity
                                     style={styles.clapButton}
-                                    activeOpacity={0.8}
+                                    activeOpacity={0.5}
                                     onPress={clapHand}
                                 >
                                     {clapIcon}
