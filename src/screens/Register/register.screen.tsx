@@ -33,7 +33,7 @@ const emptyState: RegisterData = {
     lastName: "",
     phoneNumber: "",
     city: "",
-    // role: "CLIENT"
+    role: ""
 }
 
 const Register = ({navigation}: any): ReactElement => {
@@ -98,7 +98,7 @@ const Register = ({navigation}: any): ReactElement => {
         if (Object.values(formErrors).some(item => item !== "")) {
             setErrors(formErrors)
         } else {
-            setErrors({city: "", email: "", firstName: "", lastName: "", password: "", phoneNumber: ""})
+            setErrors({city: "", email: "", firstName: "", lastName: "", password: "", phoneNumber: "", role: ""})
             try {
                 await createUserWithEmailAndPassword(
                     auth,
@@ -133,7 +133,7 @@ const Register = ({navigation}: any): ReactElement => {
                     phoneNumber: credentials.phoneNumber,
                     city: capitalizeWord(credentials.city),
                     username: username,
-                    // role: "CLIENT"
+                    role: 'CLIENT'
                 });
                 setRegisterError("")
                 setAdded(true)

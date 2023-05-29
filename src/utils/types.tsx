@@ -82,7 +82,7 @@ export type RegisterData = {
     lastName: string,
     phoneNumber: string,
     city: string,
-    // role: string,
+    role: string
 }
 
 export type LoginData = {
