@@ -2,13 +2,14 @@ import React, {createContext, useContext, useEffect, useRef, useState} from "rea
 import * as Notifications from 'expo-notifications';
 import {Platform} from "react-native";
 import * as Device from "expo-device";
+import {useNavigation} from '@react-navigation/native';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
         shouldPlaySound: false,
         shouldSetBadge: false,
-    }),
+    })
 });
 
 const registerForPushNotificationsAsync = async () => {
@@ -62,15 +63,21 @@ export const ExpoPushTokenProvider = ({children,}: {children: React.ReactNode;})
     const [token, setToken] = useState("")
     const notificationListener = useRef<Notifications.Subscription>();
     const responseListener = useRef<Notifications.Subscription>();
+    const navigation = useNavigation()
 
     useEffect(() => {
         registerForPushNotificationsAsync().then((token) => setToken(token));
 
         notificationListener.current =
-            Notifications.addNotificationReceivedListener(() => {});
+            Notifications.addNotificationReceivedListener((event) => {
+                console.log(event.request.content.data)
+            });
 
         responseListener.current =
-            Notifications.addNotificationResponseReceivedListener(() => {});
+            Notifications.addNotificationResponseReceivedListener(response => {
+                const url = response.notification.request.content.data.url;
+                navigation.navigate(url);
+            })
 
         return () => {
             if (notificationListener.current && responseListener.current) {

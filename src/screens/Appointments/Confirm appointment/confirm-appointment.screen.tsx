@@ -48,7 +48,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
                 sound: "default",
                 title: "New appointment sent!",
                 body: `Your appointment at ${salon?.name}, for ${date}, ${time}, was sent successfully!`,
-                data: { someData: "goes here" },
+                data: { url: "Appointments" },
             };
 
             await fetch("https://exp.host/--/api/v2/push/send", {
@@ -94,7 +94,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
     return(
         <View style={styles.centered}>
             <Center w="100%">
-                <Box shadow={"6"} p={6} w="90%" justifyContent='center' backgroundColor={'white'} rounded={5}>
+                <Box shadow={"6"} p={3} w="90%" justifyContent='center' backgroundColor={'white'} rounded={5}>
                     <Heading mb={8}>Do you confirm the following appointment?</Heading>
                     <HStack>
                         <Text fontSize="xl" bold>Salon: </Text>
