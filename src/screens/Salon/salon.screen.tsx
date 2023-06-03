@@ -61,6 +61,8 @@ const emptyState: Salon = {
 
 export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
+    const styles = salonStyles()
+
     const [salon, setSalon] = useState<Salon>(emptyState)
 
     const [allSalonServices, setAllSalonServices] = useState<ServicesListData[]>([])
@@ -184,8 +186,6 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
             Alert.alert(error.message);
         }
     };
-
-    const styles = salonStyles()
 
     //animation for clapping button
     const [countClaps, setCountClaps]=useState(1);

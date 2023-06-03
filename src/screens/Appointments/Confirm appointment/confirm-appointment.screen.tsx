@@ -13,10 +13,12 @@ import {AlertComponent} from "../../../components/alert.component";
 import {useExpoPushTokenContext} from "../../../store/expo-push-token.context";
 
 export const ConfirmAppointment = ({navigation}: any) => {
+
+    const styles = confirmAppointmentStyle()
+
     const {token} = useExpoPushTokenContext()
     const route = useRoute<ConfirmAppointmentRouteProp>()
     const { service, time, date, idSalon } = route.params;
-    const styles = confirmAppointmentStyle()
 
     const { user } = useUserDataContext()
 

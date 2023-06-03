@@ -28,6 +28,8 @@ const emptyState: User = {
 
 const EditProfile = ({navigation}: any) => {
 
+    const styles = editProfileStyles()
+
     const bs = React.createRef();
     const fall = new Animated.Value(1);
 
@@ -114,8 +116,6 @@ const EditProfile = ({navigation}: any) => {
 
         }
     }
-
-    const styles = editProfileStyles()
 
     const onChangeTextUserDetails = (text: string, key: string) => {
         if (errors[key as keyof User] !== "") {

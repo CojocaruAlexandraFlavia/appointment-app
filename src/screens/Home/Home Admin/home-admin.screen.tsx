@@ -7,8 +7,11 @@ import {Avatar, Box, Button, Center, FlatList, Heading, Row, Text, Column, Scrol
 import {Image, ImageBackground, ListRenderItemInfo, SafeAreaView, StyleSheet, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {Loading} from "../../../components/activity-indicator.component";
+import home_adminStyles from "./home-admin.styles"
 
 const HomeAdmin = () => {
+
+    const styles = home_adminStyles()
 
     const [salons, setSalons] = useState<Salon[]>([])
     const [loading, setLoading] = useState(false)
@@ -86,25 +89,6 @@ const HomeAdmin = () => {
         }
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            paddingTop: 0,
-        },
-        logo: {
-            width: 125,
-            height: 140,
-            alignSelf: 'center',
-            borderRadius: 200/2
-        },
-        backgroundImage: {
-            flex: 1,
-            width: 400,
-            height: 870,
-            resizeMode: 'cover', // or 'stretch'
-            justifyContent: 'center',
-            alignItems: 'center',
-        }
-    });
 
     return(
         <ScrollView>
