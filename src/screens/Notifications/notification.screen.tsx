@@ -13,6 +13,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import NotificationsList from '../../utils/NotificationsList';
 import notificationsStyles from "./notifications.styles"
+import {ScrollView} from "native-base";
 
 const Notifications = () => {
 
@@ -217,32 +218,26 @@ const Notifications = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <ImageBackground  style={styles.backgroundImage} source={require('../../../assets/background-semi.png')} >
-
-            <StatusBar barStyle="dark-content"/>
-            {/* <StatusBar backgroundColor="#FF6347" barStyle="light-content"/> */}
-
-            <SwipeListView
-                data={listData}
-                renderItem={renderItem}
-                renderHiddenItem={renderHiddenItem}
-                leftOpenValue={75}
-                rightOpenValue={-150}
-                disableRightSwipe
-                onRowDidOpen={onRowDidOpen}
-                leftActivationValue={100}
-                rightActivationValue={-200}
-                leftActionValue={0}
-                rightActionValue={-500}
-                onLeftAction={onLeftAction}
-                onRightAction={onRightAction}
-                onLeftActionStatusChange={onLeftActionStatusChange}
-                onRightActionStatusChange={onRightActionStatusChange}
-            />
-            </ImageBackground>
-
-        </View>
+        <ScrollView backgroundColor={'#cda9e6'}>
+                <StatusBar barStyle="dark-content"/>
+                <SwipeListView
+                    data={listData}
+                    renderItem={renderItem}
+                    renderHiddenItem={renderHiddenItem}
+                    leftOpenValue={75}
+                    rightOpenValue={-150}
+                    disableRightSwipe
+                    onRowDidOpen={onRowDidOpen}
+                    leftActivationValue={100}
+                    rightActivationValue={-200}
+                    leftActionValue={0}
+                    rightActionValue={-500}
+                    onLeftAction={onLeftAction}
+                    onRightAction={onRightAction}
+                    onLeftActionStatusChange={onLeftActionStatusChange}
+                    onRightActionStatusChange={onRightActionStatusChange}
+                />
+        </ScrollView>
     );
 };
 
