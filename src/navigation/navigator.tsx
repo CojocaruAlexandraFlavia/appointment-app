@@ -1,5 +1,6 @@
 import {DefaultTheme, NavigationContainer} from "@react-navigation/native";
 import {Authentication} from "./Client/authentication";
+import {ExpoPushTokenProvider} from "../store/expo-push-token.context";
 
 const CustomTheme = {
     ...DefaultTheme,
@@ -13,7 +14,9 @@ export const Navigator = () => {
 
     return(
         <NavigationContainer theme={CustomTheme}>
-            <Authentication/>
+            <ExpoPushTokenProvider>
+                <Authentication/>
+            </ExpoPushTokenProvider>
         </NavigationContainer>
     )
 

@@ -12,7 +12,7 @@ import {
     VStack
 } from "native-base";
 import {useCallback, useEffect, useRef, useState} from "react";
-import {AirbnbRating} from "react-native-ratings";
+import {Rating} from "react-native-ratings";
 import {Salon} from "../../../utils/types";
 import 'react-native-gesture-handler';
 import React from 'react'
@@ -66,7 +66,7 @@ const HomeClient = ({data, navigation, emptySearchResult}: Props) => {
                     <Avatar size={"lg"} source={{uri: item.images[0]}} mr={1}/>
                     <VStack alignItems={"center"}>
                         <Heading style={{fontSize: 17}}>{item.name}</Heading>
-                        <AirbnbRating showRating={false} ratingContainerStyle={{marginTop: 0}} size={20} defaultRating={item.rating} isDisabled/>
+                        <Rating imageSize={20} startingValue={item.rating} readonly fractions={2}/>
                     </VStack>
                 </HStack>
             </Box>

@@ -5,13 +5,15 @@ import { ConfirmAppointmentRouteProp } from "../../../navigation/navigator.types
 import { useUserDataContext } from "../../../store/user-data.context";
 import { Loading } from "../../../components/activity-indicator.component";
 import confirmAppointmentStyle from "./confirm-appointment.style";
-import {addDoc, collection, doc, getDoc, getDocs, query, where} from "firebase/firestore";
+import {addDoc, collection, doc, getDoc} from "firebase/firestore";
 import { firestore } from "../../../utils/firebase";
 import { Salon } from "../../../utils/types";
 import {salonConverter} from "../../Salon/salon.class";
+import {AlertComponent} from "../../../components/alert.component";
+import {useExpoPushTokenContext} from "../../../store/expo-push-token.context";
 
 export const ConfirmAppointment = ({navigation}: any) => {
-
+    const {token} = useExpoPushTokenContext()
     const route = useRoute<ConfirmAppointmentRouteProp>()
     const { service, time, date, idSalon } = route.params;
     const styles = confirmAppointmentStyle()
@@ -21,6 +23,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
     const [salon, setSalon] = useState<Salon | null>(null)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
     const [firebaseError, setFirebaseError] = useState("")
+    const [notificationError, setNotificationError] = useState("")
 
     const retrieveSalon = useCallback(async () => {
         try {
@@ -38,6 +41,30 @@ export const ConfirmAppointment = ({navigation}: any) => {
         retrieveSalon().catch(e => console.log(e))
     }, [])
 
+    const sendNotificationAfterConfirm = async () => {
+        try {
+            const message = {
+                to: token,
+                sound: "default",
+                title: "New appointment sent!",
+                body: `Your appointment at ${salon?.name}, for ${date}, ${time}, was sent successfully!`,
+                data: { url: "Appointments" },
+            };
+
+            await fetch("https://exp.host/--/api/v2/push/send", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Accept-encoding": "gzip, deflate",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(message),
+            })
+        } catch (e: any) {
+            setNotificationError(e.message)
+        }
+    }
+
     const confirmAppointment = async () => {
         try {
             const collectionRef = collection(firestore, "appointments");
@@ -51,6 +78,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
             setShowConfirmationModal(true)
             setTimeout(() => {
                 setShowConfirmationModal(false)
+                sendNotificationAfterConfirm()
                 navigation.navigate("Salon", {id: salon?.id})
             }, 3000)
         } catch (e) {
@@ -66,7 +94,7 @@ export const ConfirmAppointment = ({navigation}: any) => {
     return(
         <View style={styles.centered}>
             <Center w="100%">
-                <Box shadow={"6"} p={6} w="90%" justifyContent='center' backgroundColor={'white'} rounded={5}>
+                <Box shadow={"6"} p={3} w="90%" justifyContent='center' backgroundColor={'white'} rounded={5}>
                     <Heading mb={8}>Do you confirm the following appointment?</Heading>
                     <HStack>
                         <Text fontSize="xl" bold>Salon: </Text>
@@ -87,7 +115,10 @@ export const ConfirmAppointment = ({navigation}: any) => {
                     showConfirmationModal && <Loading/>
                 }
                 {
-                    firebaseError && <Text color='red.500'>{firebaseError}</Text>
+                    firebaseError && <AlertComponent status={"error"} onClose={() => setFirebaseError("")} text={firebaseError}/>
+                }
+                {
+                    notificationError && <AlertComponent status={"error"} text={notificationError} onClose={() => setNotificationError("")}/>
                 }
             </Center>
         </View>

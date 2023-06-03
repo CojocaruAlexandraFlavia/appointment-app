@@ -5,11 +5,10 @@ import { Navigator} from "./src/navigation/navigator";
 import React from 'react'
 
 export default function App() {
-
     return (
         <NativeBaseProvider>
             <UserDataProvider>
-                <Navigator/>
+                    <Navigator/>
             </UserDataProvider>
         </NativeBaseProvider>
   );
