@@ -24,6 +24,7 @@ import {Loading} from "../../components/activity-indicator.component";
 import * as euCountries from "../../utils/european-countries.json";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {capitalizeWord} from "../../utils/functions";
+import add_salonStyles from "./add-salon.styles"
 
 const emptySalonState: Salon = {
     endTime: "",
@@ -43,6 +44,8 @@ const emptySalonState: Salon = {
 }
 
 const AddSalon = () => {
+
+    const styles = add_salonStyles()
 
     const [salon, setSalon] = useState<Salon>(emptySalonState)
     const [citiesForSelectedState, setCitiesForSelectedState] = useState<string[]>([])
@@ -173,27 +176,6 @@ const AddSalon = () => {
             }
         }
     }
-
-    const styles = StyleSheet.create({
-        container: {
-            paddingTop: 10,
-        },
-        logo: {
-            width: 125,
-            height: 140,
-            alignSelf: 'center',
-            borderRadius: 200/2
-        },
-        backgroundImage: {
-            flex: 1,
-            width: 400,
-            // height: null,
-            resizeMode: 'cover', // or 'stretch'
-            justifyContent: 'center',
-            alignItems: 'center',
-        }
-    });
-
 
     return(
          <ScrollView>

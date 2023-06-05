@@ -25,6 +25,7 @@ import {userConverter} from "../Profile/user.class";
 import {AlertComponent} from "../../components/alert.component";
 import * as euCountries from '../../utils/european-countries.json'
 import {capitalizeWord} from "../../utils/functions";
+import registerStyles from "./register.styles";
 
 const emptyState: RegisterData = {
     email: "",
@@ -37,6 +38,8 @@ const emptyState: RegisterData = {
 }
 
 const Register = ({navigation}: any): ReactElement => {
+
+    const styles = registerStyles()
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [credentials, setCredentials] = useState<RegisterData>(emptyState)
@@ -159,27 +162,6 @@ const Register = ({navigation}: any): ReactElement => {
         }
         setCredentials({...credentials, [key]: value})
     }
-
-    const styles = StyleSheet.create({
-        container: {
-            paddingTop: 10,
-            marginTop:20
-        },
-        logo: {
-            width: 125,
-            height: 140,
-            alignSelf: 'center',
-            borderRadius: 200/2
-        },
-        backgroundImage: {
-            flex: 1,
-            width: 400,
-            // height: null,
-            resizeMode: 'cover', // or 'stretch'
-            justifyContent: 'center',
-            alignItems: 'center',
-        }
-    });
 
     return (
         <ScrollView>

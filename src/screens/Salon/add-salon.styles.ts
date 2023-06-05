@@ -8,8 +8,16 @@ const styles = () => StyleSheet.create({
         width: 125,
         height: 140,
         alignSelf: 'center',
-        borderRadius: 100
+        borderRadius: 200/2
     },
+    backgroundImage: {
+        flex: 1,
+        width: 400,
+        // height: null,
+        resizeMode: 'cover', // or 'stretch'
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 })
 
 export default styles

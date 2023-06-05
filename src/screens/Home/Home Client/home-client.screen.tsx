@@ -28,6 +28,7 @@ import {
 import {useUserDataContext} from "../../../store/user-data.context";
 import {Loading} from "../../../components/activity-indicator.component";
 import {useIsFocused} from "@react-navigation/native";
+import home_clientStyles from "./home-client.styles"
 
 type Props = {
     data: Salon[],
@@ -36,6 +37,8 @@ type Props = {
 }
 
 const HomeClient = ({data, navigation, emptySearchResult}: Props) => {
+
+    const styles = home_clientStyles()
 
     const [allSalons, setAllSalons] = useState<Salon[]>(data)
     const [filteredByCity, setFilteredByCity] = useState<Salon[]>(data)
@@ -147,26 +150,5 @@ const HomeClient = ({data, navigation, emptySearchResult}: Props) => {
         </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        paddingTop: 10,
-        paddingBottom: 10
-    },
-    logo: {
-        width: 135,
-        height: 150,
-        alignSelf: 'center',
-        borderRadius: 200/2,
-    },
-    backgroundImage: {
-        flex: 1,
-        width: 355,
-        height: 870,
-        resizeMode: 'cover', // or 'stretch'
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-});
 
 export default HomeClient;

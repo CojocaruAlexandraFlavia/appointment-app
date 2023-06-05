@@ -13,8 +13,11 @@ import {SalonClass, salonConverter} from "../Salon/salon.class";
 import {userConverter} from "../Profile/user.class";
 import {Loading} from "../../components/activity-indicator.component";
 import {useIsFocused} from "@react-navigation/native";
+import reviewsStyles from "./reviews.styles"
 
 export const Reviews: React.FC = (): ReactElement => {
+
+    const styles = reviewsStyles()
 
     const [error, setError] = useState(null)
     const [filteredSalons, setFilteredSalons] = useState<Salon[]>([])

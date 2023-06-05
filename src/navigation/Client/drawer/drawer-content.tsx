@@ -12,8 +12,11 @@ import Notifications from '../../../screens/Notifications';
 import {useUserDataContext} from "../../../store/user-data.context";
 import {getAuth, signOut} from 'firebase/auth';
 import app from "../../../utils/firebase";
+import drawer_contentStyles from "./drawer-content.style";
 
 export const DrawerContent = (props:any) => {
+
+    const styles = drawer_contentStyles()
 
     const { user, setUser } = useUserDataContext()
 
@@ -61,10 +64,16 @@ export const DrawerContent = (props:any) => {
                         />
                         <DrawerItem
                             icon={({color, size}:any) => (
-                                <Icon name="star" color={color} size={size}/> )}
+                                <Icon name="star-outline" color={color} size={size}/> )}
                             label="Reviews"
                             onPress={() => {props.navigation.navigate('Reviews')}}
                         />
+                        {/*<DrawerItem*/}
+                        {/*    icon={({color, size}:any) => (*/}
+                        {/*        <Icon name="bell-outline" color={color} size={size}/> )}*/}
+                        {/*    label="Notifications"*/}
+                        {/*    onPress={() => {props.navigation.navigate('Notifications')}}*/}
+                        {/*/>*/}
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
@@ -80,49 +89,3 @@ export const DrawerContent = (props:any) => {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    drawerContent: {
-        flex: 1,
-    },
-    userInfoSection: {
-        paddingLeft: 20,
-    },
-    title: {
-        fontSize: 16,
-        marginTop: 3,
-        fontWeight: 'bold',
-    },
-    caption: {
-        fontSize: 14,
-        lineHeight: 14,
-    },
-    row: {
-        marginTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    section: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginRight: 15,
-    },
-    paragraph: {
-        fontWeight: 'bold',
-        marginRight: 3,
-    },
-    drawerSection: {
-        marginTop: 15,
-    },
-    bottomDrawerSection: {
-        marginBottom: 15,
-        borderTopColor: '#f4f4f4',
-        borderTopWidth: 1
-    },
-    preference: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-    },
-});

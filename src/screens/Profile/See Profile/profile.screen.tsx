@@ -18,6 +18,8 @@ type RecordType = Record<string, number>
 
 const Profile = ({navigation}: any) => {
 
+    const styles = profileStyles()
+
     const { user } = useUserDataContext()
     const isFocused = useIsFocused();
 
@@ -141,8 +143,6 @@ const Profile = ({navigation}: any) => {
             </HStack>
         </Box>
     </Pressable>, [favoritesOccurrencesMapping])
-
-    const styles = profileStyles()
 
     return (
         <SafeAreaView style={styles.container}>

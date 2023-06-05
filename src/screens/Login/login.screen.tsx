@@ -26,8 +26,8 @@ import {LoginData} from "../../utils/types";
 import {collection, getDocs, query, where} from "firebase/firestore";
 import {useUserDataContext} from "../../store/user-data.context";
 import {userConverter} from "../Profile/user.class";
-
 import {AlertComponent} from "../../components/alert.component";
+import loginStyles from "./login.styles"
 
 const emptyData: LoginData = {
     email: "",
@@ -35,6 +35,8 @@ const emptyData: LoginData = {
 }
 
 const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNavigationProps): ReactElement => {
+
+    const styles = loginStyles()
 
     const [showPassword, setShowPassword] = useState(false)
     const [credentials, setCredentials] = useState<LoginData>(emptyData)
@@ -98,18 +100,6 @@ const Login: React.FC<LoginScreenNavigationProps> = ({navigation}: LoginScreenNa
         }
         setCredentials({...credentials, [key]: value})
     }
-
-    const styles = StyleSheet.create({
-        container: {
-            paddingTop: 10,
-        },
-        logo: {
-            width: 125,
-            height: 140,
-            alignSelf: 'center',
-            borderRadius: 100
-        },
-    });
 
     return (
         <Center>
