@@ -47,6 +47,7 @@ const Register = ({navigation}: any): ReactElement => {
     const [registerError, setRegisterError] = useState("")
     const [added, setAdded] = useState(false)
     const [citiesForSelectedState, setCitiesForSelectedState] = useState<string[]>([])
+    const [emailValidError, setEmailValidError] = useState("");
 
     const getMajorCitiesForCountry = async (countryCode: string) => {
         const headers = new Headers();
@@ -90,6 +91,7 @@ const Register = ({navigation}: any): ReactElement => {
 
     const resetState = () => {
         setRegisterError("")
+        setEmailValidError("")
         setCredentials(emptyState)
         setErrors(emptyState)
         setShowPassword(false)
@@ -139,6 +141,7 @@ const Register = ({navigation}: any): ReactElement => {
                     role: 'CLIENT'
                 });
                 setRegisterError("")
+                // setEmailValidError("")
                 setAdded(true)
                 setTimeout(() => resetState(), 5000)
             } catch (e) {
@@ -155,6 +158,18 @@ const Register = ({navigation}: any): ReactElement => {
             //navigation.navigate('Login')
         }
     }
+
+    const handleValidEmail = (val: string | any[]) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+        if (val.length === 0) {
+            setEmailValidError('email address must be enter');
+        } else if (!reg.test(val as string)) {
+            setEmailValidError('enter valid email address');
+        } else if (reg.test(val as string)) {
+            setEmailValidError('');
+        }
+    };
 
     const onChangeText = (key: string, value: string) => {
         if (errors[key as keyof RegisterData] !== "") {
@@ -185,8 +200,14 @@ const Register = ({navigation}: any): ReactElement => {
                                     <FormControl.Label _text={{bold: true, color:"black"}} >Email</FormControl.Label>
                                     <Input value={credentials.email} isInvalid={errors.email !== ""} size={5}
                                            backgroundColor={"white"}
+                                           autoCorrect={false} autoCapitalize="none"
                                            InputLeftElement={ <Icon as={<MaterialIcons name="person" />} ml={2}/>}
-                                           onChangeText={text => onChangeText("email", text)}/>
+                                           // onChangeText={text => onChangeText("email", text) }
+                                           onChangeText={value => {
+                                               handleValidEmail(value); onChangeText("email", value)
+                                           }}
+                                    />
+                                    {emailValidError ? <Text style={{ color:"red" }} >{emailValidError}</Text> : null}
                                     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errors.email}</FormControl.ErrorMessage>
                                 </FormControl>
 

@@ -333,20 +333,20 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 <Heading mt={3} italic bold marginBottom={4}>Reviews</Heading>
                             </HStack>
                             {salon.reviews.length > 0 ?
-                                <View>
-                                    {salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" marginBottom={2}
+                                <View >
+                                    {salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" marginBottom="1"
                                                                       _dark={{borderColor: "muted.50"}}
                                                                       borderColor="muted.800" pl={["0", "4"]}
                                                                       pr={["0", "5"]} py="2">
-                                        <HStack space={[2, 3]} justifyContent="space-between">
+                                        <HStack space={[2, 3]} justifyContent="space-between" >
                                             <Avatar alignSelf={"center"} size="48px"
                                                     source={{uri: item.client.profilePicture}}/>
-                                            <VStack alignItems={"flex-start"}>
-                                                {/*@ts-ignore*/}
+                                            <VStack alignItems={"flex-start"} style={{ alignSelf: "flex-start", flexWrap: "wrap" }}>
                                                 <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                                                <AirbnbRating showRating={false} defaultRating={item.stars}
-                                                              size={10} isDisabled/>
-                                                <Text style={{fontSize: 12}}>{item.message}</Text>
+                                                <AirbnbRating showRating={false} defaultRating={item.stars} size={10} isDisabled/>
+                                                <ScrollView horizontal={false}>
+                                                <Text style={{fontSize: 12 ,textAlign:'auto', alignSelf: "flex-start", flexWrap: "wrap"}} >{item.message}</Text>
+                                                </ScrollView>
                                             </VStack>
                                             <Spacer/>
                                         </HStack>
