@@ -18,6 +18,7 @@ const CalendarPicker: React.FC<CalendarProps> = ({salonId, selectedService, show
     const [isHourSelectionModalVisible, setHourSelectionVisibility] = useState(false)
     const [availableTimeSlots, setAvailableTimeSlots] = useState<Date[]>([])
     const [salon, setSalon] = useState<Salon>({
+        nrOfStars: 0,
         address: "",
         city: "",
         country: "",
