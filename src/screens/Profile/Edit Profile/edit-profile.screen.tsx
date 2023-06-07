@@ -8,11 +8,12 @@ import {useUserDataContext} from "../../../store/user-data.context";
 import {userConverter} from "../user.class";
 import {User} from "../../../utils/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {firestore, storage} from "../../../utils/firebase";
+import {auth, firestore, storage} from "../../../utils/firebase";
 import editProfileStyles from "./edit-profile.styles";
 import * as ImagePicker from "expo-image-picker";
 import {getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import {Box, Heading} from "native-base";
+import {updateEmail } from 'firebase/auth';
 
 const emptyState: User = {
     city: "",
@@ -94,26 +95,17 @@ const EditProfile = ({navigation}: any) => {
         } else {
             setErrors(emptyState)
             const userRef = doc(firestore, "users", user.id).withConverter(userConverter)
-            if (newPicture !== "") {
-                const pictureDownloadUrl = await uploadImageAsync(newPicture)
-                updateDoc(userRef, {
-                    ...editedUser,
-                    profilePicture: pictureDownloadUrl
-                }).then(async() => {
-                    const firestoreUpdatedUser = await getDoc(userRef)
-                    setUser({...firestoreUpdatedUser.data(), id: firestoreUpdatedUser.id})
-                    navigation.navigate("Profile")
-                })
-            } else {
-                updateDoc(userRef, {
-                    ...editedUser
-                }).then(async() => {
-                    const firestoreUpdatedUser = await getDoc(userRef)
-                    setUser({...firestoreUpdatedUser.data(), id: firestoreUpdatedUser.id})
-                    navigation.navigate("Profile")
-                })
+            if (auth.currentUser) {
+                await updateEmail(auth.currentUser, editedUser.email)
             }
-
+            updateDoc(userRef, {
+                ...editedUser,
+                profilePicture: newPicture!== ""? await uploadImageAsync(newPicture): editedUser.profilePicture
+            }).then(async() => {
+                const firestoreUpdatedUser = await getDoc(userRef)
+                setUser({...firestoreUpdatedUser.data(), id: firestoreUpdatedUser.id})
+                navigation.navigate("Profile")
+            })
         }
     }
 
