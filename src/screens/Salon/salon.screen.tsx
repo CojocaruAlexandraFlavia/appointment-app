@@ -15,10 +15,10 @@ import {
     View,
     VStack,
     WarningOutlineIcon,
-    Icon, Divider
+    Icon, Divider, FlatList
 } from "native-base";
-import {BackHandler, Text, TouchableOpacity} from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import {BackHandler, ListRenderItemInfo, Text, TouchableOpacity} from 'react-native';
+import {useIsFocused, useRoute} from '@react-navigation/native';
 import React, {ReactElement, useCallback, useEffect, useState} from "react";
 import { SliderBox } from "react-native-image-slider-box";
 import { Review, Salon, ServicesListData, ServiceWithTime } from "../../utils/types";
@@ -71,6 +71,8 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     const [showCalendarPicker, setShowCalendar] = useState(false)
     const [selectedService, setSelectedService] = useState("")
     const [formValidation, setFormValidation] = useState(true)
+    const [loading, setLoading] = useState(false)
+    const isFocused = useIsFocused();
 
     const route = useRoute<SalonScreenRouteProp>()
     let { id } = route.params;
@@ -110,6 +112,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
     const retrieveSalon = useCallback(async () => {
         try {
+            setLoading(true)
             const docRef = doc(firestore, "salons", id).withConverter(salonConverter);
             const salonDoc = await getDoc(docRef)
             if (salonDoc.exists()) {
@@ -117,6 +120,7 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                     const salon = salonDoc.data()
                     const updatedReviews = await updateReviewsWithUserDetails(salon.reviews)
                     setSalon({...salon, images: result, id: salonDoc.id, reviews: updatedReviews})
+                    setLoading(false)
                 })
             }
         } catch (e: any) {
@@ -126,9 +130,13 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
 
 
     useEffect(() => {
-        retrieveSalon().catch(e => console.log(e))
+        if (isFocused) {
+            retrieveSalon().catch(e => console.log(e))
+            setCountClaps(1)
+            setClaps([])
+        }
         retrieveAllServices()
-    }, [id])
+    }, [isFocused])
 
     useEffect(() => {
         const backAction = () => {
@@ -188,23 +196,26 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
     };
 
     //animation for clapping button
-    const [countClaps, setCountClaps]=useState(1);
-    const [claps, setClaps]=useState([]);
-    const clapHand=()=>{
+    const [countClaps, setCountClaps] = useState(1);
+    const [claps, setClaps] = useState([]);
+    const clapHand = () => {
         setCountClaps(
-            countClaps+1
+            countClaps + 1
         )
         // @ts-ignore
         claps.push(countClaps);
     }
+
     const clapIcon = countClaps > 1 ? <Image source={require("../../../assets/clapping.png")} style={styles.img} />
         : <Image source={require("../../../assets/clap.png")} style={styles.img} />
-    const RenderBubble=()=>{
+
+    const RenderBubble = () => {
         return(
-            claps.map(newCount=><BubbleHand animationCompleted={animationCompleted} newCount={newCount}  key={newCount}/>)
+            claps.map(newCount => <BubbleHand animationCompleted={animationCompleted} newCount={newCount}  key={newCount}/>)
         )
     }
-    const animationCompleted=(newCount: any)=>{
+
+    const animationCompleted = (newCount: any)=>{
         // @ts-ignore
         claps.splice(claps.indexOf(newCount), 1)
         setClaps([])
@@ -247,11 +258,24 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
         )
     }
 
+    const renderItemReview = useCallback(({item}: ListRenderItemInfo<Review>) => (<Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
+                                                                                       borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+        <HStack space={[2, 3]} justifyContent="space-between">
+            <Avatar alignSelf={"center"} size="48px" source={{uri: item.client.profilePicture}} />
+            <VStack alignItems={"flex-start"}>
+                <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
+                <Rating type="custom" startingValue={item.stars} imageSize={15} readonly />
+                <Text style={{fontSize:12}}>{item.message}</Text>
+            </VStack>
+            <Spacer />
+        </HStack>
+    </Box>), [])
+
     return(
         <ScrollView backgroundColor={'#cda9e6'}>
             <Center w="100%">
                 <Box marginY={5} safeArea p="5" py="5" w="90%" backgroundColor={'white'} rounded={15}>
-                    { salon.name === ""? <Loading/>:
+                    { loading? <Loading/>:
                         <View>
                             <HStack mb={3} justifyContent={'space-between'}>
                                 <Heading size={"md"}>{salon?.name}</Heading>
@@ -332,26 +356,12 @@ export const Salons: React.FC = ({navigation}: any): ReactElement => {
                                 {/**/}
                                 <Heading mt={3} italic bold marginBottom={4}>Reviews</Heading>
                             </HStack>
-                            {salon.reviews.length > 0 ?
-                                <View >
-                                    {salon.reviews.map((item) => <Box key={item.id} borderBottomWidth="1" marginBottom="1"
-                                                                      _dark={{borderColor: "muted.50"}}
-                                                                      borderColor="muted.800" pl={["0", "4"]}
-                                                                      pr={["0", "5"]} py="2">
-                                        <HStack space={[2, 3]} justifyContent="space-between" >
-                                            <Avatar alignSelf={"center"} size="48px"
-                                                    source={{uri: item.client.profilePicture}}/>
-                                            <VStack alignItems={"flex-start"} style={{ alignSelf: "flex-start", flexWrap: "wrap" }}>
-                                                <Text mb={1}> {item.client.firstName} {item.client.lastName} </Text>
-                                                <AirbnbRating showRating={false} defaultRating={item.stars} size={10} isDisabled/>
-                                                <ScrollView horizontal={false}>
-                                                <Text style={{fontSize: 12 ,textAlign:'auto', alignSelf: "flex-start", flexWrap: "wrap"}} >{item.message}</Text>
-                                                </ScrollView>
-                                            </VStack>
-                                            <Spacer/>
-                                        </HStack>
-                                    </Box>)}
-                                </View> : <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>}
+                            {
+                                salon.reviews.length > 0 ?
+                                    <FlatList scrollEnabled={false} data={salon.reviews} renderItem={renderItemReview}
+                                              keyExtractor={item => item.id.toString()}/>:
+                                <Text style={{alignSelf: "center"}}>Salon does not have reviews yet..</Text>
+                            }
                             <AddReviewModal salonId={salon.id} retrieveSalon={retrieveSalon}/>
                         </View>
                     }

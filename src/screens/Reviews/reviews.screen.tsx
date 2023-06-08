@@ -85,13 +85,10 @@ export const Reviews: React.FC = (): ReactElement => {
                         loading == false? filteredSalons.length > 0? filteredSalons.map((salon, index) =>
                             <View key={salon.id} borderBottomWidth="1"  marginBottom={2}>
                                 <Text italic style={{fontSize:15, fontWeight: 'bold'}} mb={1}> {"Salon name:   " + salon.name} </Text>
-                                {/*<ScrollView horizontal={false}>*/}
-                                    <FlatList data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
-                                {/*</ScrollView>*/}
+                                    <FlatList scrollEnabled={false} data={salon.reviews} renderItem={renderItemReview} keyExtractor={item => item.id.toString()} />
                             </View>
                         ): <Heading>You haven't post any review yet..</Heading>: null
                     }
-
                 </Box>
             </Center>
         </ScrollView>

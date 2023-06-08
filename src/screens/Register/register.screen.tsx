@@ -163,9 +163,9 @@ const Register = ({navigation}: any): ReactElement => {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
         if (val.length === 0) {
-            setEmailValidError('email address must be enter');
+            setEmailValidError('Email address must be enter');
         } else if (!reg.test(val as string)) {
-            setEmailValidError('enter valid email address');
+            setEmailValidError('Enter valid email address');
         } else if (reg.test(val as string)) {
             setEmailValidError('');
         }
