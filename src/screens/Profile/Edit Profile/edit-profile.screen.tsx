@@ -39,6 +39,7 @@ const EditProfile = ({navigation}: any) => {
     const [editedUser, setEditedUser] = useState<User>({...user})
     const [errors, setErrors] = useState<User>(emptyState)
     const [newPicture, setNewPicture] = useState("")
+    const [emailValidError, setEmailValidError] = useState("");
 
     const findFormErrors = () : User => {
         const errors = {...emptyState}
@@ -116,6 +117,18 @@ const EditProfile = ({navigation}: any) => {
         setEditedUser({...editedUser, [key]: text})
     }
 
+    const handleValidEmail = (val: string | any[]) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+        if (val.length === 0) {
+            setEmailValidError('email address must be enter');
+        } else if (!reg.test(val as string)) {
+            setEmailValidError('enter valid email address');
+        } else if (reg.test(val as string)) {
+            setEmailValidError('');
+        }
+    };
+
     return (
             <View style={styles.container}>
                 <Animated.View style={{ margin: 20, opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)), }}>
@@ -188,13 +201,18 @@ const EditProfile = ({navigation}: any) => {
                             <FontAwesome name="envelope-o" color="#000" size={20} />
                             <TextInput
                                 value={editedUser.email}
-                                onChangeText={(text) => onChangeTextUserDetails(text, "email")}
+                                // onChangeText={(text) => onChangeTextUserDetails(text, "email")}
+                                onChangeText={value => {
+                                    handleValidEmail(value); onChangeTextUserDetails(value,"email")
+                                }}
                                 placeholder="Email"
                                 placeholderTextColor="#666666"
                                 keyboardType="email-address"
-                                autoCorrect={false}
+                                autoCorrect={false} autoCapitalize="none"
                                 style={[ styles.textInput, { color: "#000" } ]}
                             />
+                            {emailValidError ? <Text style={{ color:"red" }} >{emailValidError}</Text> : null}
+
                         </View>
 
                         <View style={styles.action}>
