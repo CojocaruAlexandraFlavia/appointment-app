@@ -1,6 +1,8 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "jsx": "react-jsx",
+    "strict": true,
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   }
 }
